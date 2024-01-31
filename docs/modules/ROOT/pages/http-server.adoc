@@ -395,7 +395,7 @@ include::{examplesdir}/channeloptions/Application.java[lines=18..33]
 ----
 ====
 
-See <<tcp-server>> for more detail about TCP-level configuration.
+See xref:tcp-server.adoc[TCP Server] for more detail about TCP-level configuration.
 
 
 
@@ -716,9 +716,9 @@ This section describes various timeout configuration options that can be used in
 Configuring a proper timeout may improve or solve issues in the communication process.
 The configuration options can be grouped as follows:
 
-* <<http-server-request-timeout>>
-* <<http-server-connection-timeout>>
-* <<http-server-ssl-tls-timeout>>
+* xref:http-server.adoc#http-server-request-timeout[Request Timeout]
+* xref:http-server.adoc#http-server-connection-timeout[Connection Timeout]
+* xref:http-server.adoc#http-server-ssl-tls-timeout[SSL/TLS Timeout]
 
 [[http-server-request-timeout]]
 === Request Timeout

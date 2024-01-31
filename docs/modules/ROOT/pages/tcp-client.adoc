@@ -173,9 +173,9 @@ include::{examplesdir}/lifecycle/Application.java[lines=18..41]
 
 This section describes three kinds of configuration that you can use at the TCP level:
 
-* <<client-tcp-level-configurations-channel-options>>
-* <<client-tcp-level-configurations-event-wire-logger>>
-* <<client-tcp-level-configurations-event-loop-group>>
+* xref:tcp-client.adoc#client-tcp-level-configurations-channel-options[Channel Options]
+* xref:tcp-client.adoc#client-tcp-level-configurations-event-wire-logger[null]
+* xref:tcp-client.adoc#client-tcp-level-configurations-event-loop-group[null]
 
 [[client-tcp-level-configurations-channel-options]]
 === Channel Options

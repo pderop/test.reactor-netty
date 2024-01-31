@@ -3,11 +3,11 @@
 
 This section covers the following content:
 
-* <<faq.proxy-connect-method>>
-* <<faq.logging-prefix>>
-* <<faq.logging-correlation>>
-* <<faq.memory-leaks>>
-* <<faq.connection-closed>>
+* xref:faq.adoc#faq.proxy-connect-method[Connection to the proxy cannot be established]
+* xref:faq.adoc#faq.logging-prefix[What is it meaning of the information that is prepended to every log record?]
+* xref:faq.adoc#faq.logging-correlation[How can I extract all log records for a particular HTTP request?]
+* xref:faq.adoc#faq.memory-leaks[How can I debug a memory leak?]
+* xref:faq.adoc#faq.connection-closed[How can I debug "Connection prematurely closed BEFORE response"?]
 
 [[faq.proxy-connect-method]]
 == Connection to the proxy cannot be established
@@ -88,7 +88,7 @@ Format
 == How can I extract all log records for a particular HTTP request?
 Reactor Netty adds information for the connection at the beginning of every log record (when this is possible).
 Use the id of the connection in order to extract all log records for a particular HTTP request.
-For more information see <<faq.logging-prefix>>
+For more information see xref:faq.adoc#faq.logging-prefix[What is it meaning of the information that is prepended to every log record?]
 
 [[faq.memory-leaks]]
 == How can I debug a memory leak?
@@ -128,7 +128,7 @@ If, on the client side, you observe `Connection prematurely closed BEFORE respon
 * Check for any proxies and load balancers.
 ** Do they have some kind of idle timeout configuration (the connection is closed when there is no incoming data for a certain period of time)?
 ** Do they silently drop the idle connections without sending any signal?
-In order to verify whether this might be the issue, you can enable the TCP keep-alive as described in the section <<connection-timeout>>.
+In order to verify whether this might be the issue, you can enable the TCP keep-alive as described in the section xref:http-server.adoc#http-server-connection-timeout[Connection Timeout].
 Issues related to TCP keep-alive configuration on various load balancers were reported in the past.
 *** https://github.com/reactor/reactor-netty/issues/764#issuecomment-1011373248
 *** https://github.com/reactor/reactor-netty/issues/1510
@@ -140,5 +140,5 @@ Issues related to TCP keep-alive configuration on various load balancers were re
 ** bad request
 ** max keep alive requests (the connection is closed when the requests reach the configured maximum number)
 
-Consider checking <<timeout-configuration>>. The section describes various timeout configuration options that are available for Reactor Netty clients.
+Consider checking xref:http-server.adoc#http-server-timeout-configuration[Timeout Configuration]. The section describes various timeout configuration options that are available for Reactor Netty clients.
 Configuring a proper timeout may improve or solve issues in the communication process.

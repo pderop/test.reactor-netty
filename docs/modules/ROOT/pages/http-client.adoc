@@ -286,7 +286,7 @@ include::{examplesdir}/channeloptions/Application.java[lines=18..54]
 <5> Configures the maximum number of TCP `keepalive` probes to 8.
 ====
 
-See <<tcp-client>> for more about `TCP` level configurations.
+See xref:tcp-client.adoc[TCP Client] for more about `TCP` level configurations.
 
 
 
@@ -611,13 +611,13 @@ This section describes various timeout configuration options that can be used in
 Configuring a proper timeout may improve or solve issues in the communication process.
 The configuration options can be grouped as follows:
 
-* <<connection-pool-timeout>>
-* <<http-client-timeout>>
-** <<response-timeout>>
-** <<connection-timeout>>
-** <<ssl-tls-timeout>>
-** <<proxy-timeout>>
-** <<dns-timeout>>
+* xref:http-client.adoc#connection-pool-timeout[Connection Pool Timeout]
+* xref:http-client.adoc#http-client-timeout[HttpClient Timeout]
+** xref:http-client.adoc#response-timeout[Response Timeout]
+** xref:http-server.adoc#http-server-connection-timeout[Connection Timeout]
+** xref:http-client.adoc#ssl-tls-timeout[SSL/TLS Timeout]
+** xref:http-client.adoc#proxy-timeout[Proxy Timeout]
+** xref:http-client.adoc#dns-timeout[Host Name Resolution Timeout]
 
 [[connection-pool-timeout]]
 === Connection Pool Timeout

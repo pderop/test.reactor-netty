@@ -141,9 +141,9 @@ include::{examplesdir}/lifecycle/Application.java[lines=18..40]
 
 This section describes three kinds of configuration that you can use at the UDP level:
 
-* <<client-udp-connection-configurations-channel-options>>
-* <<client-udp-connection-configurations-wire-logger>>
-* <<client-udp-connection-configurations-event-loop-group>>
+* xref:udp-client.adoc#client-udp-connection-configurations-channel-options[Channel Options]
+* xref:udp-client.adoc#client-udp-connection-configurations-wire-logger[null]
+* xref:udp-client.adoc#client-udp-connection-configurations-event-loop-group[null]
 
 [[client-udp-connection-configurations-channel-options]]
 === Channel Options

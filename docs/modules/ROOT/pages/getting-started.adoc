@@ -4,10 +4,10 @@
 This section contains information that should help you get going with `Reactor Netty`. It
 includes the following information:
 
-* <<getting-started-introducing-reactor-netty>>
-* <<prerequisites>>
-* <<getting-started-understanding-bom>>
-* <<getting>>
+* xref:getting-started.adoc#getting-started-introducing-reactor-netty[Introducing Reactor Netty]
+* xref:getting-started.adoc#prerequisites[Prerequisites]
+* xref:getting-started.adoc#getting-started-understanding-bom[Understanding the BOM and versioning scheme]
+* xref:getting-started.adoc#getting[Getting Reactor Netty]
 
 [[getting-started-introducing-reactor-netty]]
 == Introducing Reactor Netty
@@ -71,7 +71,7 @@ like YYYY.0.X-SNAPSHOT so we get 1 snapshot per PATCH)
 [[getting]]
 == Getting Reactor Netty
 
-As <<getting-started-understanding-bom,mentioned earlier>>, the easiest way to use
+As xref:getting-started.adoc#getting-started-understanding-bom[mentioned earlier], the easiest way to use
 `Reactor Netty` in your core is to use the `BOM` and
 add the relevant dependencies to your project. Note that, when adding such a dependency,
 you must omit the version so that the version gets picked up from the `BOM`.
