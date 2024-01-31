@@ -1,3 +1,4 @@
+[[proxy-support]]
 == Proxy Support
 
 Reactor Netty supports the proxy functionality provided by Netty and provides a way

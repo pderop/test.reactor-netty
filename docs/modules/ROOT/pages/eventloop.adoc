@@ -1,5 +1,6 @@
 :eventloopsourcedir: ./../../reactor-netty-core/src/main/java
 
+[[event-loop-group]]
 === Event Loop Group
 
 By default `Reactor Netty` uses an "`Event Loop Group`", where the number of the worker threads equals the number of

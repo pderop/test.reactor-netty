@@ -12,6 +12,7 @@
 It hides most of the `Netty` functionality that is needed to create a `TCP` server
 and adds `Reactive Streams` backpressure.
 
+[[starting-and-stopping]]
 == Starting and Stopping
 
 To start a `TCP` server, you must create and configure a
@@ -35,6 +36,7 @@ The returned {javadoc}/reactor/netty/DisposableServer.html[`DisposableServer`]
 offers a simple server API, including {javadoc}/reactor/netty/DisposableChannel.html#disposeNow-java.time.Duration-[`disposeNow()`],
 which shuts the server down in a blocking fashion.
 
+[[host-and-port]]
 === Host and Port
 
 To serve on a specific `host` and `port`, you can apply the following configuration to the `TCP` server:
@@ -64,6 +66,7 @@ include::{examplesdir}/address/MultiAddressApplication.java[lines=18..41]
 <4> Configures the second `TCP` server port
 ====
 
+[[eager-initialization]]
 == Eager Initialization
 
 By default, the initialization of the `TcpServer` resources happens on demand. This means that the `bind
@@ -84,6 +87,7 @@ include::{examplesdir}/warmup/Application.java[lines=18..36]
 <1> Initialize and load the event loop groups, the native transport libraries and the native libraries for the security
 ====
 
+[[writing-data]]
 == Writing Data
 
 In order to send data to a connected client, you must attach an I/O handler.
@@ -99,6 +103,7 @@ include::{examplesdir}/send/Application.java[lines=18..33]
 <1> Sends `hello` string to the connected clients
 ====
 
+[[consuming-data]]
 == Consuming Data
 
 In order to receive data from a connected client, you must attach an I/O handler.
@@ -114,6 +119,7 @@ include::{examplesdir}/read/Application.java[lines=18..32]
 <1> Receives data from the connected clients
 ====
 
+[[lifecycle-callbacks]]
 == Lifecycle Callbacks
 
 The following lifecycle callbacks are provided to let you extend the `TcpServer`:
@@ -140,6 +146,7 @@ include::{examplesdir}/lifecycle/Application.java[lines=18..39]
 <2> `Netty` pipeline is extended with `LoggingHandler` when initializing the channel.
 ====
 
+[[tcp-level-configurations]]
 == TCP-level Configurations
 
 This section describes three kinds of configuration that you can use at the TCP level:
@@ -184,6 +191,7 @@ include::wire-logger.adoc[]
 [[server-tcp-level-configurations-event-loop-group]]
 include::eventloop.adoc[]
 
+[[ssl-and-tls]]
 == SSL and TLS
 
 When you need SSL or TLS, you can apply the configuration shown in the next listing.
@@ -205,6 +213,7 @@ include::{examplesdir}/security/Application.java[lines=18..40]
 ----
 ====
 
+[[server-name-indication]]
 === Server Name Indication
 You can configure the `TCP` server with multiple `SslContext` mapped to a specific domain.
 An exact domain name or a domain name containing a wildcard can be used when configuring the `SNI` mapping.
@@ -219,6 +228,7 @@ include::{examplesdir}/sni/Application.java[lines=18..47]
 ----
 ====
 
+[[metrics]]
 == Metrics
 The TCP server supports built-in integration with https://micrometer.io/[`Micrometer`].
 It exposes all metrics with a prefix of `reactor.netty.tcp.server`.
@@ -268,6 +278,7 @@ include::{examplesdir}/metrics/custom/Application.java[lines=18..35]
 <1> Enables TCP server metrics and provides {javadoc}/reactor/netty/channel/ChannelMetricsRecorder.html[`ChannelMetricsRecorder`] implementation.
 ====
 
+[[tracing]]
 == Tracing
 The TCP server supports built-in integration with https://micrometer.io/docs/tracing[`Micrometer Tracing`].
 
@@ -297,6 +308,7 @@ The result in `Zipkin` looks like:
 
 image::images/tcp-server-tracing.png[]
 
+[[access-current-observation]]
 === Access Current Observation
 Project Micrometer provides https://micrometer.io/docs/contextPropagation[`a library`] that assists with context propagation across
 different types of context mechanisms such as `ThreadLocal`, `Reactor Context` and others.
@@ -322,6 +334,7 @@ NOTE: When you enable Reactor Netty tracing within a framework, you may need to 
 For this purpose you need to invoke {javadoc}/reactor/netty/Metrics.html#observationRegistry-io.micrometer.observation.ObservationRegistry-[`reactor.netty.Metrics#observationRegistry`].
 You may also need to configure the Reactor Netty `ObservationHandlers` using the API provided by the framework.
 
+[[unix-domain-sockets]]
 == Unix Domain Sockets
 The `TCP` server supports Unix Domain Sockets (UDS) when native transport is in use.
 

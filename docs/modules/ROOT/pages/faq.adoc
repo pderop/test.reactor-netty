@@ -18,6 +18,7 @@ include::proxy.adoc[tag=proxy-connect-method]
 Reactor Netty adds information for the connection at the beginning of every log record (when this is possible).
 There is a slight difference in the details for the connection when you use `TCP`, `UDP`, `HTTP/1.1` or `HTTP/2`.
 
+[[tcp-and-udp]]
 === TCP and UDP
 In case of `TCP` and `UDP`, the following is added at the beginning of every log record: the id of the underlying connection, local and remote addresses.
 
@@ -38,6 +39,7 @@ Format
 ----
 ====
 
+[[http/1-1]]
 === HTTP/1.1
 In case of `HTTP/1.1`, the following is added at the beginning of every log record: the id of the underlying connection,
 the serial number of the request received on that connection, local and remote addresses.
@@ -60,6 +62,7 @@ Format
 ----
 ====
 
+[[http/2]]
 === HTTP/2
 In case of `HTTP/2`, the following is added at the beginning of every log record: the id of the underlying connection,
 local and remote addresses, the id of the stream received on that connection.

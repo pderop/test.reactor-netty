@@ -1,3 +1,4 @@
+[[asynchronous-tcp-udp-and-http]]
 == Asynchronous TCP, UDP and HTTP
 
 "Nothing travels faster than the speed of light, with the possible exception of bad news, which obeys its own special laws."
@@ -113,14 +114,19 @@ Of course there is always the choice to provide for a pool of threads or any _As
 *Reactor Net* implements a model discussed under the https://github.com/reactive-ipc/reactive-ipc-jvm[Reactive IPC] initiative. As we progress we will align more and eventually depend on the specified artifacts likely over 2016. We give you a chance to experiment as of today with some of the principles and make our best to prepare our users to this next-generation standard.
 
 
+[[channels]]
 === Channels
 
+[[channel-handlers]]
 === Channel Handlers
 
+[[specifications]]
 === Specifications
 
+[[client-specification]]
 === Client Specification
 
+[[server-specification]]
 === Server Specification
 
 [[net-backpressure]]

@@ -80,6 +80,7 @@ However, if you want to force the use of a specific artifact's version, you can 
 it when adding your dependency as you usually would. You can also forego the `BOM` entirely
 and specify dependencies by their artifact versions.
 
+[[maven-installation]]
 === Maven Installation
 
 The `BOM` concept is natively supported by `Maven`. First, you need to import the `BOM` by
@@ -131,6 +132,7 @@ Next, add your dependencies to the relevant reactor projects, as usual (except w
 <2> No version tag here
 ====
 
+[[gradle-installation]]
 === Gradle Installation
 
 The `BOM` concept is supported in Gradle since version 5.
@@ -153,6 +155,7 @@ Check for updates at https://github.com/reactor/reactor/releases.
 <2> There is no third `:` separated section for the version. It is taken from the `BOM`.
 ====
 
+[[milestones-and-snapshots]]
 === Milestones and Snapshots
 
 Milestones and developer previews are distributed through the `Spring Milestones`

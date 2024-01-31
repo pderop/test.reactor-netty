@@ -1,5 +1,6 @@
 :formattersourcedir: ./../../reactor-netty-core/src/main/java
 
+[[wire-logger]]
 === Wire Logger
 
 Reactor Netty provides wire logging for when the traffic between the peers needs to be inspected.
@@ -16,6 +17,7 @@ include::{examplesdir}/wiretap/Application.java[lines=18..35]
 <1> Enables the wire logging
 ====
 
+[[wire-logger-formatters]]
 ==== Wire Logger formatters
 Reactor Netty supports 3 different formatters:
 
