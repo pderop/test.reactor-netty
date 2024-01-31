@@ -15,23 +15,19 @@ in the pool and thus a new connection can be opened when needed. This behaviour 
 and is intentional because only the user/framework knows if the actual protocol is compatible with reusing connections.
 (opposed to `HttpClient` where the protocol is known and Reactor Netty can return the connection to the pool when this is possible)
 
-====
 [source,java,indent=0]
 ../../../reactor-netty-core/src/main/java/reactor/netty/ReactorNetty.java
 ----
 ----
-====
 
 When you need to change the default settings, you can configure the `ConnectionProvider` as follows:
 
-====
 [source,java,indent=0]
 .{examplesdir}/pool/config/Application.java
 ----
 include::{examplesdir}/pool/config/Application.java[lines=18..41]
 ----
 <1> Configures the maximum time for the pending acquire operation to 60 seconds.
-====
 
 The following listing shows the available configurations:
 [width="100%",options="header"]
@@ -60,13 +56,11 @@ thrown (resolution: ms). If -1 is specified, no such timeout is applied. Default
 
 If you need to disable the connection pool, you can apply the following configuration:
 
-====
 [source,java,indent=0]
 .{examplesdir}/pool/Application.java
 ----
 include::{examplesdir}/pool/Application.java[lines=18..35]
 ----
-====
 
 [[metrics]]
 == Metrics
@@ -76,11 +70,9 @@ It exposes all metrics with a prefix of `reactor.netty.connection.provider`.
 
 The following example enables that integration:
 
-====
 [source,java,indent=0]
 .{examplesdir}/pool/metrics/Application.java
 ----
 include::{examplesdir}/pool/metrics/Application.java[lines=18..45]
 ----
 <1> Enables the built-in integration with Micrometer
-====

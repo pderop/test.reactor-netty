@@ -15,11 +15,9 @@ whether it supports or needs an additional configuration in order to support `CO
 
 The following example uses `ProxyProvider`:
 
-====
 [source,java,indent=0]
 .{examplesdir}/proxy/Application.java
 ----
 include::{examplesdir}/proxy/Application.java[lines=18..42]
 ----
 <1> Configures the connection establishment timeout to 20 seconds.
-====

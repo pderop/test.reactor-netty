@@ -21,7 +21,6 @@ There is a slight difference in the details for the connection when you use `TCP
 === TCP and UDP
 In case of `TCP` and `UDP`, the following is added at the beginning of every log record: the id of the underlying connection, local and remote addresses.
 
-====
 [source,text,indent=0]
 ----
 Examples
@@ -36,14 +35,12 @@ Format
                             ! (connection closed)
 <REMOTE_ADDRESS>: [0:0:0:0:0:0:0:1]:53444
 ----
-====
 
 [[http/1-1]]
 === HTTP/1.1
 In case of `HTTP/1.1`, the following is added at the beginning of every log record: the id of the underlying connection,
 the serial number of the request received on that connection, local and remote addresses.
 
-====
 [source,text,indent=0]
 ----
 Examples
@@ -59,14 +56,12 @@ Format
                             ! (connection closed)
 <REMOTE_ADDRESS>: [0:0:0:0:0:0:0:1]:53444
 ----
-====
 
 [[http/2]]
 === HTTP/2
 In case of `HTTP/2`, the following is added at the beginning of every log record: the id of the underlying connection,
 local and remote addresses, the id of the stream received on that connection.
 
-====
 [source,text,indent=0]
 ----
 Examples
@@ -82,7 +77,6 @@ Format
 <REMOTE_ADDRESS>: [0:0:0:0:0:0:0:1]:53444
 <STREAM_ID>: (H2 - 5)
 ----
-====
 
 [[faq.logging-correlation]]
 == How can I extract all log records for a particular HTTP request?

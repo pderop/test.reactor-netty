@@ -1,6 +1,6 @@
-name: shell # FIXME: Change to your project name typically just remove spring- from the artifact name
+name: reactor-netty
 version: true
-title: Spring Shell # FIXME: Change to the title of your Project's docs
+title: Reactor Netty
 nav:
   - modules/ROOT/nav.adoc
 ext:
@@ -10,7 +10,7 @@ ext:
       # See https://gitlab.com/antora/antora-collector-extension/-/blob/main/docs/modules/ROOT/pages/configuration-keys.adoc?ref_type=heads#collector-reference
       # HINT: Maven is typically something like:
       # ./mvnw validate process-resources -am -Pantora-process-resources
-      command: gradlew -q "-Dorg.gradle.jvmargs=-Xmx3g -XX:+HeapDumpOnOutOfMemoryError" :spring-shell-docs:generateAntoraYml
+      command: gradlew -q "-Dorg.gradle.jvmargs=-Xmx3g -XX:+HeapDumpOnOutOfMemoryError" :docs:generateAntoraYml
       local: true
     scan:
       # FIXME Change "dir" to the location that generated files are at

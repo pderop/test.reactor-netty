@@ -10,16 +10,13 @@ When the maximum number of channels in the pool is reached, up to `1000` new att
 acquire a channel are delayed (pending) until a channel is returned to the pool again,
 and further attempts are declined with an error.
 
-====
 [source,java,indent=0]
 ../../../reactor-netty-core/src/main/java/reactor/netty/ReactorNetty.java
 ----
 ----
-====
 
 When you need to change the default settings, you can configure the `ConnectionProvider` as follows:
 
-====
 [source,java,indent=0]
 .{examplesdir}/pool/config/Application.java
 ----
@@ -29,7 +26,6 @@ include::{examplesdir}/pool/config/Application.java[lines=18..50]
 <2> Configures the maximum time for a connection to stay alive to 60 seconds.
 <3> Configures the maximum time for the pending acquire operation to 60 seconds.
 <4> Every two minutes, the connection pool is regularly checked for connections that are applicable for removal.
-====
 
 NOTE: Notice that only the default `HttpClient` (`HttpClient.create()`) uses `500` as the maximum number of active channels. In the example above, when
 instantiating a custom `ConnectionProvider`, we are changing this value to `50` using `maxConnections`. Also, if you don't set this parameter the
@@ -76,13 +72,11 @@ to too many concurrent connections opened/acquired.
 
 If you need to disable the connection pool, you can apply the following configuration:
 
-====
 [source,java,indent=0]
 .{examplesdir}/pool/Application.java
 ----
 include::{examplesdir}/pool/Application.java[lines=18..49]
 ----
-====
 
 [[metrics]]
 == Metrics
@@ -92,11 +86,9 @@ It exposes all metrics with a prefix of `reactor.netty.connection.provider`.
 
 The following example enables that integration:
 
-====
 [source,java,indent=0]
 .{examplesdir}/pool/metrics/Application.java
 ----
 include::{examplesdir}/pool/metrics/Application.java[lines=18..45]
 ----
 <1> Enables the built-in integration with Micrometer
-====
