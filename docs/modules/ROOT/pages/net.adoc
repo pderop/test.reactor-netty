@@ -1,5 +1,5 @@
 [[asynchronous-tcp-udp-and-http]]
-== Asynchronous TCP, UDP and HTTP
+= Asynchronous TCP, UDP and HTTP
 
 "Nothing travels faster than the speed of light, with the possible exception of bad news, which obeys its own special laws."
 -- Douglas Noel Adams, Mostly Harmless (1992)
@@ -67,7 +67,7 @@ server.shutdown().await();
 ----
 
 [[net-overview]]
-=== Overview
+== Overview
 How is Reactor Net module working ?
 
 .How Doge can use Reactor-Net
@@ -115,20 +115,20 @@ Of course there is always the choice to provide for a pool of threads or any _As
 
 
 [[channels]]
-=== Channels
+== Channels
 
 [[channel-handlers]]
-=== Channel Handlers
+== Channel Handlers
 
 [[specifications]]
-=== Specifications
+== Specifications
 
 [[client-specification]]
-=== Client Specification
+== Client Specification
 
 [[server-specification]]
-=== Server Specification
+== Server Specification
 
 [[net-backpressure]]
-=== Backpressure
+== Backpressure
 Using Reactor and Reactive Stream standard for flow-control with TCP network peers.

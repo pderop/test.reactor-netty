@@ -1,7 +1,7 @@
 :formattersourcedir: ./../../reactor-netty-core/src/main/java
 
 [[wire-logger]]
-=== Wire Logger
+= Wire Logger
 
 Reactor Netty provides wire logging for when the traffic between the peers needs to be inspected.
 By default, wire logging is disabled.
@@ -18,7 +18,7 @@ include::{examplesdir}/wiretap/Application.java[lines=18..35]
 ====
 
 [[wire-logger-formatters]]
-==== Wire Logger formatters
+== Wire Logger formatters
 Reactor Netty supports 3 different formatters:
 
 - {javadoc}/reactor/netty/transport/logging/AdvancedByteBufFormat.html#HEX_DUMP[AdvancedByteBufFormat#HEX_DUMP] - the default

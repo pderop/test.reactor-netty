@@ -1,5 +1,5 @@
 [[proxy-support]]
-== Proxy Support
+= Proxy Support
 
 Reactor Netty supports the proxy functionality provided by Netty and provides a way
 to specify `non proxy hosts` through the {javadoc}/reactor/netty/tcp/ProxyProvider.html[`ProxyProvider`] builder.

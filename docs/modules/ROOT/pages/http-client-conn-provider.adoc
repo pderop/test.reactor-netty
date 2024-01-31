@@ -1,5 +1,6 @@
 [[connection-pool]]
-== Connection Pool
+= Connection Pool
+
 By default, `HttpClient` uses a "`fixed`" connection pool with `500` as the maximum number of active channels
 and `1000` as the maximum number of further channel acquisition attempts allowed to be kept in a pending state
 (for the rest of the configurations check the system properties or the builder configurations below).
@@ -85,7 +86,7 @@ include::{examplesdir}/pool/Application.java[lines=18..49]
 ====
 
 [[metrics]]
-=== Metrics
+== Metrics
 The pooled `ConnectionProvider` supports built-in integration with https://micrometer.io/[`Micrometer`].
 It exposes all metrics with a prefix of `reactor.netty.connection.provider`.
 
