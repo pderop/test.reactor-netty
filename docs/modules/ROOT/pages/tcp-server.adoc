@@ -186,10 +186,8 @@ You can find more about `Netty` channel options at the following links:
 * https://docs.oracle.com/javase/8/docs/technotes/guides/net/socketOpt.html[Socket Options]
 
 [[server-tcp-level-configurations-event-wire-logger]]
-include::wire-logger.adoc[]
 
 [[server-tcp-level-configurations-event-loop-group]]
-include::eventloop.adoc[]
 
 [[ssl-and-tls]]
 == SSL and TLS
@@ -252,8 +250,6 @@ See <<observability-metrics-tls-handshake-time>>
 
 These additional metrics are also available:
 
-include::alloc-metrics.adoc[]
-include::eventloop-metrics.adoc[]
 
 The following example enables that integration:
 

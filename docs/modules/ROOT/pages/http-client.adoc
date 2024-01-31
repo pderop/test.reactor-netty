@@ -288,11 +288,8 @@ include::{examplesdir}/channeloptions/Application.java[lines=18..54]
 
 See <<tcp-client>> for more about `TCP` level configurations.
 
-include::wire-logger.adoc[]
 
-include::eventloop.adoc[]
 
-include::http-client-conn-provider.adoc[]
 
 [[ssl-and-tls]]
 == SSL and TLS
@@ -373,7 +370,6 @@ include::{sourcedir}/reactor/netty/http/HttpProtocol.java[lines=24..52]
 ----
 ====
 
-include::proxy.adoc[]
 
 [[metrics]]
 == Metrics
@@ -407,7 +403,6 @@ See <<observability-metrics-http-client-response-time>>
 
 These additional metrics are also available:
 
-include::conn-provider-metrics.adoc[]
 
 The following table provides information for the HTTP client metrics when it is configured to serve `HTTP/2` traffic:
 
@@ -420,8 +415,6 @@ See <<observability-metrics-active-streams>>
 See <<observability-metrics-pending-streams>>
 |=======
 
-include::alloc-metrics.adoc[]
-include::eventloop-metrics.adoc[]
 
 
 The following example enables that integration:

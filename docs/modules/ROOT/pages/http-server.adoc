@@ -397,9 +397,7 @@ include::{examplesdir}/channeloptions/Application.java[lines=18..33]
 
 See <<tcp-server>> for more detail about TCP-level configuration.
 
-include::wire-logger.adoc[]
 
-include::eventloop.adoc[]
 
 [[ssl-and-tls]]
 == SSL and TLS
@@ -607,8 +605,6 @@ See <<observability-metrics-http-server-response-time>>
 
 These additional metrics are also available:
 
-include::alloc-metrics.adoc[]
-include::eventloop-metrics.adoc[]
 
 The following example enables that integration:
 

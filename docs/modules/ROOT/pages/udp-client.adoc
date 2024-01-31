@@ -176,10 +176,8 @@ You can find more about Netty channel options at the following links:
 * https://docs.oracle.com/javase/8/docs/technotes/guides/net/socketOpt.html[Socket Options]
 
 [[client-udp-connection-configurations-wire-logger]]
-include::wire-logger.adoc[]
 
 [[client-udp-connection-configurations-event-loop-group]]
-include::eventloop.adoc[]
 
 [[metrics]]
 == Metrics
@@ -205,8 +203,6 @@ See <<observability-metrics-hostname-resolution-time>>
 
 These additional metrics are also available:
 
-include::alloc-metrics.adoc[]
-include::eventloop-metrics.adoc[]
 
 The following example enables that integration:
 

@@ -208,12 +208,9 @@ You can find more about `Netty` channel options at the following links:
 * https://docs.oracle.com/javase/8/docs/technotes/guides/net/socketOpt.html[Socket Options]
 
 [[client-tcp-level-configurations-event-wire-logger]]
-include::wire-logger.adoc[]
 
 [[client-tcp-level-configurations-event-loop-group]]
-include::eventloop.adoc[]
 
-include::tcp-client-conn-provider.adoc[]
 
 [[ssl-and-tls]]
 == SSL and TLS
@@ -250,7 +247,6 @@ include::{examplesdir}/sni/Application.java[lines=18..41]
 ----
 ====
 
-include::proxy.adoc[]
 
 [[metrics]]
 == Metrics
@@ -278,10 +274,7 @@ See <<observability-metrics-hostname-resolution-time>>
 
 These additional metrics are also available:
 
-include::conn-provider-metrics.adoc[]
 
-include::alloc-metrics.adoc[]
-include::eventloop-metrics.adoc[]
 
 The following example enables that integration:
 
