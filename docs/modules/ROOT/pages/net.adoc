@@ -71,12 +71,12 @@ server.shutdown().await();
 How is Reactor Net module working ?
 
 .How Doge can use Reactor-Net
-image::images/net-overview.png[Net Overview, width=650, align="center", link="images/net-overview.png"]
+image::net-overview.png[Net Overview, width=650, align="center", link="images/net-overview.png"]
 
 So why should you care about an asynchronous runtime to deal with network operations ? As seen in the <<streams.adoc#streams-microservice, Microservice with Streams>> section, it is preferred to not block for a service reply. Non-Blocking write over network will slightly be more costly than blocking ones in terms of resources, however it might be perceived *more responsive* to the producer. Responsiveness all along the request flow impacts various systems and eventually, 1 or N users waiting their turn to push new requests.
 
 .Doge trades off CPU for Latency for better responsivity and to leave the service available to his friends
-image::images/net-latency.png[Net Latency, width=650, align="center", link="images/net-latency.png"]
+image::net-latency.png[Net Latency, width=650, align="center", link="images/net-latency.png"]
 
 Blocking Read or Write become more like a nightmare for concurrent services use over long-living connections such as TCP or WebSocket. Apart from network routing component which might timeout a too long connection, little can be done with a blocking socket in the application locking the thread on read or write IO methods.
 
