@@ -1,31 +1,45 @@
 name: Deploy Docs
+run-name: ${{ format('{0} ({1})', github.workflow, github.event.inputs.build-refname || 'all') }}
 on:
-  push:
-    branches: [ main ]
-    tags: 'v[0-9]+.[0-9]+.[0-9]+'
-  repository_dispatch:
-    types: request-build-reference # legacy
-  #schedule:
-  #- cron: '0 10 * * *' # Once per day at 10am UTC
   workflow_dispatch:
+    inputs:
+      build-refname:
+        description: Enter git refname to build (e.g., 5.7.x).
+        required: false
+  push:
+    branches: docs-build
+#env:
+#  GH_TOKEN: ${{ github.token }}
 permissions:
+  contents: write
   actions: write
 jobs:
   build:
+    if: github.repository_owner == 'micrometer-metrics'
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v3
         with:
-          ref: docs-build
-          fetch-depth: 1
-      - name: Dispatch (partial build)
-        if: github.ref_type == 'branch'
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: gh workflow run deploy-docs.yml -r $(git rev-parse --abbrev-ref HEAD) -f build-refname=${{ github.ref_name }}
-      - name: Dispatch (full build)
-        if: github.ref_type == 'tag'
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: gh workflow run deploy-docs.yml -r $(git rev-parse --abbrev-ref HEAD)
+          fetch-depth: 0
+      - name: Set Up Gradle
+        uses: spring-io/spring-gradle-build-action@v2
+        with:
+          java-version: '17'
+          distribution: temurin
+      - name: Set up refname build
+        if: github.event.inputs.build-refname
+        run: |
+          git fetch --depth 1 https://github.com/$GITHUB_REPOSITORY ${{ github.event.inputs.build-refname }}
+          echo BUILD_REFNAME=${{ github.event.inputs.build-refname }} >> $GITHUB_ENV
+          echo BUILD_VERSION=$(git cat-file --textconv FETCH_HEAD:gradle.properties | sed -n '/^version=/ { s/^version=//;p }') >> $GITHUB_ENV
+      - name: Run Antora
+        run: ./gradlew antora
+      - name: Copy the cache to be included in the site
+        run: cp -rf build/antora/inject-collector-cache-config-extension/.cache build/site/
+      - name: Publish Docs
+        uses: JamesIves/github-pages-deploy-action@v4
+        with:
+#         token: ${{ env.GH_TOKEN }}
+         target-folder: test-antora/reference
+         folder: build/site # The folder the action should deploy.

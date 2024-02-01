@@ -1,25 +1,16 @@
 plugins {
-    id 'java'
+	id 'base'
+	id 'org.antora' version '1.0.0'
 }
 
-java {
-    toolchain {
-        languageVersion = JavaLanguageVersion.of(17)
-    }
-}
-
-group 'org.example'
-version project.property('version')
-
-repositories {
-    mavenCentral()
-}
-
-dependencies {
-    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.8.1'
-    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.8.1'
-}
-
-test {
-    useJUnitPlatform()
+antora {
+	version = '3.2.0-alpha.4'
+	options = [clean: true, fetch: true, stacktrace: true]
+	dependencies = [
+			'@antora/atlas-extension': '1.0.0-alpha.1',
+			'@antora/collector-extension': '1.0.0-alpha.3',
+			'@asciidoctor/tabs': '1.0.0-beta.3',
+			'@springio/antora-extensions': '1.6.0',
+			'@springio/asciidoctor-extensions': '1.0.0-alpha.9',
+	]
 }
