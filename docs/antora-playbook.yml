@@ -13,8 +13,9 @@ antora:
 #      unwrap_example_block: always
 #      save_result: true
 site:
-  title: Reactor Netty # FIXME: Change to your Project's title
+  title: Reactor Netty Reference Guide # FIXME: Change to your Project's title
   url: https://projectreactor.io/docs/netty/release/reference/ # FIXME: Change to your Project's URL
+  start_page: reactor-netty::about-doc.adoc
 content:
   sources:
     - url: ./..

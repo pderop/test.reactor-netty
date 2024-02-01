@@ -1,6 +1,6 @@
 name: reactor-netty
 version: true
-title: Reactor Netty
+title: Reactor Netty Reference Guide
 nav:
   - modules/ROOT/nav.adoc
 ext:
@@ -23,3 +23,8 @@ asciidoc:
   attributes:
     attribute-missing: 'warn'
     chomp: 'all'
+    project-version: 1.1.16-SNAPSHOT
+    examples: 'example$reactor-netty-examples'
+    http: 'example$reactor-netty-http'
+    core: 'example$reactor-netty-core'
+    build: 'example$build'

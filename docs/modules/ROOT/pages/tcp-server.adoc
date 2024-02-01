@@ -1,5 +1,5 @@
-:sourcedir: ./../../reactor-netty-core/src/main/java
-:examplesdir: ./../../reactor-netty-examples/src/main/java/reactor/netty/examples/documentation/tcp/server
+:sourcedir: {core}/src/main/java
+:examples-dir: {examples}/src/main/java/reactor/netty/examples/documentation/tcp/server
 :javadoc: https://projectreactor.io/docs/netty/{project-version}/api
 :nettyjavadoc: https://netty.io/4.1/api
 :wirelogger: reactor.netty.tcp.TcpServer
@@ -22,9 +22,9 @@ when the `bind` operation is invoked. The following example shows how to create 
 configure a `TcpServer` instance:
 
 [source,java,indent=0]
-.{examplesdir}/create/Application.java
+.{examples-dir}/create/Application.java
 ----
-include::{examplesdir}/create/Application.java[lines=18..31]
+include::{examples-dir}/create/Application.java[lines=18..31]
 ----
 <1> Creates a {javadoc}/reactor/netty/tcp/TcpServer.html[`TcpServer`]
 instance that is ready for configuring.
@@ -40,9 +40,9 @@ which shuts the server down in a blocking fashion.
 To serve on a specific `host` and `port`, you can apply the following configuration to the `TCP` server:
 
 [source,java,indent=0]
-.{examplesdir}/address/Application.java
+.{examples-dir}/address/Application.java
 ----
-include::{examplesdir}/address/Application.java[lines=18..33]
+include::{examples-dir}/address/Application.java[lines=18..33]
 ----
 <1> Configures the `TCP` server host
 <2> Configures the `TCP` server port
@@ -51,9 +51,9 @@ To serve on multiple addresses, after having configured the `TcpServer` you can 
 All created servers will share resources such as `LoopResources` because they use the same configuration instance under the hood.
 
 [source,java,indent=0]
-.{examplesdir}/address/MultiAddressApplication.java
+.{examples-dir}/address/MultiAddressApplication.java
 ----
-include::{examplesdir}/address/MultiAddressApplication.java[lines=18..41]
+include::{examples-dir}/address/MultiAddressApplication.java[lines=18..41]
 ----
 <1> Configures the first `TCP` server host
 <2> Configures the first `TCP` server port
@@ -73,9 +73,9 @@ operation` absorbs the extra time needed to initialize and load:
 When you need to preload these resources, you can configure the `TcpServer` as follows:
 
 [source,java,indent=0]
-.{examplesdir}/warmup/Application.java
+.{examples-dir}/warmup/Application.java
 ----
-include::{examplesdir}/warmup/Application.java[lines=18..36]
+include::{examples-dir}/warmup/Application.java[lines=18..36]
 ----
 <1> Initialize and load the event loop groups, the native transport libraries and the native libraries for the security
 
@@ -87,9 +87,9 @@ The I/O handler has access to {javadoc}/reactor/netty/NettyOutbound.html[`NettyO
 to be able to write data. The following example shows how to attach an I/O handler:
 
 [source,java,indent=0]
-.{examplesdir}/send/Application.java
+.{examples-dir}/send/Application.java
 ----
-include::{examplesdir}/send/Application.java[lines=18..33]
+include::{examples-dir}/send/Application.java[lines=18..33]
 ----
 <1> Sends `hello` string to the connected clients
 
@@ -101,9 +101,9 @@ The I/O handler has access to {javadoc}/reactor/netty/NettyInbound.html[`NettyIn
 to be able to read data. The following example shows how to use it:
 
 [source,java,indent=0]
-.{examplesdir}/read/Application.java
+.{examples-dir}/read/Application.java
 ----
-include::{examplesdir}/read/Application.java[lines=18..32]
+include::{examples-dir}/read/Application.java[lines=18..32]
 ----
 <1> Receives data from the connected clients
 
@@ -125,9 +125,9 @@ The following lifecycle callbacks are provided to let you extend the `TcpServer`
 The following example uses the `doOnConnection` and `doOnChannelInit` callbacks:
 
 [source,java,indent=0]
-.{examplesdir}/lifecycle/Application.java
+.{examples-dir}/lifecycle/Application.java
 ----
-include::{examplesdir}/lifecycle/Application.java[lines=18..39]
+include::{examples-dir}/lifecycle/Application.java[lines=18..39]
 ----
 <1> `Netty` pipeline is extended with `ReadTimeoutHandler` when a remote client is connected.
 <2> `Netty` pipeline is extended with `LoggingHandler` when initializing the channel.
@@ -155,9 +155,9 @@ include::{sourcedir}/reactor/netty/tcp/TcpServerBind.java[lines=40..48]
 If additional options are necessary or changes to the current options are needed, you can apply the following configuration:
 
 [source,java,indent=0]
-.{examplesdir}/channeloptions/Application.java
+.{examples-dir}/channeloptions/Application.java
 ----
-include::{examplesdir}/channeloptions/Application.java[lines=18..33]
+include::{examples-dir}/channeloptions/Application.java[lines=18..33]
 ----
 
 You can find more about `Netty` channel options at the following links:
@@ -167,10 +167,12 @@ You can find more about `Netty` channel options at the following links:
 * {nettyjavadoc}/io/netty/channel/kqueue/KQueueChannelOption.html[KQueue ChannelOption]
 * https://docs.oracle.com/javase/8/docs/technotes/guides/net/socketOpt.html[Socket Options]
 
-
-
 [[server-tcp-level-configurations-event-wire-logger]]
+include::partial$wire-logger.adoc[]
+
 [[server-tcp-level-configurations-event-loop-group]]
+include::partial$eventloop.adoc[]
+
 [[ssl-and-tls]]
 == SSL and TLS
 
@@ -186,9 +188,9 @@ or by setting `-Dio.netty.handler.ssl.noOpenSsl=true`.
 The following example uses `SslContextBuilder`:
 
 [source,java,indent=0]
-.{examplesdir}/security/Application.java
+.{examples-dir}/security/Application.java
 ----
-include::{examplesdir}/security/Application.java[lines=18..40]
+include::{examples-dir}/security/Application.java[lines=18..40]
 ----
 
 [[server-name-indication]]
@@ -199,9 +201,9 @@ An exact domain name or a domain name containing a wildcard can be used when con
 The following example uses a domain name containing a wildcard:
 
 [source,java,indent=0]
-.{examplesdir}/sni/Application.java
+.{examples-dir}/sni/Application.java
 ----
-include::{examplesdir}/sni/Application.java[lines=18..47]
+include::{examples-dir}/sni/Application.java[lines=18..47]
 ----
 
 [[metrics]]
@@ -228,13 +230,15 @@ See <<observability-metrics-tls-handshake-time>>
 
 These additional metrics are also available:
 
+include::partial$alloc-metrics.adoc[]
+include::partial$eventloop-metrics.adoc[]
 
 The following example enables that integration:
 
 [source,java,indent=0]
-.{examplesdir}/metrics/Application.java
+.{examples-dir}/metrics/Application.java
 ----
-include::{examplesdir}/metrics/Application.java[lines=18..32]
+include::{examples-dir}/metrics/Application.java[lines=18..32]
 ----
 <1> Enables the built-in integration with Micrometer
 
@@ -242,9 +246,9 @@ When TCP server metrics are needed for an integration with a system other than `
 to provide your own integration with `Micrometer`, you can provide your own metrics recorder, as follows:
 
 [source,java,indent=0]
-.{examplesdir}/metrics/custom/Application.java
+.{examples-dir}/metrics/custom/Application.java
 ----
-include::{examplesdir}/metrics/custom/Application.java[lines=18..35]
+include::{examples-dir}/metrics/custom/Application.java[lines=18..35]
 ----
 <1> Enables TCP server metrics and provides {javadoc}/reactor/netty/channel/ChannelMetricsRecorder.html[`ChannelMetricsRecorder`] implementation.
 
@@ -265,9 +269,9 @@ The following example enables that integration. This concrete example uses `Brav
 See the https://micrometer.io/docs/tracing#_micrometer_tracing_opentelemetry_setup[`Micrometer Tracing`] documentation for `OpenTelemetry` setup.
 
 [source,java,indent=0]
-.{examplesdir}/tracing/Application.java
+.{examples-dir}/tracing/Application.java
 ----
-include::{examplesdir}/tracing/Application.java[lines=18..81]
+include::{examples-dir}/tracing/Application.java[lines=18..81]
 ----
 <1> Initializes Brave, Zipkin, and the Observation registry.
 <2> Enables the built-in integration with Micrometer.
@@ -284,9 +288,9 @@ different types of context mechanisms such as `ThreadLocal`, `Reactor Context` a
 The following example shows how to use this library in a custom `ChannelHandler`:
 
 [source,java,indent=0]
-.{examplesdir}/tracing/custom/Application.java
+.{examples-dir}/tracing/custom/Application.java
 ----
-include::{examplesdir}/tracing/custom/Application.java[lines=18..86]
+include::{examples-dir}/tracing/custom/Application.java[lines=18..86]
 ----
 <1> Initializes Brave, Zipkin, and the Observation registry.
 <2> Enables the built-in integration with Micrometer.
@@ -307,8 +311,8 @@ The `TCP` server supports Unix Domain Sockets (UDS) when native transport is in 
 The following example shows how to use UDS support:
 
 [source,java,indent=0]
-.{examplesdir}/uds/Application.java
+.{examples-dir}/uds/Application.java
 ----
-include::{examplesdir}/uds/Application.java[lines=18..33]
+include::{examples-dir}/uds/Application.java[lines=18..33]
 ----
 <1> Specifies `DomainSocketAddress` that will be used

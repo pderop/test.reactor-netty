@@ -11,6 +11,7 @@ This section covers the following content:
 
 [[faq.proxy-connect-method]]
 == Connection to the proxy cannot be established
+include::partial$proxy.adoc[tag=proxy-connect-method]
 
 [[faq.logging-prefix]]
 == What is it meaning of the information that is prepended to every log record?

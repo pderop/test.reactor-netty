@@ -1,5 +1,5 @@
-:sourcedir: ./../../reactor-netty-core/src/main/java
-:examplesdir: ./../../reactor-netty-examples/src/main/java/reactor/netty/examples/documentation/udp/client
+:sourcedir: {core}/src/main/java
+:examples-dir: {examples}/src/main/java/reactor/netty/examples/documentation/udp/client
 :javadoc: https://projectreactor.io/docs/netty/{project-version}/api
 :nettyjavadoc: https://netty.io/4.1/api
 :wirelogger: reactor.netty.udp.UdpClient
@@ -21,9 +21,9 @@ By default, the host is configured for `localhost` and the port is `12012`.
 The following example shows how to create and connect a UDP client:
 
 [source,java,indent=0]
-.{examplesdir}/create/Application.java
+.{examples-dir}/create/Application.java
 ----
-include::{examplesdir}/create/Application.java[lines=18..32]
+include::{examples-dir}/create/Application.java[lines=18..32]
 ----
 <1> Creates a {javadoc}/reactor/netty/udp/UdpClient.html[`UdpClient`]
 instance that is ready for configuring.
@@ -39,9 +39,9 @@ which shuts the client down in a blocking fashion.
 To connect to a specific `host` and `port`, you can apply the following configuration to the `UDP` client:
 
 [source,java,indent=0]
-.{examplesdir}/address/Application.java
+.{examples-dir}/address/Application.java
 ----
-include::{examplesdir}/address/Application.java[lines=18..34]
+include::{examples-dir}/address/Application.java[lines=18..34]
 ----
 <1> Configures the `host` to which this client should connect
 <2> Configures the `port` to which this client should connect
@@ -59,9 +59,9 @@ operation` absorbs the extra time needed to initialize and load:
 When you need to preload these resources, you can configure the `UdpClient` as follows:
 
 [source,java,indent=0]
-.{examplesdir}/warmup/Application.java
+.{examples-dir}/warmup/Application.java
 ----
-include::{examplesdir}/warmup/Application.java[lines=18..40]
+include::{examples-dir}/warmup/Application.java[lines=18..40]
 ----
 <1> Initialize and load the event loop group, the host name resolver, and the native transport libraries
 <2> Host name resolution happens when connecting to the remote peer
@@ -76,9 +76,9 @@ to be able to write data.
 The following example shows how to send `hello`:
 
 [source,java,indent=0]
-.{examplesdir}/send/Application.java
+.{examples-dir}/send/Application.java
 ----
-include::{examplesdir}/send/Application.java[lines=18..37]
+include::{examples-dir}/send/Application.java[lines=18..37]
 ----
 <1> Sends `hello` string to the remote peer.
 
@@ -91,9 +91,9 @@ to be able to read data.
 The following example shows how to consume data:
 
 [source,java,indent=0]
-.{examplesdir}/read/Application.java
+.{examples-dir}/read/Application.java
 ----
-include::{examplesdir}/read/Application.java[lines=18..35]
+include::{examples-dir}/read/Application.java[lines=18..35]
 ----
 <1> Receives data from a given peer
 
@@ -117,9 +117,9 @@ The following lifecycle callbacks are provided to let you extend the `UdpClient`
 The following example uses the `doOnConnected` and `doOnChannelInit` callbacks:
 
 [source,java,indent=0]
-.{examplesdir}/lifecycle/Application.java
+.{examples-dir}/lifecycle/Application.java
 ----
-include::{examplesdir}/lifecycle/Application.java[lines=18..40]
+include::{examples-dir}/lifecycle/Application.java[lines=18..40]
 ----
 <1> `Netty` pipeline is extended with `LineBasedFrameDecoder` when the channel has been connected.
 <2> `Netty` pipeline is extended with `LoggingHandler` when initializing the channel.
@@ -147,9 +147,9 @@ include::{sourcedir}/reactor/netty/udp/UdpClientConnect.java[lines=37..42]
 If you need additional options or need to change the current options, you can apply the following configuration:
 
 [source,java,indent=0]
-.{examplesdir}/channeloptions/Application.java
+.{examples-dir}/channeloptions/Application.java
 ----
-include::{examplesdir}/channeloptions/Application.java[lines=18..36]
+include::{examples-dir}/channeloptions/Application.java[lines=18..36]
 ----
 
 You can find more about Netty channel options at the following links:
@@ -159,10 +159,12 @@ You can find more about Netty channel options at the following links:
 * {nettyjavadoc}/io/netty/channel/kqueue/KQueueChannelOption.html[KQueue ChannelOption]
 * https://docs.oracle.com/javase/8/docs/technotes/guides/net/socketOpt.html[Socket Options]
 
-
-
 [[client-udp-connection-configurations-wire-logger]]
+include::partial$wire-logger.adoc[]
+
 [[client-udp-connection-configurations-event-loop-group]]
+include::partial$eventloop.adoc[]
+
 [[metrics]]
 == Metrics
 The UDP client supports built-in integration with https://micrometer.io/[`Micrometer`].
@@ -187,13 +189,15 @@ See <<observability-metrics-hostname-resolution-time>>
 
 These additional metrics are also available:
 
+include::partial$alloc-metrics.adoc[]
+include::partial$eventloop-metrics.adoc[]
 
 The following example enables that integration:
 
 [source,java,indent=0]
-.{examplesdir}/metrics/Application.java
+.{examples-dir}/metrics/Application.java
 ----
-include::{examplesdir}/metrics/Application.java[lines=18..36]
+include::{examples-dir}/metrics/Application.java[lines=18..36]
 ----
 <1> Enables the built-in integration with Micrometer
 
@@ -201,9 +205,9 @@ When UDP client metrics are needed for an integration with a system other than `
 to provide your own integration with `Micrometer`, you can provide your own metrics recorder, as follows:
 
 [source,java,indent=0]
-.{examplesdir}/metrics/custom/Application.java
+.{examples-dir}/metrics/custom/Application.java
 ----
-include::{examplesdir}/metrics/custom/Application.java[lines=18..37]
+include::{examples-dir}/metrics/custom/Application.java[lines=18..37]
 ----
 <1> Enables UDP client metrics and provides {javadoc}/reactor/netty/channel/ChannelMetricsRecorder.html[`ChannelMetricsRecorder`] implementation.
 
@@ -214,8 +218,8 @@ The `UdpClient` supports Unix Domain Datagram Sockets (UDS) when native transpor
 The following example shows how to use UDS support:
 
 [source,java,indent=0]
-.{examplesdir}/uds/Application.java
+.{examples-dir}/uds/Application.java
 ----
-include::{examplesdir}/uds/Application.java[lines=18..42]
+include::{examples-dir}/uds/Application.java[lines=18..42]
 ----
 <1> Specifies `DomainSocketAddress` that will be used
