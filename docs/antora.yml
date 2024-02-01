@@ -1,0 +1,17 @@
+name: test-antora
+version: true
+title: Antora Test
+nav:
+  - modules/ROOT/nav.adoc
+ext:
+  collector:
+    run:
+      command: gradlew -q -PbuildSrc.skipTests=true -Pantora "-Dorg.gradle.jvmargs=-Xmx3g -XX:+HeapDumpOnOutOfMemoryError" :docs:generateAntoraResources
+      local: true
+    scan:
+      dir: ./build/generated-antora-resources
+
+asciidoc:
+  attributes:
+    attribute-missing: 'warn'
+    chomp: 'all'
