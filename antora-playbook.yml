@@ -9,7 +9,7 @@ antora:
       root_component_name: 'micrometer'
 site:
   title: Antora Test
-  url: https://pderop.github.io/test-antora/reference
+  url: https://pderop.github.io/test-antora/reference/inline-text-formatting.html
   start_page: test-antora::inline-text-formatting.adoc
 #  robots: allow
 content:
