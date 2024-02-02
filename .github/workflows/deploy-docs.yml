@@ -15,7 +15,7 @@ permissions:
   actions: write
 jobs:
   build:
-    if: github.repository_owner == 'micrometer-metrics'
+    if: github.repository_owner == 'pderop'
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
