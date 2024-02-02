@@ -18,8 +18,6 @@ content:
       # Refname matching: https://docs.antora.org/antora/latest/playbook/content-refname-matching/
       branches:
         - 'main'
-      tags:
-        - 'v1.1.*'
       start_path: docs
 asciidoc:
   attributes:
