@@ -40,6 +40,7 @@ jobs:
       - name: Publish Docs
         uses: JamesIves/github-pages-deploy-action@v4
         with:
-         #token: ${{ env.GH_TOKEN }}
-         target-folder: component1/reference
-         folder: build/site # The folder the action should deploy.
+          #token: ${{ secrets.DOCS_PAGES_TOKEN }}
+          repository-name: pderop/test-antora-pages
+          target-folder: component1/reference
+          folder: build/site # The folder the action should deploy.
