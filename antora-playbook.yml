@@ -10,7 +10,7 @@ antora:
 site:
   title: Component1
   url: https://pderop.github.io/test-antora-pages/component1/reference/
-  start_page: component1::inline-text-formatting.adoc
+  #start_page: component1::inline-text-formatting.adoc
   #robots: allow
 content:
   sources:
