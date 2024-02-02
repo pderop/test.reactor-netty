@@ -6,12 +6,12 @@ antora:
     - '@antora/collector-extension'
     - '@antora/atlas-extension'
     - require: '@springio/antora-extensions/root-component-extension'
-      root_component_name: 'micrometer'
+      root_component_name: 'component1'
 site:
   title: Component1
   url: https://pderop.github.io/test-antora-pages/component1/reference/
-#  start_page: test-antora::inline-text-formatting.adoc
-#  robots: allow
+  #start_page: component1::inline-text-formatting.adoc
+  #robots: allow
 content:
   sources:
     - url: https://github.com/pderop/test-antora
