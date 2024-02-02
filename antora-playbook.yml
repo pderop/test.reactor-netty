@@ -8,9 +8,9 @@ antora:
     - require: '@springio/antora-extensions/root-component-extension'
       root_component_name: 'micrometer'
 site:
-  title: Antora Test
-  url: https://pderop.github.io/test-antora/test-antora/reference/
-  start_page: test-antora::inline-text-formatting.adoc
+  title: Component1
+  url: https://pderop.github.io/test-antora/component1
+#  start_page: test-antora::inline-text-formatting.adoc
 #  robots: allow
 content:
   sources:
