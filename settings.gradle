@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-<<<<<<< HEAD
 rootProject.name = 'reactor-netty5'
 include 'reactor-netty5-core'
 include 'reactor-netty5-http'
@@ -21,14 +20,4 @@ include 'reactor-netty5-http'
 include 'reactor-netty5-examples'
 include 'reactor-netty5-graalvm-smoke-tests'
 include 'reactor-netty5'
-=======
-rootProject.name = 'reactor-netty'
-include 'reactor-netty-core'
-include 'reactor-netty-http'
-include 'reactor-netty-http-brave'
-include 'reactor-netty-incubator-quic'
-include 'reactor-netty-examples'
-include 'reactor-netty-graalvm-smoke-tests'
-include 'reactor-netty'
 include 'docs'
->>>>>>> main
