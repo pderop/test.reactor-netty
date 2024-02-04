@@ -1,7 +1,10 @@
-:root-target: ./../../build/
+:root-target: {build}/
 
+[[observability]]
 = Observability
+:page-section-summary-toc: 1
 
+[[observability-metadata]]
 == Observability metadata
 
 include::{root-target}_metrics.adoc[]

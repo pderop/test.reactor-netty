@@ -1,4 +1,6 @@
+[[connection-pool]]
 == Connection Pool
+
 By default, `HttpClient` uses a "`fixed`" connection pool with `500` as the maximum number of active channels
 and `1000` as the maximum number of further channel acquisition attempts allowed to be kept in a pending state
 (for the rest of the configurations check the system properties or the builder configurations below).
@@ -8,27 +10,23 @@ When the maximum number of channels in the pool is reached, up to `1000` new att
 acquire a channel are delayed (pending) until a channel is returned to the pool again,
 and further attempts are declined with an error.
 
-====
 [source,java,indent=0]
-../../../reactor-netty5-core/src/main/java/reactor/netty5/ReactorNetty.java
+.{core}/src/main/java/reactor/netty5/ReactorNetty.java
 ----
-include::./../../reactor-netty5-core/src/main/java/reactor/netty5/ReactorNetty.java[lines=116..164]
+include::{core}/src/main/java/reactor/netty5/ReactorNetty.java[lines=116..164]
 ----
-====
 
 When you need to change the default settings, you can configure the `ConnectionProvider` as follows:
 
-====
 [source,java,indent=0]
-.{examplesdir}/pool/config/Application.java
+.{examples-dir}/pool/config/Application.java
 ----
-include::{examplesdir}/pool/config/Application.java[lines=18..50]
+include::{examples-dir}/pool/config/Application.java[lines=18..50]
 ----
 <1> Configures the maximum time for a connection to stay idle to 20 seconds.
 <2> Configures the maximum time for a connection to stay alive to 60 seconds.
 <3> Configures the maximum time for the pending acquire operation to 60 seconds.
 <4> Every two minutes, the connection pool is regularly checked for connections that are applicable for removal.
-====
 
 NOTE: Notice that only the default `HttpClient` (`HttpClient.create()`) uses `500` as the maximum number of active channels. In the example above, when
 instantiating a custom `ConnectionProvider`, we are changing this value to `50` using `maxConnections`. Also, if you don't set this parameter the
@@ -75,27 +73,23 @@ to too many concurrent connections opened/acquired.
 
 If you need to disable the connection pool, you can apply the following configuration:
 
-====
 [source,java,indent=0]
-.{examplesdir}/pool/Application.java
+.{examples-dir}/pool/Application.java
 ----
-include::{examplesdir}/pool/Application.java[lines=18..49]
+include::{examples-dir}/pool/Application.java[lines=18..49]
 ----
-====
 
+[[http-client-conn-provider-metrics]]
 === Metrics
 The pooled `ConnectionProvider` supports built-in integration with https://micrometer.io/[`Micrometer`].
 It exposes all metrics with a prefix of `reactor.netty5.connection.provider`.
 
-include::conn-provider-metrics.adoc[]
 
 The following example enables that integration:
 
-====
 [source,java,indent=0]
-.{examplesdir}/pool/metrics/Application.java
+.{examples-dir}/pool/metrics/Application.java
 ----
-include::{examplesdir}/pool/metrics/Application.java[lines=18..45]
+include::{examples-dir}/pool/metrics/Application.java[lines=18..45]
 ----
 <1> Enables the built-in integration with Micrometer
-====

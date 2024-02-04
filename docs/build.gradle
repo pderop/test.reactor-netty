@@ -1,0 +1,60 @@
+buildscript {
+	repositories {
+		mavenCentral()
+		gradlePluginPortal()
+	}
+
+	dependencies {
+		classpath 'io.spring.gradle.antora:spring-antora-plugin:0.0.1'
+		classpath 'org.antora:gradle-antora-plugin:1.0.0'
+	}
+}
+
+plugins {
+	id 'java'
+    id 'org.antora' version '1.0.0'
+	id 'io.spring.antora.generate-antora-yml' version '0.0.1'
+}
+
+description = "Reactor Netty Docs"
+
+repositories {
+	mavenCentral()
+}
+
+java {
+	toolchain {
+		languageVersion = JavaLanguageVersion.of(17)
+	}
+}
+
+antora {
+	version = '3.2.0-alpha.2'
+	playbook = 'antora-playbook.yml'
+	options = ['--clean', '--stacktrace']
+	environment = [
+			'ALGOLIA_API_KEY'   : 'da671ceec1f84f80f280884a6a91bde5',
+			'ALGOLIA_APP_ID'    : 'TGS4XRGX3V',
+			'ALGOLIA_INDEX_NAME': 'reactor'
+	]
+
+	dependencies = [
+			'@antora/atlas-extension'         : '1.0.0-alpha.1',
+			'@antora/collector-extension'     : '1.0.0-alpha.3',
+			'@asciidoctor/tabs'               : '1.0.0-beta.3',
+			'@springio/antora-extensions'     : '1.6.0',
+			'@springio/asciidoctor-extensions': '1.0.0-alpha.9',
+	]
+}
+
+jar {
+	enabled = false
+}
+
+javadoc {
+	enabled = false
+}
+
+tasks.withType(AbstractPublishToMaven).configureEach {
+	enabled = false
+}
