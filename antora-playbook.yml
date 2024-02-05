@@ -6,24 +6,26 @@ antora:
     - '@antora/collector-extension'
     - '@antora/atlas-extension'
     - require: '@springio/antora-extensions/root-component-extension'
-      root_component_name: 'component1'
+      root_component_name: 'reactor-netty'
 site:
   title: Component1
-  url: https://pderop.github.io/test-antora-pages/component1/reference/
+  url: https://pderop.github.io/test-antora-pages/reactor-netty/reference/
   #start_page: component1::inline-text-formatting.adoc
   #robots: allow
 content:
   sources:
-    - url: https://github.com/pderop/test-antora
+    - url: https://github.com/pderop/test.reactor-netty
       # Refname matching: https://docs.antora.org/antora/latest/playbook/content-refname-matching/
       branches:
         - 'main'
+        - 'netty5'
       tags:
         - 'v1.1.*'
+        - 'v2.0.*'
       start_path: docs
 asciidoc:
   attributes:
-    page-stackoverflow-url: https://stackoverflow.com/tags/antora
+    page-stackoverflow-url: https://stackoverflow.com/tags/reactor-netty
     page-pagination: ''
     hide-uri-scheme: '@'
     tabs-sync-option: '@'
@@ -42,5 +44,5 @@ runtime:
     format: pretty
 ui:
   bundle:
-    url: https://gitlab.com/antora/antora-ui-default/-/jobs/artifacts/HEAD/raw/build/ui-bundle.zip?job=bundle-stable
-    snapshot: true 
+    url: https://github.com/micrometer-metrics/antora-ui-micrometer/releases/download/latest/ui-bundle.zip
+    snapshot: true
