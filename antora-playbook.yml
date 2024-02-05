@@ -18,10 +18,10 @@ content:
       # Refname matching: https://docs.antora.org/antora/latest/playbook/content-refname-matching/
       branches:
         - 'main'
-        - 'netty5'
+#        - 'netty5'
       tags:
         - 'v1.1.*'
-        - 'v2.0.*'
+#        - 'v2.0.*'
       start_path: docs
 asciidoc:
   attributes:
