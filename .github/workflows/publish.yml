@@ -149,8 +149,8 @@ jobs:
         run: |
           git config --local user.name "${{ env.CI_COMMIT_AUTHOR }}"
           git config --local user.email "${{ env.CI_COMMIT_EMAIL }}"
-          git tag -m "Release milestone ${{ needs.reactor-netty-core.outputs.fullVersion }}" v${{ needs.reactor-netty-core.outputs.fullVersion }} ${{ github.sha }}
-          git push --tags
+#          git tag -m "Release milestone ${{ needs.reactor-netty-core.outputs.fullVersion }}" v${{ needs.reactor-netty-core.outputs.fullVersion }} ${{ github.sha }}
+#          git push --tags
 
   tagRelease:
     name: Tag release
@@ -164,8 +164,8 @@ jobs:
         run: |
           git config --local user.name "${{ env.CI_COMMIT_AUTHOR }}"
           git config --local user.email "${{ env.CI_COMMIT_EMAIL }}"
-          git tag -m "Release version ${{ needs.reactor-netty-core.outputs.fullVersion }}" v${{ needs.reactor-netty-core.outputs.fullVersion }} ${{ github.sha }}
-          git push --tags
+#          git tag -m "Release version ${{ needs.reactor-netty-core.outputs.fullVersion }}" v${{ needs.reactor-netty-core.outputs.fullVersion }} ${{ github.sha }}
+#          git push --tags
 
 # For Gradle configuration of signing, see https://docs.gradle.org/current/userguide/signing_plugin.html#sec:in-memory-keys
 # publishMavenJavaPublicationToSonatypeRepository only sends to a staging repository
