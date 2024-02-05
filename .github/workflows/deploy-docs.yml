@@ -34,7 +34,9 @@ jobs:
           echo BUILD_REFNAME=${{ github.event.inputs.build-refname }} >> $GITHUB_ENV
           echo BUILD_VERSION=$(git cat-file --textconv FETCH_HEAD:gradle.properties | sed -n '/^version=/ { s/^version=//;p }') >> $GITHUB_ENV
       - name: Run Antora
-        run: ./gradlew antora
+        run: |-
+          ./gradlew generateObservabilityDocs
+          ./gradlew antora
       - name: Copy the cache to be included in the site
         run: cp -rf build/antora/inject-collector-cache-config-extension/.cache build/site/
       - name: Publish Docs
