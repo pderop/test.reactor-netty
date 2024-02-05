@@ -15,8 +15,8 @@ content:
     - url: ./..
       branches:
         - 'netty5'
-      tags:
-        - 'v2.0.*'
+#      tags:
+#        - 'v2.0.*'
       start_path: docs
       worktrees: true
 asciidoc:
