@@ -1,14 +1,15 @@
 :sourcedir: {core}/src/main/java
-:examples-dir: {examples}/src/main/java/reactor/netty/examples/documentation/tcp/client
+:examples-dir: {examples}/src/main/java/reactor/netty5/examples/documentation/tcp/client
+
 :javadoc: https://projectreactor.io/docs/netty/{project-version}/api
-:nettyjavadoc: https://netty.io/4.1/api
-:wirelogger: reactor.netty.tcp.TcpClient
+:nettyjavadoc: https://netty.io/5.0/api
+:wirelogger: reactor.netty5.tcp.TcpClient
 
 [[tcp-client]]
 = TCP Client
 
 Reactor Netty provides the easy-to-use and easy-to-configure
-{javadoc}/reactor/netty/tcp/TcpClient.html[`TcpClient`].
+{javadoc}/reactor/netty5/tcp/TcpClient.html[`TcpClient`].
 It hides most of the Netty functionality that is needed in order to create a `TCP` client
 and adds Reactive Streams backpressure.
 
@@ -16,7 +17,7 @@ and adds Reactive Streams backpressure.
 == Connect and Disconnect
 
 To connect the `TCP` client to a given endpoint, you must create and configure a
-{javadoc}/reactor/netty/tcp/TcpClient.html[`TcpClient`] instance.
+{javadoc}/reactor/netty5/tcp/TcpClient.html[`TcpClient`] instance.
 By default, the `host` is `localhost` and the `port` is `12012`.
 The following example shows how to create a `TcpClient`:
 
@@ -25,12 +26,12 @@ The following example shows how to create a `TcpClient`:
 ----
 include::{examples-dir}/create/Application.java[lines=18..31]
 ----
-<1> Creates a {javadoc}/reactor/netty/tcp/TcpClient.html[`TcpClient`]
+<1> Creates a {javadoc}/reactor/netty5/tcp/TcpClient.html[`TcpClient`]
 instance that is ready for configuring.
 <2> Connects the client in a blocking fashion and waits for it to finish initializing.
 
-The returned {javadoc}/reactor/netty/Connection.html[`Connection`]
-offers a simple connection API, including {javadoc}/reactor/netty/DisposableChannel.html#disposeNow-java.time.Duration-[`disposeNow()`],
+The returned {javadoc}/reactor/netty5/Connection.html[`Connection`]
+offers a simple connection API, including {javadoc}/reactor/netty5/DisposableChannel.html#disposeNow-java.time.Duration-[`disposeNow()`],
 which shuts the client down in a blocking fashion.
 
 [[host-and-port]]
@@ -73,7 +74,7 @@ the native libraries for the security
 == Writing Data
 
 To send data to a given endpoint, you must attach an I/O handler.
-The I/O handler has access to {javadoc}/reactor/netty/NettyOutbound.html[`NettyOutbound`]
+The I/O handler has access to {javadoc}/reactor/netty5/NettyOutbound.html[`NettyOutbound`]
 to be able to write data.
 
 [source,java,indent=0]
@@ -84,9 +85,9 @@ include::{examples-dir}/send/Application.java[lines=18..35]
 <1> Sends `hello` string to the endpoint.
 
 When you need more control over the writing process, as an alternative for I/O handler you may use
-{javadoc}/reactor/netty/Connection.html#outbound--[`Connection#outbound`]. As opposed to I/O handler
+{javadoc}/reactor/netty5/Connection.html#outbound--[`Connection#outbound`]. As opposed to I/O handler
 where the connection is closed when the provided `Publisher` finishes (in case of finite `Publisher`),
-when using {javadoc}/reactor/netty/Connection.html#outbound--[`Connection#outbound`], you have to invoke explicitly
+when using {javadoc}/reactor/netty5/Connection.html#outbound--[`Connection#outbound`], you have to invoke explicitly
 `Connection#dispose` in order to close the connection.
 
 [source,java,indent=0]
@@ -102,7 +103,7 @@ include::{examples-dir}/send/connection/Application.java[lines=18..44]
 == Consuming Data
 
 To receive data from a given endpoint, you must attach an I/O handler.
-The I/O handler has access to {javadoc}/reactor/netty/NettyInbound.html[`NettyInbound`]
+The I/O handler has access to {javadoc}/reactor/netty5/NettyInbound.html[`NettyInbound`]
 to be able to read data. The following example shows how to do so:
 
 [source,java,indent=0]
@@ -113,9 +114,9 @@ include::{examples-dir}/read/Application.java[lines=18..34]
 <1> Receives data from a given endpoint
 
 When you need more control over the reading process, as an alternative for I/O handler you may use
-{javadoc}/reactor/netty/Connection.html#inbound--[`Connection#inbound`]. As opposed to I/O handler
+{javadoc}/reactor/netty5/Connection.html#inbound--[`Connection#inbound`]. As opposed to I/O handler
 where the connection is closed when the provided `Publisher` finishes (in case of finite `Publisher`),
-when using {javadoc}/reactor/netty/Connection.html#inbound--[`Connection#inbound`], you have to invoke explicitly
+when using {javadoc}/reactor/netty5/Connection.html#inbound--[`Connection#inbound`], you have to invoke explicitly
 `Connection#dispose` in order to close the connection.
 
 [source,java,indent=0]
@@ -167,9 +168,9 @@ This section describes three kinds of configuration that you can use at the TCP 
 By default, the `TCP` client is configured with the following options:
 
 [source,java,indent=0]
-.{sourcedir}/reactor/netty/tcp/TcpClientConnect.java
+.{sourcedir}/reactor/netty5/tcp/TcpClientConnect.java
 ----
-include::{sourcedir}/reactor/netty/tcp/TcpClientConnect.java[lines=36..41]
+include::{sourcedir}/reactor/netty5/tcp/TcpClientConnect.java[lines=35..40]
 ----
 
 If additional options are necessary or changes to the current options are needed, you can apply the following configuration:
@@ -182,10 +183,11 @@ include::{examples-dir}/channeloptions/Application.java[lines=18..35]
 
 You can find more about `Netty` channel options at the following links:
 
-* {nettyjavadoc}/io/netty/channel/ChannelOption.html[Common ChannelOption]
-* {nettyjavadoc}/io/netty/channel/epoll/EpollChannelOption.html[Epoll ChannelOption]
-* {nettyjavadoc}/io/netty/channel/kqueue/KQueueChannelOption.html[KQueue ChannelOption]
-* https://docs.oracle.com/javase/8/docs/technotes/guides/net/socketOpt.html[Socket Options]
+* {nettyjavadoc}/io.netty5.transport/io/netty5/channel/ChannelOption.html[Common ChannelOption]
+* {nettyjavadoc}/io.netty5.transport.classes.epoll/io/netty5/channel/epoll/EpollChannelOption.html[Epoll ChannelOption]
+* {nettyjavadoc}/io.netty5.transport.classes.kqueue/io/netty5/channel/kqueue/KQueueChannelOption.html[KQueue ChannelOption]
+* https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/net/StandardSocketOptions.html[Standard Socket Options]
+* https://docs.oracle.com/en/java/javase/17/docs/api/jdk.net/jdk/net/ExtendedSocketOptions.html[Extended Socket Options]
 
 [[client-tcp-level-configurations-event-wire-logger]]
 include::partial$wire-logger.adoc[]
@@ -200,12 +202,12 @@ include::partial$tcp-client-conn-provider.adoc[]
 
 When you need SSL or TLS, you can apply the following configuration.
 By default, if `OpenSSL` is available, the
-{nettyjavadoc}/io/netty/handler/ssl/SslProvider.html#OPENSSL[SslProvider.OPENSSL]
+{nettyjavadoc}/io.netty5.handler/io/netty5/handler/ssl/SslProvider.html#OPENSSL[`SslProvider.OPENSSL`]
 provider is used as a provider. Otherwise, the provider is
-{nettyjavadoc}/io/netty/handler/ssl/SslProvider.html#JDK[SslProvider.JDK].
+{nettyjavadoc}/io.netty5.handler/io/netty5/handler/ssl/SslProvider.html#JDK[`SslProvider.JDK`] is used.
 You can switch the provider by using
-{nettyjavadoc}/io/netty/handler/ssl/SslContextBuilder.html#sslProvider-io.netty.handler.ssl.SslProvider-[SslContextBuilder]
-or by setting `-Dio.netty.handler.ssl.noOpenSsl=true`.
+{nettyjavadoc}/io.netty5.handler/io/netty5/handler/ssl/SslContextBuilder.html#sslProvider(io.netty5.handler.ssl.SslProvider)[`SslContextBuilder`]
+or by setting `-Dio.netty5.handler.ssl.noOpenSsl=true`.
 
 The following example uses `SslContextBuilder`:
 
@@ -231,24 +233,24 @@ include::partial$proxy.adoc[]
 [[metrics]]
 == Metrics
 The TCP client supports built-in integration with https://micrometer.io/[`Micrometer`].
-It exposes all metrics with a prefix of `reactor.netty.tcp.client`.
+It exposes all metrics with a prefix of `reactor.netty5.tcp.client`.
 
 The following table provides information for the TCP client metrics:
 
 [width="100%",options="header"]
 |=======
 | metric name | type | description
-| reactor.netty.tcp.client.data.received | DistributionSummary | Amount of the data received, in bytes.
+| reactor.netty5.tcp.client.data.received | DistributionSummary | Amount of the data received, in bytes.
 See <<observability-metrics-data-received>>
-| reactor.netty.tcp.client.data.sent | DistributionSummary | Amount of the data sent, in bytes.
+| reactor.netty5.tcp.client.data.sent | DistributionSummary | Amount of the data sent, in bytes.
 See <<observability-metrics-data-sent>>
-| reactor.netty.tcp.client.errors | Counter | Number of errors that occurred.
+| reactor.netty5.tcp.client.errors | Counter | Number of errors that occurred.
 See <<observability-metrics-errors-count>>
-| reactor.netty.tcp.client.tls.handshake.time | Timer | Time spent for TLS handshake.
+| reactor.netty5.tcp.client.tls.handshake.time | Timer | Time spent for TLS handshake.
 See <<observability-metrics-tls-handshake-time>>
-| reactor.netty.tcp.client.connect.time | Timer | Time spent for connecting to the remote address.
+| reactor.netty5.tcp.client.connect.time | Timer | Time spent for connecting to the remote address.
 See <<observability-metrics-connect-time>>
-| reactor.netty.tcp.client.address.resolver | Timer | Time spent for resolving the address.
+| reactor.netty5.tcp.client.address.resolver | Timer | Time spent for resolving the address.
 See <<observability-metrics-hostname-resolution-time>>
 |=======
 
@@ -276,7 +278,8 @@ to provide your own integration with `Micrometer`, you can provide your own metr
 ----
 include::{examples-dir}/metrics/custom/Application.java[lines=18..37]
 ----
-<1> Enables TCP client metrics and provides {javadoc}/reactor/netty/channel/ChannelMetricsRecorder.html[`ChannelMetricsRecorder`] implementation.
+<1> Enables TCP client metrics and provides {javadoc}/reactor/netty5/channel/ChannelMetricsRecorder.html[`ChannelMetricsRecorder`] implementation.
+
 
 [[tracing]]
 == Tracing
@@ -336,7 +339,7 @@ You may also need to configure the Reactor Netty `ObservationHandlers` using the
 
 [[unix-domain-sockets]]
 == Unix Domain Sockets
-The `TCP` client supports Unix Domain Sockets (UDS) when native transport is in use.
+The `TCP` client supports Unix Domain Sockets (UDS) for all transports (native and NIO).
 
 The following example shows how to use UDS support:
 
@@ -386,8 +389,8 @@ This configuration is applicable for `DnsNameResolver#resolveAll(String)`. By de
  how much data the resolver can read per response. By default, this setting is enabled.
 | `disableRecursionDesired` | Specifies whether this resolver has to send a DNS query with the recursion desired (RD) flag set.
  By default, this setting is enabled.
-| `hostsFileEntriesResolver` | Sets a custom {nettyjavadoc}/io/netty/resolver/HostsFileEntriesResolver.html[`HostsFileEntriesResolver`] to be used for hosts file entries.
-Default: {nettyjavadoc}/io/netty/resolver/DefaultHostsFileEntriesResolver.html[`DefaultHostsFileEntriesResolver`].
+| `hostsFileEntriesResolver` | Sets a custom {nettyjavadoc}/io.netty5.resolver/io/netty5/resolver/HostsFileEntriesResolver.html[`HostsFileEntriesResolver`] to be used for hosts file entries.
+Default: {nettyjavadoc}/io.netty5.resolver/io/netty5/resolver/DefaultHostsFileEntriesResolver.html[`DefaultHostsFileEntriesResolver`].
 | `maxPayloadSize` | Sets the capacity of the datagram packet buffer (in bytes). Default: 4096.
 | `maxQueriesPerResolve` | Sets the maximum allowed number of DNS queries to send when resolving a host name. Default: 16.
 | `ndots` | Sets the number of dots that must appear in a name before an initial absolute query is made.
@@ -397,13 +400,13 @@ Default: {nettyjavadoc}/io/netty/resolver/DefaultHostsFileEntriesResolver.html[`
 | `resolveCache` | The cache to use to store resolved DNS entries.
 | `bindAddressSupplier` | The supplier of the local address to bind to.
 | `roundRobinSelection` | Enables an
- {nettyjavadoc}/io/netty/resolver/AddressResolverGroup.html[`AddressResolverGroup`] of
- {nettyjavadoc}/io/netty/resolver/dns/DnsNameResolver.html[`DnsNameResolver`] that supports random selection
+ {nettyjavadoc}/io.netty5.resolver/io/netty5/resolver/AddressResolverGroup.html[`AddressResolverGroup`] of
+ {nettyjavadoc}/io.netty5.resolver.dns/io/netty5/resolver/dns/DnsNameResolver.html[`DnsNameResolver`] that supports random selection
  of destination addresses if multiple are provided by the nameserver.
- See {nettyjavadoc}/io/netty/resolver/dns/RoundRobinDnsAddressResolverGroup.html[`RoundRobinDnsAddressResolverGroup`].
- Default: {nettyjavadoc}/io/netty/resolver/dns/DnsAddressResolverGroup.html[`DnsAddressResolverGroup`]
+ See {nettyjavadoc}/io.netty5.resolver.dns/io/netty5/resolver/dns/RoundRobinDnsAddressResolverGroup.html[`RoundRobinDnsAddressResolverGroup`].
+ Default: {nettyjavadoc}/io.netty5.resolver.dns/io/netty5/resolver/dns/DnsAddressResolverGroup.html[`DnsAddressResolverGroup`]
 | `runOn` | Performs the communication with the DNS servers on the given
- {javadoc}/reactor/netty/resources/LoopResources.html[`LoopResources`]. By default, the LoopResources
+ {javadoc}/reactor/netty5/resources/LoopResources.html[`LoopResources`]. By default, the LoopResources
  specified on the client level are used.
 | `searchDomains` | The list of search domains of the resolver.
  By default, the effective search domain list is populated by using the system DNS search domains.

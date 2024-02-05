@@ -41,7 +41,7 @@ plugins {
 	id 'io.spring.javadoc' version '0.0.1' apply false
 	id 'io.spring.javadoc-aggregate' version '0.0.1' apply false
 	id 'biz.aQute.bnd.builder' version '6.4.0' apply false
-	id 'org.graalvm.buildtools.native' version '0.9.25' apply false
+	id 'org.graalvm.buildtools.native' version '0.9.28' apply false
 }
 
 description = 'Reactive Streams Netty driver'
@@ -98,17 +98,18 @@ ext {
 		println "Context Propagation version defined from command line: ${forceContextPropagationVersion}"
 	}
 
+	// Used only in examples
 	braveVersion = '5.18.1'
 	zipkinSenderVersion = '2.16.3'
 
 	jsr305Version = '3.0.2'
 
 	// Logging
-	slf4jVersion = '1.7.36'
-	logbackVersion = '1.2.13'
+	slf4jVersion = '2.0.7'
+	logbackVersion = '1.4.14'
 
 	// Netty
-	nettyDefaultVersion = '4.1.106.Final'
+	nettyDefaultVersion = '5.0.0.Alpha6-SNAPSHOT'
 	if (!project.hasProperty("forceNettyVersion")) {
 		nettyVersion = nettyDefaultVersion
 	}
@@ -116,8 +117,10 @@ ext {
 		nettyVersion = forceNettyVersion
 		println "Netty version defined from command line: ${forceNettyVersion}"
 	}
-	nettyIoUringVersion = '0.0.24.Final'
-	nettyQuicVersion = '0.0.56.Final'
+	nettyContribVersion = '5.0.0.Alpha2'
+	//nettyQuicVersion = '0.0.56.Final'
+	nettyContribMultipartVersion = '5.0.0.Alpha2-SNAPSHOT'
+	nettyContribHandlerProxyVersion = '5.0.0.Alpha3-SNAPSHOT'
 
 	// Testing
 	brotli4jVersion = '1.16.0'
@@ -132,15 +135,16 @@ ext {
 	junitPlatformLauncherVersion = '1.10.1'
 	mockitoVersion = '4.11.0'
 	blockHoundVersion = '1.0.8.RELEASE'
+	bouncycastleVersion = '1.70'
 	reflectionsVersion = '0.10.2'
 
-	javadocLinks = ["https://docs.oracle.com/javase/8/docs/api/",
+	javadocLinks = ["https://docs.oracle.com/en/java/javase/17/docs/api/",
 					// Use Reactive Streams 1.0.3 version for javadoc generation
 					// With Reactive Streams 1.0.4 version there is
 					// javadoc: warning - Error fetching URL: https://www.reactive-streams.org/reactive-streams-1.0.4-javadoc/
 					"https://www.reactive-streams.org/reactive-streams-1.0.3-javadoc/",
 					"https://projectreactor.io/docs/core/release/api/",
-					"https://netty.io/4.1/api/",
+					"https://netty.io/5.0/api/",
 					"https://projectreactor.io/docs/netty/release/api/",] as String[]
 }
 
@@ -164,7 +168,7 @@ spotless {
 		enforceCheck false
 	}
 	else {
-		String spotlessBranch = "origin/main"
+		String spotlessBranch = "origin/netty5"
 		println "[Spotless] Local run detected, ratchet from $spotlessBranch"
 		ratchetFrom spotlessBranch
 	}
@@ -192,10 +196,9 @@ subprojects {
 	apply from: "${rootDir}/gradle/javadoc.gradle"
 	apply from: "${rootDir}/gradle/errorprone.gradle"
 
-
 	java {
 		toolchain {
-			languageVersion = JavaLanguageVersion.of(8)
+			languageVersion = JavaLanguageVersion.of(17)
 		}
 	}
 
@@ -248,6 +251,7 @@ subprojects {
 	}
 
 	project.tasks.withType(Test).all {
+		jvmArgs += "-XX:+AllowRedefinitionToAddDeleteMethods"
 		// run tests with IPv4 only when IPv6 is available
 		if (project.hasProperty('preferIPv4Stack')) {
 			systemProperty("java.net.preferIPv4Stack", "true")
@@ -260,13 +264,15 @@ subprojects {
 		systemProperty("reactor.trace.cancel", "true")
 		systemProperty("reactor.trace.nocapacity", "true")
 		systemProperty("testGroups", project.properties.get("testGroups"))
-		systemProperty("io.netty.leakDetection.level", "paranoid")
-		systemProperty("reactor.netty.pool.getPermitsSamplingRate", "0.5")
-		systemProperty("reactor.netty.pool.returnPermitsSamplingRate", "0.5")
+		systemProperty("io.netty5.leakDetection.level", "paranoid")
+		systemProperty("io.netty5.leakDetection.targetRecords", "32")
+		systemProperty("io.netty5.buffer.lifecycleTracingEnabled", "true")
+		systemProperty("io.netty5.buffer.leakDetectionEnabled", "true")
+		systemProperty("reactor.netty5.pool.getPermitsSamplingRate", "0.5")
+		systemProperty("reactor.netty5.pool.returnPermitsSamplingRate", "0.5")
 		if (project.hasProperty("forceTransport")) {
 			systemProperty("forceTransport", forceTransport)
 		}
-		systemProperty("nettyVersionMicro", VersionNumber.parse(nettyVersion.toString()).micro)
 		systemProperty("reactorCoreVersionMinor", VersionNumber.parse(reactorCoreVersion.toString()).minor)
 		systemProperty("contextPropagationVersionMicro", VersionNumber.parse(contextPropagationVersion.toString()).micro)
 		scanForTestClasses = false
@@ -289,11 +295,8 @@ subprojects {
 
 		onOutput { descriptor, event ->
 			def evMsg = event.message
-			if (evMsg.contains("ResourceLeakDetector")) {
-				if (!evMsg.contains(" -Dio.netty.leakDetection")
-						&& !evMsg.contains("DEBUG io.netty.util.ResourceLeakDetectorFactory")) {
-					logger.error("ERROR: Test: " + descriptor + " produced resource leak: " + event.message)
-				}
+			if (evMsg.contains("LoggingLeakCallback")) {
+				logger.error("ERROR: Test: " + descriptor + " produced resource leak: " + event.message)
 			}
 		}
 	}
@@ -303,12 +306,12 @@ subprojects {
 		maven { url "https://oss.sonatype.org/content/repositories/releases/" }
 		maven { url 'https://repo.spring.io/milestone' }
 		if (version.endsWith('-SNAPSHOT') || version.contains('-SNAPSHOT-')) { //classic or customized snapshots
-			if (System.getenv()["GITHUB_ACTION"] == null) {
+			//if (System.getenv()["GITHUB_ACTION"] == null) {
 				mavenLocal()
-			}
-			else {
-				println 'GitHub Action detected, avoiding use of mavenLocal()'
-			}
+			//}
+			//else {
+			//	println 'GitHub Action detected, avoiding use of mavenLocal()'
+			//}
 			maven { url 'https://repo.spring.io/snapshot' }
 			maven { url 'https://oss.sonatype.org/content/repositories/snapshots' }
 		}

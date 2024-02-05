@@ -10,7 +10,7 @@
 clients & servers based on `Netty` framework.
 
 ## Getting it
-`Reactor Netty` requires Java 8 or + to run.
+`Reactor Netty` requires Java 17 or + to run.
 
 With `Gradle` from [repo.spring.io](https://repo.spring.io) or `Maven Central` repositories (stable releases only):
 
@@ -22,10 +22,10 @@ With `Gradle` from [repo.spring.io](https://repo.spring.io) or `Maven Central` r
     }
 
     dependencies {
-      //compile "io.projectreactor.netty:reactor-netty-core:1.1.16-SNAPSHOT"
-      compile "io.projectreactor.netty:reactor-netty-core:1.1.15"
-      //compile "io.projectreactor.netty:reactor-netty-http:1.1.16-SNAPSHOT"
-      compile "io.projectreactor.netty:reactor-netty-http:1.1.15"
+      //compile "io.projectreactor.netty:reactor-netty-core:2.0.0-SNAPSHOT"
+      compile "io.projectreactor.netty:reactor-netty-core:2.0.0-M3"
+      //compile "io.projectreactor.netty:reactor-netty-http:2.0.0-SNAPSHOT"
+      compile "io.projectreactor.netty:reactor-netty-http:2.0.0-M3"
     }
 ```
 
@@ -60,7 +60,7 @@ HttpClient.create()             // Prepares an HTTP client ready for configurati
                                 // client should connect
           .post()               // Specifies that POST method will be used
           .uri("/test/World")   // Specifies the path
-          .send(ByteBufFlux.fromString(Flux.just("Hello")))  // Sends the request body
+          .send(BufferFlux.fromString(Flux.just("Hello")))  // Sends the request body
           .responseContent()    // Receives the response body
           .aggregate()
           .asString()

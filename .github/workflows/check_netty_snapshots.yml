@@ -27,6 +27,6 @@ jobs:
         uses: actions/setup-java@387ac29b308b003ca37ba93a6cab5eb57c8f5f93
         with:
           distribution: 'temurin'
-          java-version: '8'
+          java-version: 17
       - name: Build with Gradle
         run: ./gradlew clean check --no-daemon -PforceTransport=${{ matrix.transport }} -PforceNettyVersion='4.1.107.Final-SNAPSHOT'

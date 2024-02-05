@@ -18,13 +18,13 @@ backpressure-ready network engines for `HTTP` (including Websockets), `TCP`, and
 [[prerequisites]]
 == Prerequisites
 
-`Reactor Netty` runs on `Java 8` and above.
+`Reactor Netty` runs on `Java 17` and above.
 
 It has transitive dependencies on:
 
 * Reactive Streams v1.0.4
 * Reactor Core v3.x
-* Netty v4.1.x
+* Netty v5.0.x
 
 [[getting-started-understanding-bom]]
 == Understanding the BOM and versioning scheme
@@ -114,14 +114,14 @@ Next, add your dependencies to the relevant reactor projects, as usual (except w
 <dependencies>
     <dependency>
         <groupId>io.projectreactor.netty</groupId>
-        <artifactId>reactor-netty-core</artifactId> <1>
+        <artifactId>reactor-netty5-core</artifactId> <1>
         <2>
     </dependency>
 </dependencies>
 <dependencies>
     <dependency>
         <groupId>io.projectreactor.netty</groupId>
-        <artifactId>reactor-netty-http</artifactId>
+        <artifactId>reactor-netty5-http</artifactId>
     </dependency>
 </dependencies>
 ----
@@ -141,8 +141,8 @@ dependencies {
     implementation platform('io.projectreactor:reactor-bom:\{reactorReleaseTrain\}') <1>
 
     // define dependencies without versions
-    implementation 'io.projectreactor.netty:reactor-netty-core' <2>
-    implementation 'io.projectreactor.netty:reactor-netty-http'
+    implementation 'io.projectreactor.netty:reactor-netty5-core' <2>
+    implementation 'io.projectreactor.netty:reactor-netty5-http'
 }
 ----
 <1> As of this writing, `\{reactorReleaseTrain\}` is the latest version of the `BOM`.

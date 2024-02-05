@@ -15,7 +15,7 @@
  */
 import org.gradle.util.VersionNumber
 
-if (project.name == 'reactor-netty-examples' || project.name == 'reactor-netty-graalvm-smoke-tests') {
+if (project.name == 'reactor-netty5-examples' || project.name == 'reactor-netty5-graalvm-smoke-tests') {
 	return
 }
 
@@ -75,7 +75,7 @@ task qualifyVersionGha() {
 		println "Recognized $version as $versionType"
 
 		//only output the versionType and fullVersion for the main artifact
-		if (project.name == 'reactor-netty') {
+		if (project.name == 'reactor-netty5') {
 			outputToGha(versionType, version)
 		}
 	}

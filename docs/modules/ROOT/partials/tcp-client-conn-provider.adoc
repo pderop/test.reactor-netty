@@ -16,8 +16,9 @@ and is intentional because only the user/framework knows if the actual protocol 
 (opposed to `HttpClient` where the protocol is known and Reactor Netty can return the connection to the pool when this is possible)
 
 [source,java,indent=0]
-../../../reactor-netty-core/src/main/java/reactor/netty/ReactorNetty.java
+.{core}/src/main/java/reactor/netty5/ReactorNetty.java
 ----
+include::{core}/src/main/java/reactor/netty5/ReactorNetty.java[lines=116..126]
 ----
 
 When you need to change the default settings, you can configure the `ConnectionProvider` as follows:
@@ -65,7 +66,7 @@ include::{examples-dir}/pool/Application.java[lines=18..35]
 [[tcp-client-conn-provider-metrics]]
 === Metrics
 The pooled `ConnectionProvider` supports built-in integration with https://micrometer.io/[`Micrometer`].
-It exposes all metrics with a prefix of `reactor.netty.connection.provider`.
+It exposes all metrics with a prefix of `reactor.netty5.connection.provider`.
 
 
 The following example enables that integration:
