@@ -1,0 +1,335 @@
+/*
+ * Copyright (c) 2011-2024 VMware, Inc. or its affiliates, All Rights Reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *   https://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+import org.gradle.util.VersionNumber
+import java.text.SimpleDateFormat
+
+buildscript {
+	repositories {
+		mavenCentral()
+		maven { url "https://plugins.gradle.org/m2/" }
+		maven { url "https://repo.spring.io/plugins-release" }
+	}
+	dependencies {
+		classpath 'org.jfrog.buildinfo:build-info-extractor-gradle:4.33.12' //applied in individual submodules
+	}
+}
+
+plugins {
+	id "com.diffplug.spotless" version "6.13.0"
+	id 'org.asciidoctor.jvm.convert' version '3.3.2' apply false
+	id 'org.asciidoctor.jvm.pdf' version '3.3.2' apply false
+	id 'com.google.osdetector' version '1.7.3'
+	id 'org.gradle.test-retry' version '1.5.8'
+	id 'io.spring.nohttp' version '0.0.11'
+	id 'com.github.johnrengelman.shadow' version '7.1.2' apply false
+	//we now need version of Artifactory gradle plugin deployed on Maven Central, see above
+	id 'me.champeau.gradle.japicmp' version '0.4.2' apply false
+	id 'de.undercouch.download' version '5.5.0' apply false
+	id 'io.spring.javadoc' version '0.0.1' apply false
+	id 'io.spring.javadoc-aggregate' version '0.0.1' apply false
+	id 'biz.aQute.bnd.builder' version '6.4.0' apply false
+	id 'org.graalvm.buildtools.native' version '0.9.25' apply false
+}
+
+description = 'Reactive Streams Netty driver'
+
+apply from: "gradle/releaser.gradle"
+
+repositories { //needed at root for nohttp-checkstyle
+	mavenCentral()
+}
+
+ext {
+	if (project.hasProperty('versionBranch') && version.toString().endsWith("-SNAPSHOT")) {
+		versionBranch = versionBranch.replaceAll("\"", "").trim()
+		if (!versionBranch.isEmpty()) {
+			realVersion = version.toString() + "-" + versionBranch
+			project.version = realVersion
+			println "Building special snapshot ${project.version}"
+		}
+	}
+
+	versionNumber = VersionNumber.parse(version.toString())
+	if (versionNumber.qualifier == null || versionNumber.qualifier.size() == 0) {
+		osgiVersion = "${version}.RELEASE"
+		println "$version is a release, will use $osgiVersion for bnd"
+	}
+	else if (versionNumber.qualifier.equalsIgnoreCase("SNAPSHOT")) {
+		sdf = new SimpleDateFormat("yyyyMMddHHmm");
+		sdf.setTimeZone(TimeZone.getTimeZone("UTC"));
+		buildTimestamp = sdf.format(new Date())
+		osgiVersion = "${versionNumber.major}.${versionNumber.minor}.${versionNumber.micro}.BUILD-$buildTimestamp"
+		println "$version is a snapshot, will use $osgiVersion for bnd"
+	}
+	else {
+		osgiVersion = "${versionNumber.major}.${versionNumber.minor}.${versionNumber.micro}.${versionNumber.qualifier}"
+		println "$version is neither release nor snapshot, will use $osgiVersion for bnd"
+	}
+
+	os_suffix = ""
+	if (osdetector.classifier in ["linux-x86_64"] || ["osx-x86_64"] || ["osx-aarch_64"] || ["windows-x86_64"]) {
+		os_suffix = ":" + osdetector.classifier
+	}
+
+	//Metrics
+	micrometerVersion = '1.10.0' //optional baseline
+	micrometerTracingVersion = '1.0.0' //optional baseline
+	micrometerDocsVersion = '1.0.0' //optional baseline
+
+	contextPropagationDefaultVersion = '1.0.0' //optional baseline
+	if (!project.hasProperty("forceContextPropagationVersion")) {
+		contextPropagationVersion = contextPropagationDefaultVersion
+	}
+	else {
+		contextPropagationVersion = forceContextPropagationVersion
+		println "Context Propagation version defined from command line: ${forceContextPropagationVersion}"
+	}
+
+	braveVersion = '5.18.1'
+	zipkinSenderVersion = '2.16.3'
+
+	jsr305Version = '3.0.2'
+
+	// Logging
+	slf4jVersion = '1.7.36'
+	logbackVersion = '1.2.13'
+
+	// Netty
+	nettyDefaultVersion = '4.1.106.Final'
+	if (!project.hasProperty("forceNettyVersion")) {
+		nettyVersion = nettyDefaultVersion
+	}
+	else {
+		nettyVersion = forceNettyVersion
+		println "Netty version defined from command line: ${forceNettyVersion}"
+	}
+	nettyIoUringVersion = '0.0.24.Final'
+	nettyQuicVersion = '0.0.56.Final'
+
+	// Testing
+	brotli4jVersion = '1.16.0'
+	jacksonDatabindVersion = '2.16.1'
+	testAddonVersion = reactorCoreVersion
+	assertJVersion = '3.25.2'
+	awaitilityVersion = '4.2.0'
+	hoverflyJavaVersion = '0.16.1'
+	tomcatVersion = '9.0.85'
+	boringSslVersion = '2.0.62.Final'
+	junitVersion = '5.10.1'
+	junitPlatformLauncherVersion = '1.10.1'
+	mockitoVersion = '4.11.0'
+	blockHoundVersion = '1.0.8.RELEASE'
+	reflectionsVersion = '0.10.2'
+
+	javadocLinks = ["https://docs.oracle.com/javase/8/docs/api/",
+					// Use Reactive Streams 1.0.3 version for javadoc generation
+					// With Reactive Streams 1.0.4 version there is
+					// javadoc: warning - Error fetching URL: https://www.reactive-streams.org/reactive-streams-1.0.4-javadoc/
+					"https://www.reactive-streams.org/reactive-streams-1.0.3-javadoc/",
+					"https://projectreactor.io/docs/core/release/api/",
+					"https://netty.io/4.1/api/",
+					"https://projectreactor.io/docs/netty/release/api/",] as String[]
+}
+
+nohttp {
+	source.exclude "docs/asciidoc/highlight/**"
+	source.exclude "**/build/**"
+}
+
+spotless {
+	if (project.hasProperty("spotlessFrom")) {
+		if (project.spotlessFrom == "ALL") {
+			println "[Spotless] Ratchet deactivated"
+		}
+		else {
+			println "[Spotless] Ratchet from $project.spotlessFrom"
+			ratchetFrom project.spotlessFrom
+		}
+	}
+	else if (System.getenv ()["GITHUB_ACTION"] != null) {
+		println "[Spotless] GitHub Action detected without explicit branch, not enforcing check"
+		enforceCheck false
+	}
+	else {
+		String spotlessBranch = "origin/main"
+		println "[Spotless] Local run detected, ratchet from $spotlessBranch"
+		ratchetFrom spotlessBranch
+	}
+	java {
+		target '**/*.java'
+		licenseHeaderFile('codequality/spotless/licenseSlashstarStyle.txt')
+	}
+	format 'gradle', {
+		target '**/*.gradle'
+		// find start of gradle files by looking for either `import`, `apply`
+		// or start of blocks like `javadoc {` or `configure(rootProject) {`...
+		licenseHeaderFile('codequality/spotless/licenseSlashstarStyle.txt',
+				"^\\w+(\\(\\w+\\))?\\s?\\{?|import|apply")
+	}
+}
+
+subprojects {
+	group = 'io.projectreactor.netty'
+
+	apply plugin: 'java-library'
+	apply plugin: 'jacoco'
+	apply plugin: 'checkstyle'
+	apply plugin: 'org.gradle.test-retry'
+	apply from: "${rootDir}/gradle/setup.gradle"
+	apply from: "${rootDir}/gradle/javadoc.gradle"
+	apply from: "${rootDir}/gradle/errorprone.gradle"
+
+
+	java {
+		toolchain {
+			languageVersion = JavaLanguageVersion.of(8)
+		}
+	}
+
+	jacoco {
+		toolVersion = '0.8.7'
+	}
+
+	jacocoTestReport {
+		reports {
+			xml.required = true
+			html.required = true
+		}
+	}
+
+	checkstyle {
+		configFile = file("${rootDir}/codequality/checkstyle.xml")
+	}
+
+	[compileJava, compileTestJava]*.options*.compilerArgs = ["-Xlint:varargs",
+															 "-Xlint:cast",
+															 "-Xlint:classfile",
+															 "-Xlint:dep-ann",
+															 "-Xlint:divzero",
+															 "-Xlint:empty",
+															 "-Xlint:finally",
+															 "-Xlint:overrides",
+															 "-Xlint:path",
+															 "-Xlint:processing",
+															 "-Xlint:static",
+															 "-Xlint:try",
+															 "-Xlint:deprecation",
+															 "-Xlint:unchecked",
+															 "-Xlint:-serial",      // intentionally disabled
+															 "-Xlint:-options",     // intentionally disabled
+															 "-Xlint:fallthrough",
+															 "-Xlint:rawtypes"
+	]
+
+	compileTestJava.options.compilerArgs += "-parameters"
+	tasks.withType(Javadoc) {
+		options.addStringOption('Xdoclint:none', '-quiet')
+		options.addStringOption('encoding', 'UTF-8')
+	}
+
+	[compileJava, compileTestJava]*.options*.encoding = 'UTF-8'
+	sourceSets.test.resources.srcDirs = ["src/test/resources", "src/test/java"]
+
+	configurations.all {
+		exclude group: 'commons-logging', module: 'commons-logging'
+	}
+
+	project.tasks.withType(Test).all {
+		// run tests with IPv4 only when IPv6 is available
+		if (project.hasProperty('preferIPv4Stack')) {
+			systemProperty("java.net.preferIPv4Stack", "true")
+		}
+		// run tests with preferring IPv6 addresses
+		if (project.hasProperty('preferIPv6Addresses')) {
+			systemProperty("java.net.preferIPv6Addresses", "true")
+		}
+		systemProperty("java.awt.headless", "true")
+		systemProperty("reactor.trace.cancel", "true")
+		systemProperty("reactor.trace.nocapacity", "true")
+		systemProperty("testGroups", project.properties.get("testGroups"))
+		systemProperty("io.netty.leakDetection.level", "paranoid")
+		systemProperty("reactor.netty.pool.getPermitsSamplingRate", "0.5")
+		systemProperty("reactor.netty.pool.returnPermitsSamplingRate", "0.5")
+		if (project.hasProperty("forceTransport")) {
+			systemProperty("forceTransport", forceTransport)
+		}
+		systemProperty("nettyVersionMicro", VersionNumber.parse(nettyVersion.toString()).micro)
+		systemProperty("reactorCoreVersionMinor", VersionNumber.parse(reactorCoreVersion.toString()).minor)
+		systemProperty("contextPropagationVersionMicro", VersionNumber.parse(contextPropagationVersion.toString()).micro)
+		scanForTestClasses = false
+		include '**/*Tests.*'
+		include '**/*Test.*'
+		include '**/*Spec.*'
+		exclude '**/*Abstract*.*'
+
+		useJUnitPlatform()
+
+		retry {
+			maxFailures = 10
+			maxRetries = 1
+		}
+
+		testLogging {
+			showExceptions true
+			exceptionFormat "full"
+		}
+
+		onOutput { descriptor, event ->
+			def evMsg = event.message
+			if (evMsg.contains("ResourceLeakDetector")) {
+				if (!evMsg.contains(" -Dio.netty.leakDetection")
+						&& !evMsg.contains("DEBUG io.netty.util.ResourceLeakDetectorFactory")) {
+					logger.error("ERROR: Test: " + descriptor + " produced resource leak: " + event.message)
+				}
+			}
+		}
+	}
+
+	repositories {
+		mavenCentral()
+		maven { url "https://oss.sonatype.org/content/repositories/releases/" }
+		maven { url 'https://repo.spring.io/milestone' }
+		if (version.endsWith('-SNAPSHOT') || version.contains('-SNAPSHOT-')) { //classic or customized snapshots
+			if (System.getenv()["GITHUB_ACTION"] == null) {
+				mavenLocal()
+			}
+			else {
+				println 'GitHub Action detected, avoiding use of mavenLocal()'
+			}
+			maven { url 'https://repo.spring.io/snapshot' }
+			maven { url 'https://oss.sonatype.org/content/repositories/snapshots' }
+		}
+	}
+
+	tasks.withType(GenerateModuleMetadata) {
+		enabled = false
+	}
+
+	jar {
+		manifest {
+			attributes("Created-By": "${System.getProperty("java.version")} (${System.getProperty("java.specification.vendor")})",
+					"Implementation-Title": project.name,
+					"Implementation-Version": project.version)
+		}
+	}
+
+	check.dependsOn jacocoTestReport
+}
+
+configurations.all {
+	// check for updates every build
+	resolutionStrategy.cacheChangingModulesFor 0, 'seconds'
+}

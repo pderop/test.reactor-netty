@@ -1,0 +1,343 @@
+/*
+ * Copyright (c) 2020-2023 VMware, Inc. or its affiliates, All Rights Reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *   https://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+import aQute.bnd.gradle.BundleTaskConvention
+import me.champeau.gradle.japicmp.JapicmpTask
+
+apply plugin: 'java-test-fixtures'
+apply plugin: 'io.spring.javadoc'
+apply plugin: 'com.github.johnrengelman.shadow'
+apply plugin: 'me.champeau.gradle.japicmp'
+apply plugin: 'de.undercouch.download'
+apply plugin: 'biz.aQute.bnd.builder'
+
+ext {
+	bndOptions = [
+			"Export-Package" : "reactor.netty*;version=$osgiVersion;-noimport:=true",
+			"Import-Package": [
+					"!javax.annotation",
+					"io.netty.channel.kqueue;resolution:=optional;version=\"[4.1,5)\"",
+					"io.netty.incubator.channel.uring;resolution:=optional",
+					"io.micrometer.*;resolution:=optional",
+					"*"
+			].join(","),
+			"Bundle-Name" : "reactor-netty-core",
+			"Bundle-SymbolicName" : "io.projectreactor.netty.reactor-netty-core",
+			"Bundle-Version" : "$osgiVersion"
+	]
+}
+
+sourceSets {
+	jarFileTest
+	contextPropagationTest {
+		compileClasspath += sourceSets.main.output
+		runtimeClasspath += sourceSets.main.output
+	}
+}
+
+configurations {
+	shaded
+	contextPropagationTestImplementation.extendsFrom(implementation)
+	contextPropagationTestRuntimeOnly.extendsFrom(runtimeOnly)
+}
+
+dependencies {
+	// JSR-305 annotations
+	compileOnly "com.google.code.findbugs:jsr305:$jsr305Version"
+
+	api "io.netty:netty-handler:$nettyVersion"
+	api "io.netty:netty-handler-proxy:$nettyVersion"
+	api "io.netty:netty-resolver-dns:$nettyVersion"
+	if (!"$nettyVersion".endsWithAny("SNAPSHOT")) {
+		if (osdetector.classifier == "osx-x86_64" || osdetector.classifier == "osx-aarch_64") {
+			api "io.netty:netty-resolver-dns-native-macos:$nettyVersion$os_suffix"
+		}
+		else {
+			api "io.netty:netty-resolver-dns-native-macos:$nettyVersion:osx-x86_64"
+		}
+	}
+	else {
+		// MacOS binaries are not available for Netty SNAPSHOT version
+		api "io.netty:netty-resolver-dns-native-macos:$nettyVersion"
+	}
+	//transport resolution: typical build forces epoll but not kqueue transitively
+	//on the other hand, if we want to make transport-specific tests, we'll make all
+	// native optional at compile time and add correct native/nio to testRuntime
+	if (project.hasProperty("forceTransport")) {
+		//so that the main code compiles
+		compileOnly "io.netty:netty-transport-native-epoll:$nettyVersion"
+		compileOnly "io.netty:netty-transport-native-kqueue:$nettyVersion"
+		compileOnly "io.netty.incubator:netty-incubator-transport-native-io_uring:$nettyIoUringVersion"
+		testImplementation "io.netty:netty-transport-native-epoll:$nettyVersion"
+		testImplementation "io.netty:netty-transport-native-kqueue:$nettyVersion"
+		testImplementation "io.netty.incubator:netty-incubator-transport-native-io_uring:$nettyIoUringVersion"
+		//now we explicitly add correctly qualified native, or do nothing if we want to test NIO
+		if (forceTransport == "native") {
+			if (osdetector.os == "osx") {
+				testImplementation "io.netty:netty-transport-native-kqueue:$nettyVersion$os_suffix"
+			}
+			else if (osdetector.os == "linux") {
+				testImplementation "io.netty:netty-transport-native-epoll:$nettyVersion$os_suffix"
+			}
+		}
+		else if (forceTransport == "io_uring" && osdetector.os == "linux") {
+			testImplementation "io.netty.incubator:netty-incubator-transport-native-io_uring:$nettyIoUringVersion$os_suffix"
+		}
+		else if (forceTransport != "nio") {
+			throw new InvalidUserDataException("invalid -PforceTranport option " + forceTransport + ", should be native|nio")
+		}
+	}
+	else {
+		//classic build to be distributed
+		api "io.netty:netty-transport-native-epoll:$nettyVersion:linux-x86_64"
+		compileOnly "io.netty:netty-transport-native-kqueue:$nettyVersion"
+		compileOnly "io.netty.incubator:netty-incubator-transport-native-io_uring:$nettyIoUringVersion"
+		testImplementation "io.netty:netty-transport-native-kqueue:$nettyVersion"
+		testImplementation "io.netty.incubator:netty-incubator-transport-native-io_uring:$nettyIoUringVersion"
+	}
+
+	//Metrics
+	compileOnly "io.micrometer:micrometer-core:$micrometerVersion"
+	compileOnly "io.micrometer:micrometer-tracing:$micrometerTracingVersion"
+	compileOnly "io.micrometer:context-propagation:$contextPropagationVersion"
+
+	// Logging
+	compileOnly "org.slf4j:slf4j-api:$slf4jVersion"
+
+	api "io.projectreactor:reactor-core:$reactorCoreVersion"
+	shaded("io.projectreactor.addons:reactor-pool:$reactorPoolVersion") {
+		exclude module: "reactor-core"
+	}
+
+	// Testing
+
+	// JSR-305 annotations
+	testCompileOnly "com.google.code.findbugs:jsr305:$jsr305Version"
+
+	testImplementation "com.fasterxml.jackson.core:jackson-databind:$jacksonDatabindVersion"
+	testImplementation "io.projectreactor:reactor-test:$testAddonVersion"
+	testImplementation "io.projectreactor.addons:reactor-extra:$reactorAddonsVersion"
+	testImplementation "org.assertj:assertj-core:$assertJVersion"
+	testImplementation "org.awaitility:awaitility:$awaitilityVersion"
+	testImplementation "org.junit.jupiter:junit-jupiter-api:$junitVersion"
+	testImplementation "org.junit.jupiter:junit-jupiter-params:$junitVersion"
+	testImplementation "org.mockito:mockito-core:$mockitoVersion"
+	testImplementation "ch.qos.logback:logback-classic:$logbackVersion"
+	testImplementation "io.projectreactor.tools:blockhound-junit-platform:$blockHoundVersion"
+	testImplementation "io.micrometer:micrometer-core:$micrometerVersion"
+	testImplementation "io.micrometer:micrometer-test:$micrometerVersion"
+	testImplementation "org.reflections:reflections:$reflectionsVersion"
+
+	testRuntimeOnly "org.junit.platform:junit-platform-launcher:$junitPlatformLauncherVersion"
+	testRuntimeOnly "org.junit.jupiter:junit-jupiter-engine:$junitVersion"
+	testRuntimeOnly "org.slf4j:jcl-over-slf4j:$slf4jVersion"
+
+	testFixturesApi("ch.qos.logback:logback-classic:$logbackVersion")
+
+	for (dependency in project.configurations.shaded.dependencies) {
+		compileOnly(dependency)
+		testImplementation(dependency)
+		contextPropagationTestImplementation(dependency)
+	}
+
+	jarFileTestImplementation "org.assertj:assertj-core:$assertJVersion"
+	jarFileTestImplementation "org.junit.jupiter:junit-jupiter-api:$junitVersion"
+	jarFileTestRuntimeOnly "org.junit.jupiter:junit-jupiter-engine:$junitVersion"
+
+	contextPropagationTestImplementation "io.projectreactor:reactor-test:$testAddonVersion"
+	contextPropagationTestImplementation "org.assertj:assertj-core:$assertJVersion"
+	contextPropagationTestImplementation "org.junit.jupiter:junit-jupiter-api:$junitVersion"
+	contextPropagationTestImplementation "org.junit.jupiter:junit-jupiter-params:$junitVersion"
+	contextPropagationTestImplementation "ch.qos.logback:logback-classic:$logbackVersion"
+	contextPropagationTestImplementation "io.micrometer:micrometer-core:$micrometerVersion"
+	contextPropagationTestImplementation "io.micrometer:context-propagation:$contextPropagationVersion"
+	contextPropagationTestRuntimeOnly "org.junit.jupiter:junit-jupiter-engine:$junitVersion"
+}
+
+jar {
+	archiveClassifier.set('original')
+	manifest {
+		attributes("Automatic-Module-Name": "reactor.netty.core")
+	}
+	bnd(bndOptions)
+}
+
+components.java.withVariantsFromConfiguration(configurations.testFixturesApiElements) { skip() }
+components.java.withVariantsFromConfiguration(configurations.testFixturesRuntimeElements) { skip() }
+
+task downloadBaseline(type: Download) {
+	onlyIf {
+		if (project.gradle.startParameter.isOffline()) {
+			println "Offline: skipping downloading of baseline and JAPICMP"
+			return false
+		}
+		else if ("$compatibleVersion" == "SKIP") {
+			println "SKIP: Instructed to skip the baseline comparison"
+			return false
+		}
+		else {
+			println "Will download and perform baseline comparison with ${compatibleVersion}"
+			return true
+		}
+	}
+
+	onlyIfNewer true
+	compress true
+	src "${repositories.mavenCentral().url}io/projectreactor/netty/reactor-netty-core/$compatibleVersion/reactor-netty-core-${compatibleVersion}-original.jar"
+	dest "${buildDir}/baselineLibs/reactor-netty-core-${compatibleVersion}-original.jar"
+}
+
+def japicmpReport = tasks.register('japicmpReport') {
+	onlyIf {
+		japicmp.state.failure != null
+	}
+	doLast {
+		def reportFile = file("${project.buildDir}/reports/japi.txt")
+		if (reportFile.exists()) {
+			println "\n **********************************"
+			println " * /!\\ API compatibility failures *"
+			println " **********************************"
+			println "Japicmp report was filtered and interpreted to find the following incompatibilities:"
+			reportFile.eachLine {
+				if (it.contains("*") && (!it.contains("***") || it.contains("****")))
+					println "source incompatible change: $it"
+				else if (it.contains("!"))
+					println "binary incompatible change: $it"
+			}
+		}
+		else println "No incompatible change to report"
+	}
+}
+
+task japicmp(type: JapicmpTask) {
+	finalizedBy(japicmpReport)
+	onlyIf { "$compatibleVersion" != "SKIP" }
+
+	oldClasspath.from(files("${buildDir}/baselineLibs/reactor-netty-core-${compatibleVersion}-original.jar"))
+	newClasspath.from(files(jar.archiveFile))
+	// these onlyXxx parameters result in a report that is slightly too noisy, but better than
+	// onlyBinaryIncompatibleModified = true which masks source-incompatible-only changes
+	onlyBinaryIncompatibleModified = false
+	onlyModified = true
+	failOnModification = true
+	failOnSourceIncompatibility = true
+	txtOutputFile = file("${project.buildDir}/reports/japi.txt")
+	ignoreMissingClasses = true
+	includeSynthetic = true
+
+	compatibilityChangeExcludes = [ "METHOD_NEW_DEFAULT" ]
+
+	methodExcludes = [
+	]
+}
+
+tasks.japicmp.dependsOn(downloadBaseline)
+
+tasks.check.dependsOn(japicmp)
+
+shadowJar {
+	configure {
+		it.convention.plugins.bundle = new BundleTaskConvention(it)
+		doLast {
+			buildBundle()
+		}
+	}
+	bnd(bndOptions)
+
+	archiveClassifier.set(null)
+
+	dependsOn(project.tasks.jar)
+
+	manifest {
+		inheritFrom project.tasks.jar.manifest
+	}
+
+	configurations = [project.configurations.shaded]
+
+	project.afterEvaluate {
+		dependencies {
+			def shadedDependencies = project.configurations
+					.shaded
+					.dependencies
+					.collect { "${it.group}:${it.name}".toString() }
+					.toSet()
+
+			// Exclude every compile-scoped dependency (including the transitive ones)
+			for (id in project.configurations.compileClasspath.resolvedConfiguration.resolvedArtifacts*.moduleVersion*.id) {
+				def module = "${id.group}:${id.name}".toString()
+				if (!shadedDependencies.contains(module)) {
+					project.configurations.shaded.exclude(group: id.group, module: id.name)
+					exclude(dependency(module))
+				}
+			}
+		}
+	}
+
+	exclude 'META-INF/maven*/**'
+}
+
+task relocateShadowJar(type: com.github.jengelman.gradle.plugins.shadow.tasks.ConfigureShadowRelocation) {
+	target = tasks.shadowJar
+	prefix = "reactor.netty.internal.shaded"
+}
+
+tasks.shadowJar.dependsOn(relocateShadowJar)
+
+//delay the maven publishing so that the OSGi metadata is generated
+//then add shadowJar to the publication
+components.java.withVariantsFromConfiguration(configurations.shadowRuntimeElements) {
+	skip()
+}
+publishing.publications.mavenJava.artifact(shadowJar)
+
+task jarFileTest(type: Test) {
+	testClassesDirs = sourceSets.jarFileTest.output.classesDirs
+	classpath = sourceSets.jarFileTest.runtimeClasspath
+
+	systemProperty("jarFile", shadowJar.outputs.files.singleFile)
+
+	dependsOn(shadowJar)
+}
+
+tasks.check.dependsOn(jarFileTest)
+
+task contextPropagationTest(type: Test) {
+	testClassesDirs = sourceSets.contextPropagationTest.output.classesDirs
+	classpath = sourceSets.contextPropagationTest.runtimeClasspath
+}
+
+tasks.check.dependsOn(contextPropagationTest)
+
+task shadedJarTest(type: Test) {
+	testClassesDirs = sourceSets.test.output.classesDirs
+
+	Set<? super File> mainOutputs = [
+			project.sourceSets.main.output.resourcesDir,
+			project.sourceSets.main.java.classesDirectory,
+	]
+
+	classpath = shadowJar.outputs.files
+	// Exclude main outputs since we have the shaded JAR on the classpath already
+	classpath += sourceSets.test.runtimeClasspath.filter { !(it in mainOutputs) }
+
+	//The imports are not relocated, we do relocation only for the main sources not the tests
+	exclude '**/*PooledConnectionProviderTest*.*'
+
+	dependsOn(shadowJar)
+}
+
+tasks.check.dependsOn(shadedJarTest)
+
+description = "Core functionality for the Reactor Netty library"
