@@ -15,10 +15,10 @@ content:
     - url: ./..
       branches:
         - 'main'
-        - 'netty5'
-      tags:
-        - 'v1.1.*'
-        - 'v2.0.*'
+#        - 'netty5'
+#      tags:
+#        - 'v1.1.*'
+#        - 'v2.0.*'
       start_path: docs
       worktrees: true
 asciidoc:
