@@ -6,27 +6,23 @@ antora:
     - '@antora/collector-extension'
     - '@antora/atlas-extension'
     - require: '@springio/antora-extensions/root-component-extension'
-      root_component_name: 'reactor-netty' # FIXME: Change this to match `name:` in antora.yml
-      # FIXME: Run antora once using this extension to migrate to the Asciidoc Tabs syntax
-      # and then remove this extension
-#    - require: '@springio/antora-extensions/tabs-migration-extension'
-#      unwrap_example_block: always
-#      save_result: true
+      root_component_name: 'reactor-netty'
 site:
-  title: Reactor Netty Reference Guide # FIXME: Change to your Project's title
-  url: https://projectreactor.io/docs/netty/release/reference/ # FIXME: Change to your Project's URL
-  start_page: reactor-netty::about-doc.adoc
+  title: Reactor Netty Reference Guide
+  url: https://pderop.github.io/test-antora-pages/reactor-netty/reference/
 content:
   sources:
     - url: ./..
-      branches: HEAD
-      # FIXME: Change this to the path to the directory containing antora.yml in your project
-      # See https://docs.antora.org/antora/latest/playbook/content-source-start-path/#start-path-key
+      branches:
+        - 'main'
+        - 'netty5'
+      tags:
+        - 'v1.1.*'
+        - 'v2.0.*'
       start_path: docs
       worktrees: true
 asciidoc:
   attributes:
-    # FIXME: Change to your stackoverflow URL or remove
     page-stackoverflow-url: https://stackoverflow.com/tags/reactor-netty
     page-pagination: ''
     hide-uri-scheme: '@'
@@ -44,5 +40,4 @@ runtime:
     format: pretty
 ui:
   bundle:
-    #url: https://github.com/spring-io/antora-ui-spring/releases/download/v0.3.4/ui-bundle.zip
-    url: ./../../antora-ui-projectreactor/build/ui-bundle.zip
+    url: https://github.com/spring-io/antora-ui-spring/releases/download/v0.3.4/ui-bundle.zip

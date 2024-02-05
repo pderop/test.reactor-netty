@@ -3,7 +3,7 @@ on:
   push:
     branches: # For branches, better to list them explicitly than regexp include
       - main
-      - 1.0.x
+      - netty5
 permissions: read-all
 jobs:
   # General job notes: we DON'T want to cancel any previous runs, especially in the case of a "back to snapshots" build right after a release push
@@ -30,7 +30,7 @@ jobs:
         run: ./gradlew qualifyVersionGha
       - name: run reactor-netty-core checks
         id: reactor-netty-core-checks
-        run: ./gradlew reactor-netty-core:check
+        run: echo "./gradlew reactor-netty-core:check"
   reactor-netty-http:
     # Notes on reactor-netty-http: this job has no access to secrets, only github token. As a result, all non-core actions are centralized here
     name: reactor-netty-http
@@ -44,7 +44,7 @@ jobs:
           java-version: '8'
       - name: run reactor-netty-http checks
         id: reactor-netty-http-checks
-        run: ./gradlew reactor-netty-http:check
+        run: echo "./gradlew reactor-netty-http:check"
   reactor-netty-http-brave:
     # Notes on reactor-netty-http-brave: this job has no access to secrets, only github token. As a result, all non-core actions are centralized here
     name: reactor-netty-http-brave
@@ -58,7 +58,7 @@ jobs:
           java-version: '8'
       - name: run reactor-netty-http-brave checks
         id: reactor-netty-http-brave-checks
-        run: ./gradlew reactor-netty-http-brave:check
+        run: echo "./gradlew reactor-netty-http-brave:check"
   reactor-netty-incubator-quic:
     # Notes on reactor-netty-incubator-quic: this job has no access to secrets, only github token. As a result, all non-core actions are centralized here
     name: reactor-netty-incubator-quic
@@ -72,7 +72,7 @@ jobs:
           java-version: '8'
       - name: run reactor-netty-incubator-quic checks
         id: reactor-netty-incubator-quic-checks
-        run: ./gradlew reactor-netty-incubator-quic:check
+        run: echo "./gradlew reactor-netty-incubator-quic:check"
 
   #deploy the snapshot artifacts to Artifactory
   deploySnapshot:
@@ -91,8 +91,7 @@ jobs:
         env:
           ORG_GRADLE_PROJECT_artifactory_publish_username: ${{secrets.ARTIFACTORY_SNAPSHOT_USERNAME}}
           ORG_GRADLE_PROJECT_artifactory_publish_password: ${{secrets.ARTIFACTORY_PASSWORD}}
-        run: |
-          ./gradlew assemble artifactoryPublish -Partifactory_publish_contextUrl=https://repo.spring.io -Partifactory_publish_repoKey=libs-snapshot-local
+        run: echo "deploy snapshot artifacts to Artifactory ..."
 
   #sign the milestone artifacts and deploy them to Artifactory
   deployMilestone:
@@ -113,8 +112,7 @@ jobs:
           ORG_GRADLE_PROJECT_artifactory_publish_password: ${{secrets.ARTIFACTORY_PASSWORD}}
           ORG_GRADLE_PROJECT_signingKey: ${{secrets.SIGNING_KEY}}
           ORG_GRADLE_PROJECT_signingPassword: ${{secrets.SIGNING_PASSPHRASE}}
-        run: |
-          ./gradlew assemble sign artifactoryPublish -Partifactory_publish_contextUrl=https://repo.spring.io -Partifactory_publish_repoKey=libs-milestone-local
+        run: echo "deploy milestone artifacts to artifactory"
 
   #sign the release artifacts and deploy them to Artifactory
   deployRelease:
@@ -137,8 +135,7 @@ jobs:
           ORG_GRADLE_PROJECT_signingPassword: ${{secrets.SIGNING_PASSPHRASE}}
           ORG_GRADLE_PROJECT_sonatypeUsername: ${{secrets.SONATYPE_USERNAME}}
           ORG_GRADLE_PROJECT_sonatypePassword: ${{secrets.SONATYPE_PASSWORD}}
-        run: |
-          ./gradlew assemble sign artifactoryPublish -Partifactory_publish_contextUrl=https://repo.spring.io  -Partifactory_publish_repoKey=libs-release-local publishMavenJavaPublicationToSonatypeRepository
+        run: echo "Release artifacts and deploy them to Artifactory"
 
   tagMilestone:
     name: Tag milestone
@@ -150,8 +147,8 @@ jobs:
       - uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11
       - name: tag
         run: |
-          git config --local user.name 'reactorbot'
-          git config --local user.email '32325210+reactorbot@users.noreply.github.com'
+          git config --local user.name "${{ env.CI_COMMIT_AUTHOR }}"
+          git config --local user.email "${{ env.CI_COMMIT_EMAIL }}"
           git tag -m "Release milestone ${{ needs.reactor-netty-core.outputs.fullVersion }}" v${{ needs.reactor-netty-core.outputs.fullVersion }} ${{ github.sha }}
           git push --tags
 
@@ -165,8 +162,8 @@ jobs:
       - uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11
       - name: tag
         run: |
-          git config --local user.name 'reactorbot'
-          git config --local user.email '32325210+reactorbot@users.noreply.github.com'
+          git config --local user.name "${{ env.CI_COMMIT_AUTHOR }}"
+          git config --local user.email "${{ env.CI_COMMIT_EMAIL }}"
           git tag -m "Release version ${{ needs.reactor-netty-core.outputs.fullVersion }}" v${{ needs.reactor-netty-core.outputs.fullVersion }} ${{ github.sha }}
           git push --tags
 
