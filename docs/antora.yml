@@ -23,7 +23,7 @@ asciidoc:
   attributes:
     attribute-missing: 'warn'
     chomp: 'all'
-    project-version: 1.1.16-SNAPSHOT
+    project-version: 1.1.17-SNAPSHOT
     examples: 'example$reactor-netty-examples'
     http: 'example$reactor-netty-http'
     core: 'example$reactor-netty-core'
