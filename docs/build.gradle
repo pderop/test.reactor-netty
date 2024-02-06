@@ -91,3 +91,20 @@ tasks.create('generateAntoraResources') {
 	dependsOn 'createAntoraPartials'
 	dependsOn 'generateAntoraYml'
 }
+
+task docsZip(type: Zip, dependsOn: [':docs:antora']) {
+	group = 'Distribution'
+	archiveClassifier = 'docs'
+	description = "Builds docs archive containing api and reference for deployment at static.spring.io/reactor-netty/docs."
+	duplicatesStrategy "fail"
+//	from(aggregatedJavadoc) {
+//		into "api"
+//	}
+	from ('build/site') {
+		into 'reference/'
+	}
+}
+
+artifacts {
+	archives docsZip
+}
