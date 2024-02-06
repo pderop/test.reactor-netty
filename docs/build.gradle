@@ -58,3 +58,36 @@ javadoc {
 tasks.withType(AbstractPublishToMaven).configureEach {
 	enabled = false
 }
+
+configurations {
+	adoc
+}
+
+dependencies {
+	adoc "io.micrometer:micrometer-docs-generator:$micrometerDocsVersion"
+}
+
+//task generateObservabilityDocs(type: JavaExec) {
+//	mainClass = "io.micrometer.docs.DocsGeneratorCommand"
+//	classpath configurations.adoc
+//	args project.rootDir.getAbsolutePath(), ".*", project.rootProject.buildDir.getAbsolutePath()
+//}
+
+def observationsOutputDir = file("${buildDir}/docs/generated/observation/").absolutePath
+
+task generateObservabilityDocs(type: JavaExec) {
+	mainClass = "io.micrometer.docs.DocsGeneratorCommand"
+	classpath configurations.adoc
+	outputs.dir(observationsOutputDir)
+	args project.rootDir.getAbsolutePath(), ".*", observationsOutputDir
+}
+
+tasks.create(name: 'createAntoraPartials', type: Sync) {
+	from { project(":docs").tasks.generateObservabilityDocs.outputs }
+	into layout.buildDirectory.dir('generated-antora-resources/modules/ROOT/partials')
+}
+
+tasks.create('generateAntoraResources') {
+	dependsOn 'createAntoraPartials'
+	dependsOn 'generateAntoraYml'
+}
