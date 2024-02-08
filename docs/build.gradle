@@ -1,3 +1,19 @@
+/*
+ * Copyright (c) 2020-2023 VMware, Inc. or its affiliates, All Rights Reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *   https://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 buildscript {
 	repositories {
 		mavenCentral()
@@ -12,99 +28,38 @@ buildscript {
 
 plugins {
 	id 'java'
-    id 'org.antora' version '1.0.0'
-	id 'io.spring.antora.generate-antora-yml' version '0.0.1'
+	id 'io.spring.javadoc-aggregate'
+	id 'org.antora'
+	id 'io.spring.antora.generate-antora-yml'
 }
 
-description = "Reactor Netty Docs"
+apply from: "${rootDir}/gradle/antora.gradle"
 
-repositories {
-	mavenCentral()
-}
+dependencies {
+	api project(':reactor-netty-core')
+	api project(':reactor-netty-http')
 
-java {
-	toolchain {
-		languageVersion = JavaLanguageVersion.of(17)
-	}
-}
+	// JSR-305 annotations
+	compileOnly "com.google.code.findbugs:jsr305:$jsr305Version"
 
-antora {
-	version = '3.2.0-alpha.4'
-	playbook = 'antora-playbook.yml'
-	options = ['--clean', '--stacktrace']
-	environment = [
-			'ALGOLIA_API_KEY'   : 'da671ceec1f84f80f280884a6a91bde5',
-			'ALGOLIA_APP_ID'    : 'TGS4XRGX3V',
-			'ALGOLIA_INDEX_NAME': 'reactor'
-	]
-
-	dependencies = [
-			'@antora/atlas-extension'         : '1.0.0-alpha.1',
-			'@antora/collector-extension'     : '1.0.0-alpha.3',
-			'@asciidoctor/tabs'               : '1.0.0-beta.3',
-			'@springio/antora-extensions'     : '1.6.0',
-			'@springio/asciidoctor-extensions': '1.0.0-alpha.9',
-	]
+	compileOnly "io.micrometer:micrometer-core:$micrometerVersion"
+	compileOnly "io.micrometer:micrometer-tracing:$micrometerTracingVersion"
+	compileOnly "io.micrometer:context-propagation:$contextPropagationVersion"
+	compileOnly "io.netty:netty-codec-haproxy:$nettyVersion"
+	compileOnly "io.netty:netty-transport-native-kqueue:$nettyVersion"
+	compileOnly "io.netty.incubator:netty-incubator-transport-native-io_uring:$nettyIoUringVersion"
+	compileOnly "io.projectreactor.addons:reactor-pool:$reactorPoolVersion"
 }
 
 jar {
-	enabled = false
-}
-
-javadoc {
-	enabled = false
-}
-
-tasks.withType(AbstractPublishToMaven).configureEach {
-	enabled = false
-}
-
-configurations {
-	adoc
-}
-
-dependencies {
-	adoc "io.micrometer:micrometer-docs-generator:$micrometerDocsVersion"
-}
-
-//task generateObservabilityDocs(type: JavaExec) {
-//	mainClass = "io.micrometer.docs.DocsGeneratorCommand"
-//	classpath configurations.adoc
-//	args project.rootDir.getAbsolutePath(), ".*", project.rootProject.buildDir.getAbsolutePath()
-//}
-
-def observationsOutputDir = file("${buildDir}/docs/generated/observation/").absolutePath
-
-task generateObservabilityDocs(type: JavaExec) {
-	mainClass = "io.micrometer.docs.DocsGeneratorCommand"
-	classpath configurations.adoc
-	outputs.dir(observationsOutputDir)
-	args project.rootDir.getAbsolutePath(), ".*", observationsOutputDir
-}
-
-tasks.create(name: 'createAntoraPartials', type: Sync) {
-	from { project(":docs").tasks.generateObservabilityDocs.outputs }
-	into layout.buildDirectory.dir('generated-antora-resources/modules/ROOT/partials')
-}
-
-tasks.create('generateAntoraResources') {
-	dependsOn 'createAntoraPartials'
-	dependsOn 'generateAntoraYml'
-}
-
-task docsZip(type: Zip, dependsOn: [':docs:antora']) {
-	group = 'Distribution'
-	archiveClassifier = 'docs'
-	description = "Builds docs archive containing api and reference for deployment at static.spring.io/reactor-netty/docs."
-	duplicatesStrategy "fail"
-//	from(aggregatedJavadoc) {
-//		into "api"
-//	}
-	from ('build/site') {
-		into 'reference/'
+	manifest {
+		attributes("Automatic-Module-Name": "reactor.netty")
 	}
 }
 
-artifacts {
-	archives docsZip
-}
+javadoc.dependsOn(aggregateJavadoc)
+
+//add docs.zip to the publication
+publishing.publications.mavenJava.artifact(docsZip)
+
+description = "Reactor Netty with all modules"

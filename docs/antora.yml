@@ -6,10 +6,6 @@ nav:
 ext:
   collector:
     run:
-      # FIXME Change "command" to the command that generates your antora.yml and other antora resources
-      # See https://gitlab.com/antora/antora-collector-extension/-/blob/main/docs/modules/ROOT/pages/configuration-keys.adoc?ref_type=heads#collector-reference
-      # HINT: Maven is typically something like:
-      # ./mvnw validate process-resources -am -Pantora-process-resources
       command: gradlew -q "-Dorg.gradle.jvmargs=-Xmx3g -XX:+HeapDumpOnOutOfMemoryError" :docs:generateAntoraResources
       local: true
     scan:
@@ -23,7 +19,6 @@ asciidoc:
   attributes:
     attribute-missing: 'warn'
     chomp: 'all'
-    project-version: 1.1.17-SNAPSHOT
     examples: 'example$reactor-netty-examples'
     http: 'example$reactor-netty-http'
     core: 'example$reactor-netty-core'
