@@ -28,8 +28,8 @@ antora {
 			'@antora/atlas-extension'         : '1.0.0-alpha.1',
 			'@antora/collector-extension'     : '1.0.0-alpha.3',
 			'@asciidoctor/tabs'               : '1.0.0-beta.3',
-			'@springio/antora-extensions'     : '1.6.0',
-			'@springio/asciidoctor-extensions': '1.0.0-alpha.9',
+			'@springio/antora-extensions'     : '1.7.0',
+			'@springio/asciidoctor-extensions': '1.0.0-alpha.9'
 	]
 }
 
@@ -83,14 +83,14 @@ tasks.create('generateAntoraResources') {
 	dependsOn 'generateAntoraYml'
 }
 
-task docsZip(type: Zip, dependsOn: [antora]) {
+task docsZip(type: Zip, dependsOn: [':docs:antora', ':docs:javadoc']) {
 	group = 'Distribution'
 	archiveClassifier = 'docs'
 	description = "Builds docs archive containing api and reference for deployment at static.spring.io/reactor-netty/docs."
 	duplicatesStrategy "fail"
-//	from(aggregatedJavadoc) {
-//		into "api"
-//	}
+	from ('build/docs/javadoc') {
+		into 'api/'
+	}
 	from ('build/site') {
 		into 'reference/'
 	}
@@ -101,7 +101,6 @@ artifacts {
 }
 
 def generateAttributes() {
-	println "XX bomVersion: ${bomVersion}"
 	return ['is-snapshot-version': project.version.endsWith("-SNAPSHOT"),
 	        'project-version': project.version,
 	        'reactorReleaseTrain': bomVersion

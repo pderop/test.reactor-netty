@@ -33,8 +33,6 @@ plugins {
 	id 'io.spring.antora.generate-antora-yml'
 }
 
-apply from: "${rootDir}/gradle/antora.gradle"
-
 dependencies {
 	api project(':reactor-netty-core')
 	api project(':reactor-netty-http')
@@ -51,11 +49,7 @@ dependencies {
 	compileOnly "io.projectreactor.addons:reactor-pool:$reactorPoolVersion"
 }
 
-jar {
-	manifest {
-		attributes("Automatic-Module-Name": "reactor.netty")
-	}
-}
+apply from: "${rootDir}/gradle/antora-docs.gradle"
 
 javadoc.dependsOn(aggregateJavadoc)
 
@@ -63,3 +57,5 @@ javadoc.dependsOn(aggregateJavadoc)
 publishing.publications.mavenJava.artifact(docsZip)
 
 description = "Reactor Netty with all modules"
+
+build.dependsOn(':docs:antora')
