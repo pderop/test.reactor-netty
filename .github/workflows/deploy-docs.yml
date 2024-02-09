@@ -4,18 +4,18 @@ on:
   workflow_dispatch:
     inputs:
       build-refname:
-        description: Enter git refname to build (e.g., 5.7.x).
+        description: Enter git refname to build (e.g., main, netty5).
         required: false
   push:
     branches: docs-build
 #env:
-#  GH_TOKEN: ${{ github.token }}
+#  GRADLE_ENTERPRISE_SECRET_ACCESS_KEY: ${{ secrets.GRADLE_ENTERPRISE_SECRET_ACCESS_KEY }}
 permissions:
   contents: write
   actions: write
 jobs:
   build:
-    if: github.repository_owner == 'pderop'
+#    if: github.repository_owner == 'reactor'
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -38,10 +38,10 @@ jobs:
           ./gradlew antora
       - name: Copy the cache to be included in the site
         run: cp -rf build/antora/inject-collector-cache-config-extension/.cache build/site/
-      - name: Publish Docs
+      - name: Publish Partial Doc
         uses: JamesIves/github-pages-deploy-action@v4
         with:
           #token: ${{ secrets.DOCS_PAGES_TOKEN }}
-          #repository-name: pderop/test-antora-pages
+          #repository-name: reactor/projectreactor.io
           target-folder: reactor-netty/reference
-          folder: build/site # The folder the action should deploy.
+          folder: build/site/
