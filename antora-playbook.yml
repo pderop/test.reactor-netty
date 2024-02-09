@@ -15,7 +15,6 @@ site:
 content:
   sources:
     - url: https://github.com/pderop/test.reactor-netty
-      # Refname matching: https://docs.antora.org/antora/latest/playbook/content-refname-matching/
       branches:
         - 'main'
 #        - 'netty5'
@@ -45,4 +44,5 @@ runtime:
 ui:
   bundle:
     url: https://github.com/spring-io/antora-ui-spring/releases/download/v0.3.6/ui-bundle.zip
+    #url: https://github.com/reactor/antora-ui-projectreactor/releases/download/latest/ui-bundle.zip
     snapshot: true
