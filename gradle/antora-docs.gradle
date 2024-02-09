@@ -53,12 +53,6 @@ dependencies {
 	adoc "io.micrometer:micrometer-docs-generator:$micrometerDocsVersion"
 }
 
-//task generateObservabilityDocs(type: JavaExec) {
-//	mainClass = "io.micrometer.docs.DocsGeneratorCommand"
-//	classpath configurations.adoc
-//	args project.rootDir.getAbsolutePath(), ".*", project.rootProject.buildDir.getAbsolutePath()
-//}
-
 def observationsOutputDir = file("${buildDir}/docs/generated/observation/").absolutePath
 
 task generateObservabilityDocs(type: JavaExec) {
@@ -81,23 +75,6 @@ tasks.named("generateAntoraYml") {
 tasks.create('generateAntoraResources') {
 	dependsOn 'createAntoraPartials'
 	dependsOn 'generateAntoraYml'
-}
-
-task docsZip(type: Zip, dependsOn: [':docs:antora', ':docs:javadoc']) {
-	group = 'Distribution'
-	archiveClassifier = 'docs'
-	description = "Builds docs archive containing api and reference for deployment at static.spring.io/reactor-netty/docs."
-	duplicatesStrategy "fail"
-	from ('build/docs/javadoc') {
-		into 'api/'
-	}
-	from ('build/site') {
-		into 'reference/'
-	}
-}
-
-artifacts {
-	archives docsZip
 }
 
 def generateAttributes() {

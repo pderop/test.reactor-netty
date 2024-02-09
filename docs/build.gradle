@@ -28,34 +28,11 @@ buildscript {
 
 plugins {
 	id 'java'
-	id 'io.spring.javadoc-aggregate'
 	id 'org.antora'
 	id 'io.spring.antora.generate-antora-yml'
 }
 
-dependencies {
-	api project(':reactor-netty-core')
-	api project(':reactor-netty-http')
-
-	// JSR-305 annotations
-	compileOnly "com.google.code.findbugs:jsr305:$jsr305Version"
-
-	compileOnly "io.micrometer:micrometer-core:$micrometerVersion"
-	compileOnly "io.micrometer:micrometer-tracing:$micrometerTracingVersion"
-	compileOnly "io.micrometer:context-propagation:$contextPropagationVersion"
-	compileOnly "io.netty:netty-codec-haproxy:$nettyVersion"
-	compileOnly "io.netty:netty-transport-native-kqueue:$nettyVersion"
-	compileOnly "io.netty.incubator:netty-incubator-transport-native-io_uring:$nettyIoUringVersion"
-	compileOnly "io.projectreactor.addons:reactor-pool:$reactorPoolVersion"
-}
-
 apply from: "${rootDir}/gradle/antora-docs.gradle"
 
-javadoc.dependsOn(aggregateJavadoc)
+description = "Reactor Netty Antora Docs"
 
-//add docs.zip to the publication
-publishing.publications.mavenJava.artifact(docsZip)
-
-description = "Reactor Netty with all modules"
-
-build.dependsOn(':docs:antora')
