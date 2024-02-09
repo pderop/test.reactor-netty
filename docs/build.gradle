@@ -36,3 +36,4 @@ apply from: "${rootDir}/gradle/antora-docs.gradle"
 
 description = "Reactor Netty Antora Docs"
 
+build.dependsOn(':docs:antora')

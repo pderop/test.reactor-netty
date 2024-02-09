@@ -41,3 +41,4 @@ runtime:
 ui:
   bundle:
     url: https://github.com/spring-io/antora-ui-spring/releases/download/v0.3.4/ui-bundle.zip
+    #url: https://github.com/reactor/antora-ui-projectreactor/releases/download/latest/ui-bundle.zip
