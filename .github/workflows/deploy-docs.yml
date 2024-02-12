@@ -33,7 +33,7 @@ jobs:
           git fetch --depth 1 https://github.com/$GITHUB_REPOSITORY ${{ github.event.inputs.build-refname }}
           BUILD_VERSION_SNAPSHOT=$( [[ $(git cat-file --textconv FETCH_HEAD:gradle.properties | sed -n '/^version=/ { s/^version=//;p }') == *-SNAPSHOT ]] && echo "true" || echo "false" )
           if [ "$BUILD_VERSION_SNAPSHOT" == "true" ]; then
-            echo BUILD_VERSION_SNAPSHOT=$BUILD_VERSION_SNAPSHOT >> $GITHUB_ENV
+            echo BUILD_VERSION=$(git cat-file --textconv FETCH_HEAD:gradle.properties | sed -n '/^version=/ { s/^version=//;p }') >> $GITHUB_ENV
             echo BUILD_REFNAME=${{ github.event.inputs.build-refname }} >> $GITHUB_ENV
           fi
       - name: Run Antora
@@ -41,11 +41,10 @@ jobs:
         run: |-
           ./gradlew antora
       - name: Copy the cache to be included in the site
-        if: ${{ ! github.event.inputs.build-refname || env.BUILD_VERSION_SNAPSHOT == 'true' }}
+        #if: ${{ ! github.event.inputs.build-refname || env.BUILD_VERSION_SNAPSHOT == 'true' }}
         run: cp -rf build/antora/inject-collector-cache-config-extension/.cache build/site/
       - name: Publish Doc
-        # Only trigger push if it's a full build or if it's a partial build with a SNAPSHOT version
-        if: ${{ ! github.event.inputs.build-refname || env.BUILD_VERSION_SNAPSHOT == 'true' }}
+        #if: ${{ ! github.event.inputs.build-refname || env.BUILD_VERSION_SNAPSHOT == 'true' }}
         uses: JamesIves/github-pages-deploy-action@v4
         with:
           #token: ${{ secrets.DOCS_PAGES_TOKEN }}
