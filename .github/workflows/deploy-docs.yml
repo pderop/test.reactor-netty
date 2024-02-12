@@ -33,6 +33,7 @@ jobs:
           git fetch --depth 1 https://github.com/$GITHUB_REPOSITORY ${{ github.event.inputs.build-refname }}
           BUILD_VERSION_SNAPSHOT=$( [[ $(git cat-file --textconv FETCH_HEAD:gradle.properties | sed -n '/^version=/ { s/^version=//;p }') == *-SNAPSHOT ]] && echo "true" || echo "false" )
           if [ "$BUILD_VERSION_SNAPSHOT" == "true" ]; then
+          echo $BUILD_VERSION_SNAPSHOT=$BUILD_VERSION_SNAPSHOT >> $GITHUB_ENV
             echo BUILD_VERSION=$(git cat-file --textconv FETCH_HEAD:gradle.properties | sed -n '/^version=/ { s/^version=//;p }') >> $GITHUB_ENV
             echo BUILD_REFNAME=${{ github.event.inputs.build-refname }} >> $GITHUB_ENV
           fi
