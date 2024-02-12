@@ -33,6 +33,7 @@ jobs:
           git fetch --depth 1 https://github.com/$GITHUB_REPOSITORY ${{ github.event.inputs.build-refname }}
           echo BUILD_REFNAME=${{ github.event.inputs.build-refname }} >> $GITHUB_ENV
           echo BUILD_VERSION=$(git cat-file --textconv FETCH_HEAD:gradle.properties | sed -n '/^version=/ { s/^version=//;p }') >> $GITHUB_ENV
+          env
       - name: Run Antora
         run: |-
           ./gradlew antora
