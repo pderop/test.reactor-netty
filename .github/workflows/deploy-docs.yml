@@ -42,7 +42,6 @@ jobs:
       - name: Publish Doc
         # Only trigger push if it's a full build or if it's a partial build with a SNAPSHOT version
         if: ${{ ! github.event.inputs.build-refname || env.BUILD_VERSION_SNAPSHOT == 'true' }}
-
         uses: JamesIves/github-pages-deploy-action@v4
         with:
           #token: ${{ secrets.DOCS_PAGES_TOKEN }}
