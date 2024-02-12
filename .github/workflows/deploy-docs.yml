@@ -37,7 +37,7 @@ jobs:
             echo BUILD_REFNAME=${{ github.event.inputs.build-refname }} >> $GITHUB_ENV
           fi
       - name: Run Antora
-        if: ${{ ! github.event.inputs.build-refname || env.BUILD_VERSION_SNAPSHOT == 'true' }}
+        #if: ${{ ! github.event.inputs.build-refname || env.BUILD_VERSION_SNAPSHOT == 'true' }}
         run: |-
           ./gradlew antora
       - name: Copy the cache to be included in the site
