@@ -39,6 +39,7 @@ jobs:
         run: |-
           ./gradlew antora
       - name: Copy the cache to be included in the site
+        if: ${{ ! github.event.inputs.build-refname || env.BUILD_VERSION_SNAPSHOT == 'true' }}
         run: cp -rf build/antora/inject-collector-cache-config-extension/.cache build/site/
       - name: Publish Doc
         # Only trigger push if it's a full build or if it's a partial build with a SNAPSHOT version
