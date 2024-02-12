@@ -35,6 +35,7 @@ jobs:
           echo BUILD_VERSION=$(git cat-file --textconv FETCH_HEAD:gradle.properties | sed -n '/^version=/ { s/^version=//;p }') >> $GITHUB_ENV
           echo BUILD_VERSION_SNAPSHOT=$( [[ $(git cat-file --textconv FETCH_HEAD:gradle.properties | sed -n '/^version=/ { s/^version=//;p }') == *-SNAPSHOT ]] && echo "true" || echo "false" ) >> $GITHUB_ENV
       - name: Run Antora
+        if: ${{ ! github.event.inputs.build-refname || env.BUILD_VERSION_SNAPSHOT == 'true' }}
         run: |-
           ./gradlew antora
       - name: Copy the cache to be included in the site
