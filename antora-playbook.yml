@@ -17,10 +17,10 @@ content:
     - url: https://github.com/pderop/test.reactor-netty
       branches:
         - 'main'
-#        - 'netty5'
       tags:
         - 'v1.1.*'
-#        - 'v2.0.*'
+        - '!v1.1.{0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15}' # exclude v1.1.[0-15]
+        - '!v1.1.0(-{RC,M}*)' # exclude v1.1.0-M1 and v1.1.0-RC*
       start_path: docs
 asciidoc:
   attributes:
