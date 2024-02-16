@@ -4,10 +4,6 @@ on:
   push:
     branches:
       - 'main'
-      - 'netty5'
-#    tags:
-#      - 'v1.1.[0-9]+'
-#      - 'v2.0.[0-9]+'
   repository_dispatch:
     types: request-build-reference # legacy
   workflow_dispatch:

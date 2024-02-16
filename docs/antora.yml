@@ -9,10 +9,6 @@ ext:
       command: gradlew -q "-Dorg.gradle.jvmargs=-Xmx3g -XX:+HeapDumpOnOutOfMemoryError" :docs:generateAntoraResources
       local: true
     scan:
-      # FIXME Change "dir" to the location that generated files are at
-      # See https://gitlab.com/antora/antora-collector-extension/-/blob/main/docs/modules/ROOT/pages/configuration-keys.adoc?ref_type=heads#collector-reference
-      # HINT: Maven is typically something like:
-      # target/classes/antora-resources/
       dir: ./build/generated-antora-resources
 
 asciidoc:
