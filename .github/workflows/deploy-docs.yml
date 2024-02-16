@@ -4,12 +4,10 @@ on:
   workflow_dispatch:
     inputs:
       build-refname:
-        description: Enter git refname to build (e.g., main, netty5).
+        description: Enter git refname to build (e.g., main, netty5). Leave empty for a full build.
         required: false
   push:
     branches: docs-build
-#env:
-#  GRADLE_ENTERPRISE_SECRET_ACCESS_KEY: ${{ secrets.GRADLE_ENTERPRISE_SECRET_ACCESS_KEY }}
 permissions:
   contents: write
   actions: write
@@ -47,9 +45,3 @@ jobs:
           folder: build/site/
           clean: false
           force: true
-#      - name: Bust Clouflare Cache
-#        uses: spring-io/spring-doc-actions/bust-cloudflare-antora-cache@v0.0.11
-#        with:
-#          context-root: reactor-netty
-#          cloudflare-zone-id: ${{ secrets.CLOUDFLARE_ZONE_ID }}
-#          cloudflare-cache-token: ${{ secrets.CLOUDFLARE_CACHE_TOKEN }}
