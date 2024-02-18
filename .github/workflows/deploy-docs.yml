@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - 'main'
+    #- tags: 'v[0-9]+.[0-9]+.[0-9]+'
   repository_dispatch:
     types: request-build-reference # legacy
   workflow_dispatch:
@@ -23,8 +24,8 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: gh workflow run deploy-docs.yml -r $(git rev-parse --abbrev-ref HEAD) -f build-refname=${{ github.ref_name }}
-      - name: Dispatch (full build)
-        if: github.ref_type == 'tag'
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: gh workflow run deploy-docs.yml -r $(git rev-parse --abbrev-ref HEAD)
+#      - name: Dispatch (full build)
+#        if: github.ref_type == 'tag'
+#        env:
+#          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+#        run: gh workflow run deploy-docs.yml -r $(git rev-parse --abbrev-ref HEAD)
