@@ -20,5 +20,7 @@ include 'reactor-netty-http-brave'
 include 'reactor-netty-incubator-quic'
 include 'reactor-netty-examples'
 include 'reactor-netty-graalvm-smoke-tests'
-include 'docs'
+if (hasProperty('antora')) {
+	include 'docs'
+}
 include 'reactor-netty'

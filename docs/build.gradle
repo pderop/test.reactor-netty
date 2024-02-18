@@ -28,8 +28,8 @@ buildscript {
 
 plugins {
 	id 'java'
-	id 'org.antora'
-	id 'io.spring.antora.generate-antora-yml'
+	id 'org.antora' version '1.0.0'
+	id 'io.spring.antora.generate-antora-yml' version '0.0.1'
 }
 
 apply from: "${rootDir}/gradle/antora-docs.gradle"
