@@ -1,6 +1,7 @@
 [[observability]]
 = Observability
 :page-section-summary-toc: 1
+:toc:
 
 [[observability-metadata]]
 == Observability metadata

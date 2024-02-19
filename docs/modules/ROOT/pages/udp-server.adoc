@@ -3,6 +3,7 @@
 :javadoc: https://projectreactor.io/docs/netty/{project-version}/api
 :nettyjavadoc: https://netty.io/4.1/api
 :wirelogger: reactor.netty.udp.UdpServer
+:toc:
 
 [[udp-server]]
 = UDP Server

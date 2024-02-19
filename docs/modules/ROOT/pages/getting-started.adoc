@@ -1,5 +1,6 @@
 [[getting-started]]
 = Getting Started
+:toc:
 
 This section contains information that should help you get going with `Reactor Netty`. It
 includes the following information:
@@ -11,12 +12,14 @@ includes the following information:
 
 [[getting-started-introducing-reactor-netty]]
 == Introducing Reactor Netty
+:toc:
 
 Suited for Microservices Architecture, `Reactor Netty` offers
 backpressure-ready network engines for `HTTP` (including Websockets), `TCP`, and `UDP`.
 
 [[prerequisites]]
 == Prerequisites
+:toc:
 
 `Reactor Netty` runs on `Java 8` and above.
 
@@ -28,6 +31,7 @@ It has transitive dependencies on:
 
 [[getting-started-understanding-bom]]
 == Understanding the BOM and versioning scheme
+:toc:
 
 `Reactor Netty` is part of the `Project Reactor BOM` (since the `Aluminium` release train).
 This curated list groups artifacts that are meant to work well together, providing
@@ -70,6 +74,7 @@ like YYYY.0.X-SNAPSHOT so we get 1 snapshot per PATCH)
 
 [[getting]]
 == Getting Reactor Netty
+:toc:
 
 As xref:getting-started.adoc#getting-started-understanding-bom[mentioned earlier], the easiest way to use
 `Reactor Netty` in your core is to use the `BOM` and
@@ -205,5 +210,6 @@ repositories {
 
 [[support]]
 == Support and policies
+:toc:
 
 See https://github.com/reactor/.github/blob/main/SUPPORT.adoc[Reactor SUPPORT documentation]

@@ -24,6 +24,7 @@ asciidoc:
     hide-uri-scheme: '@'
     tabs-sync-option: '@'
     chomp: 'all'
+    toc: left
   extensions:
     - '@asciidoctor/tabs'
     - '@springio/asciidoctor-extensions'
@@ -36,6 +37,5 @@ runtime:
     format: pretty
 ui:
   bundle:
-    #url: https://gitlab.com/antora/antora-ui-default/-/jobs/artifacts/HEAD/raw/build/ui-bundle.zip?job=bundle-stable
     url: https://github.com/spring-io/antora-ui-spring/releases/download/v0.3.4/ui-bundle.zip
     #url: https://github.com/reactor/antora-ui-projectreactor/releases/download/latest/ui-bundle.zip

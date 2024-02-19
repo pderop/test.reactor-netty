@@ -51,31 +51,31 @@ task docsZip(type: Zip) {
 	duplicatesStrategy "fail"
 
 	def docsDir = file('../docs/build/site')
-	def assemblerDir = file('../docs/build/assembler')
 
 	doFirst {
-		if (!docsDir.exists() || !Files.list(docsDir.toPath()).findFirst().isPresent() || !Files.list(assemblerDir.toPath()).findFirst().isPresent()) {
+		if (!docsDir.exists() || !Files.list(docsDir.toPath()).findFirst().isPresent()) {
 			logger.lifecycle("Docs directory does not exist or is empty. Skipping docsZip task.")
 			enabled = false
 		}
 	}
 
 	from ('../docs/build/site') {
+		into 'docs'
 		exclude '**/reactor-netty-reference-guide.pdf'
 	}
 	// Configuration for moving the PDF to the root directory
 	def pdfFile = fileTree(docsDir).matching {
 		include "**/reactor-netty-reference-guide.pdf"
 	}.files.stream().findFirst().orElse(null)
-	
+
 	if (pdfFile) {
-		into('') {
+		into('docs') {
 			from(pdfFile) {
-				rename { 'reactor-netty-reference-guide.pdf' }
+				rename { "reactor-netty-reference-guide-${project.version}.pdf" }
 			}
 		}
 	} else {
-		logger.warn("PDF file not found.")
+		logger.lifecycle("PDF not found from ../docs/site/.")
 	}
 }
 

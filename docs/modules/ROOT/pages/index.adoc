@@ -1,6 +1,7 @@
 [[index-doc]]
 = About the Documentation
 :linkattrs:
+:toc:
 
 Stephane Maldini <https://twitter.com/smaldini[@smaldini]>; Violeta Georgieva <https://twitter.com/violeta_g_g[@violeta_g_g]> Version {project-version}
 

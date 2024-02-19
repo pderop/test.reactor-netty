@@ -1,3 +1,4 @@
+:toc:
 [[faq]]
 = Frequently Asked Questions
 

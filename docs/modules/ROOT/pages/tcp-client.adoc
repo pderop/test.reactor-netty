@@ -6,6 +6,7 @@
 
 [[tcp-client]]
 = TCP Client
+:toc:
 
 Reactor Netty provides the easy-to-use and easy-to-configure
 {javadoc}/reactor/netty/tcp/TcpClient.html[`TcpClient`].
