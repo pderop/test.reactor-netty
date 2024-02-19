@@ -100,14 +100,8 @@ jobs:
         with:
             distribution: 'temurin'
             java-version: '8'
-      - name: deploy
-        env:
-          ORG_GRADLE_PROJECT_artifactory_publish_username: ${{secrets.ARTIFACTORY_SNAPSHOT_USERNAME}}
-          ORG_GRADLE_PROJECT_artifactory_publish_password: ${{secrets.ARTIFACTORY_PASSWORD}}
-        run: |-
-            echo "deploy snapshot artifacts to Artifactory ..."
-            ./gradlew reactor-netty:build
-            jar tvf reactor-netty/build/distributions/reactor-netty-1.1.18-SNAPSHOT-docs.zip
+      - name: Build Reactor Netty docs
+        run: ./gradlew reactor-netty:build
       - name: Upload docs
         uses: actions/upload-artifact@v4
         with:
@@ -115,7 +109,12 @@ jobs:
             path: reactor-netty/build/distributions/reactor-netty-1.1.18-SNAPSHOT-docs.zip
             retention-days: 1
             if-no-files-found: error
-
+      - name: deploy
+#        env:
+#            ORG_GRADLE_PROJECT_artifactory_publish_username: ${{secrets.ARTIFACTORY_SNAPSHOT_USERNAME}}
+#            ORG_GRADLE_PROJECT_artifactory_publish_password: ${{secrets.ARTIFACTORY_PASSWORD}}
+        run: |-
+            echo "deploy snapshot artifacts to Artifactory ..."
 
   #sign the milestone artifacts and deploy them to Artifactory
   deployMilestone:
