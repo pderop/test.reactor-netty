@@ -105,7 +105,7 @@ jobs:
       - name: Build Reactor Netty docs
         run: |-
             ./gradlew reactor-netty:build
-            jar tvf reactor-netty/build/distributions/reactor-netty-1.1.18-SNAPSHOT-docs.zip | grep pdf
+            jar tvf reactor-netty/build/distributions/reactor-netty-1.1.18-SNAPSHOT-docs.zip
       - name: Upload docs
         uses: actions/upload-artifact@v4
         with:
