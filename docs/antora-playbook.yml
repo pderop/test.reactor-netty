@@ -5,6 +5,7 @@ antora:
     - require: '@springio/antora-extensions/inject-collector-cache-config-extension'
     - '@antora/collector-extension'
     - '@antora/atlas-extension'
+    - '@antora/pdf-extension'
     - require: '@springio/antora-extensions/root-component-extension'
       root_component_name: 'reactor-netty'
 site:
@@ -13,7 +14,7 @@ site:
 content:
   sources:
     - url: ./..
-      branches: main
+      branches: HEAD
       start_path: docs
       worktrees: true
 asciidoc:
