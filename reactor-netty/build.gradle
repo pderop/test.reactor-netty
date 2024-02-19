@@ -63,7 +63,7 @@ task docsZip(type: Zip) {
 	doFirst {
 		def docsDir = file('../docs/build/site')
 		def assemblerDir = file('../docs/build/assembler')
-		if (!docsDir.exists() || !Files.list(docsDir.toPath()).findFirst().isPresent() ||!Files.list(assemblerDir.toPath()).findFirst().isPresent()) {
+		if (!docsDir.exists() || !Files.list(docsDir.toPath()).findFirst().isPresent() || !Files.list(assemblerDir.toPath()).findFirst().isPresent()) {
 			logger.lifecycle("Docs directory does not exist or is empty. Skipping docsZip task.")
 			enabled = false
 		}

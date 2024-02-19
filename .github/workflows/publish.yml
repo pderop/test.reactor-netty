@@ -95,7 +95,9 @@ jobs:
           distribution: 'temurin'
           java-version: '17'
       - name: Build Antora docs
-        run: ./gradlew -Pantora docs:antora
+        run: |-
+            ./gradlew -Pantora docs:antora
+            find docs/build/site -name "*.pdf"
       - uses: actions/setup-java@387ac29b308b003ca37ba93a6cab5eb57c8f5f93
         with:
             distribution: 'temurin'
