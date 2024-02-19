@@ -44,28 +44,34 @@ jar {
 
 description = "Reactor Netty with all modules"
 
+task copyPdfToSiteRootDir(type: Copy) {
+	group = 'Distribution'
+	description = 'Copies the PDF file to the root directory of the site.'
+	from '../docs/build/site/reactor-netty/${rootProject.version}/'
+	include 'reactor-netty-reference-guide.pdf'
+	into '../docs/build/site/'
+}
+
 task docsZip(type: Zip) {
 	group = 'Distribution'
 	archiveClassifier = 'docs'
-	description = "Builds docs archive containing api and reference for deployment at static.spring.io/reactor-netty/docs."
+	description = "Builds docs archive containing reference for deployment at static.spring.io/reactor-netty/docs."
 	duplicatesStrategy "fail"
+
+	dependsOn copyPdfToSiteRootDir
 
 	doFirst {
 		def docsDir = file('../docs/build/site')
-		if (!docsDir.exists() || !Files.list(docsDir.toPath()).findFirst().isPresent()) {
+		def assemblerDir = file('../docs/build/assembler')
+		if (!docsDir.exists() || !Files.list(docsDir.toPath()).findFirst().isPresent() ||!Files.list(assemblerDir.toPath()).findFirst().isPresent()) {
 			logger.lifecycle("Docs directory does not exist or is empty. Skipping docsZip task.")
 			enabled = false
 		}
 	}
 
-//	from ('build/docs/javadoc') {
-//		into 'api/'
-//	}
-//	from ('../docs/build/site') {
-//		into 'reference/'
-//	}
 	from ('../docs/build/site') {
 		into './'
+		exclude 'reactor-netty/1.1.18/reactor-netty-reference-guide.pdf'
 	}
 }
 
