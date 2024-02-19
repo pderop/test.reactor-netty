@@ -103,7 +103,9 @@ jobs:
             distribution: 'temurin'
             java-version: '8'
       - name: Build Reactor Netty docs
-        run: ./gradlew reactor-netty:build
+        run: |-
+            ./gradlew reactor-netty:build
+            jar tvf reactor-netty-1.1.18-SNAPSHOT-docs.zip |grep pdf
       - name: Upload docs
         uses: actions/upload-artifact@v4
         with:
