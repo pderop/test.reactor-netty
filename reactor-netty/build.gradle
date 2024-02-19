@@ -66,8 +66,8 @@ task docsZip(type: Zip) {
 	// Configuration for moving the PDF to the root directory
 	def pdfFile = fileTree(docsDir).matching {
 		include "**/reactor-netty-reference-guide.pdf"
-	}.singleFile
-
+	}.files.stream().findFirst().orElse(null)
+	
 	if (pdfFile) {
 		into('') {
 			from(pdfFile) {
