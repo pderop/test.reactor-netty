@@ -3,11 +3,9 @@
 :javadoc: https://projectreactor.io/docs/netty/{project-version}/api
 :nettyjavadoc: https://netty.io/4.1/api
 :wirelogger: reactor.netty.http.server.HttpServer
-:toc:
 
 [[http-server]]
 = HTTP Server
-:toc:
 
 `Reactor Netty` provides the easy-to-use and easy-to-configure
 {javadoc}/reactor/netty/http/server/HttpServer.html[`HttpServer`] class.
