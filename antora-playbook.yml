@@ -29,6 +29,7 @@ asciidoc:
     hide-uri-scheme: '@'
     tabs-sync-option: '@'
     chomp: 'all'
+    toc2: true
   extensions:
     - '@asciidoctor/tabs'
     - '@springio/asciidoctor-extensions'
