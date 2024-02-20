@@ -206,4 +206,6 @@ repositories {
 [[support]]
 == Support and policies
 
-See https://github.com/reactor/.github/blob/main/SUPPORT.adoc[Reactor SUPPORT documentation]
+The entries below are mirroring https://github.com/reactor/.github/blob/main/SUPPORT.adoc
+
+include::partial$SUPPORT.adoc[leveloffset=2,lines=12..43]
