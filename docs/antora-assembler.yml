@@ -1,4 +1,22 @@
 asciidoc:
+    build:
+        command: bundle exec asciidoctor-pdf -n -d book
     attributes:
         source-highlighter: 'rouge'
+        pdf-theme: ./pdf-theme.yml
+#        page-stackoverflow-url: https://stackoverflow.com/tags/reactor-netty
+#        page-pagination: ''
+#        hide-uri-scheme: '@'
+#        tabs-sync-option: '@'
+#        chomp: 'all'
+#        doctype: book
+#        icons: font
+#        toc2: true
+#        sectnums: true
+#        sectanchors: true
+#        stylesdir: assets/stylesheets/
+#        stylesheet: reactor.css
+#        'source-highlighter': highlightjs
+#        'highlightjsdir': assets/highlight/
+#        'highlightjs-theme': railscasts
 

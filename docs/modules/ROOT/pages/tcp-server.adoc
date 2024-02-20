@@ -21,7 +21,7 @@ By default, the `host` is configured for any local address, and the system picks
 when the `bind` operation is invoked. The following example shows how to create and
 configure a `TcpServer` instance:
 
-[source,java,indent=0]
+[source,java,indent=1]
 .{examples-dir}/create/Application.java
 ----
 include::{examples-dir}/create/Application.java[lines=18..31]
@@ -39,7 +39,7 @@ which shuts the server down in a blocking fashion.
 
 To serve on a specific `host` and `port`, you can apply the following configuration to the `TCP` server:
 
-[source,java,indent=0]
+[source,java,indent=1]
 .{examples-dir}/address/Application.java
 ----
 include::{examples-dir}/address/Application.java[lines=18..33]
@@ -50,7 +50,7 @@ include::{examples-dir}/address/Application.java[lines=18..33]
 To serve on multiple addresses, after having configured the `TcpServer` you can bind it multiple times to obtain separate `DisposableServer`s.
 All created servers will share resources such as `LoopResources` because they use the same configuration instance under the hood.
 
-[source,java,indent=0]
+[source,java,indent=1]
 .{examples-dir}/address/MultiAddressApplication.java
 ----
 include::{examples-dir}/address/MultiAddressApplication.java[lines=18..41]
@@ -72,7 +72,7 @@ operation` absorbs the extra time needed to initialize and load:
 
 When you need to preload these resources, you can configure the `TcpServer` as follows:
 
-[source,java,indent=0]
+[source,java,indent=1]
 .{examples-dir}/warmup/Application.java
 ----
 include::{examples-dir}/warmup/Application.java[lines=18..36]
@@ -86,7 +86,7 @@ In order to send data to a connected client, you must attach an I/O handler.
 The I/O handler has access to {javadoc}/reactor/netty/NettyOutbound.html[`NettyOutbound`]
 to be able to write data. The following example shows how to attach an I/O handler:
 
-[source,java,indent=0]
+[source,java,indent=1]
 .{examples-dir}/send/Application.java
 ----
 include::{examples-dir}/send/Application.java[lines=18..33]
@@ -100,7 +100,7 @@ In order to receive data from a connected client, you must attach an I/O handler
 The I/O handler has access to {javadoc}/reactor/netty/NettyInbound.html[`NettyInbound`]
 to be able to read data. The following example shows how to use it:
 
-[source,java,indent=0]
+[source,java,indent=1]
 .{examples-dir}/read/Application.java
 ----
 include::{examples-dir}/read/Application.java[lines=18..32]
@@ -124,7 +124,7 @@ The following lifecycle callbacks are provided to let you extend the `TcpServer`
 
 The following example uses the `doOnConnection` and `doOnChannelInit` callbacks:
 
-[source,java,indent=0]
+[source,java,indent=1]
 .{examples-dir}/lifecycle/Application.java
 ----
 include::{examples-dir}/lifecycle/Application.java[lines=18..39]
@@ -146,7 +146,7 @@ This section describes three kinds of configuration that you can use at the TCP 
 
 By default, the `TCP` server is configured with the following options:
 
-[source,java,indent=0]
+[source,java,indent=1]
 .{sourcedir}/reactor/netty/tcp/TcpServerBind.java
 ----
 include::{sourcedir}/reactor/netty/tcp/TcpServerBind.java[lines=40..48]
@@ -154,7 +154,7 @@ include::{sourcedir}/reactor/netty/tcp/TcpServerBind.java[lines=40..48]
 
 If additional options are necessary or changes to the current options are needed, you can apply the following configuration:
 
-[source,java,indent=0]
+[source,java,indent=1]
 .{examples-dir}/channeloptions/Application.java
 ----
 include::{examples-dir}/channeloptions/Application.java[lines=18..33]
@@ -187,7 +187,7 @@ or by setting `-Dio.netty.handler.ssl.noOpenSsl=true`.
 
 The following example uses `SslContextBuilder`:
 
-[source,java,indent=0]
+[source,java,indent=1]
 .{examples-dir}/security/Application.java
 ----
 include::{examples-dir}/security/Application.java[lines=18..40]
@@ -200,7 +200,7 @@ An exact domain name or a domain name containing a wildcard can be used when con
 
 The following example uses a domain name containing a wildcard:
 
-[source,java,indent=0]
+[source,java,indent=1]
 .{examples-dir}/sni/Application.java
 ----
 include::{examples-dir}/sni/Application.java[lines=18..47]
@@ -235,7 +235,7 @@ include::partial$eventloop-metrics.adoc[]
 
 The following example enables that integration:
 
-[source,java,indent=0]
+[source,java,indent=1]
 .{examples-dir}/metrics/Application.java
 ----
 include::{examples-dir}/metrics/Application.java[lines=18..32]
@@ -245,7 +245,7 @@ include::{examples-dir}/metrics/Application.java[lines=18..32]
 When TCP server metrics are needed for an integration with a system other than `Micrometer` or you want
 to provide your own integration with `Micrometer`, you can provide your own metrics recorder, as follows:
 
-[source,java,indent=0]
+[source,java,indent=1]
 .{examples-dir}/metrics/custom/Application.java
 ----
 include::{examples-dir}/metrics/custom/Application.java[lines=18..35]
@@ -268,7 +268,7 @@ See <<observability-spans-tls-handshake-span>>.
 The following example enables that integration. This concrete example uses `Brave` and reports the information to `Zipkin`.
 See the https://micrometer.io/docs/tracing#_micrometer_tracing_opentelemetry_setup[`Micrometer Tracing`] documentation for `OpenTelemetry` setup.
 
-[source,java,indent=0]
+[source,java,indent=1]
 .{examples-dir}/tracing/Application.java
 ----
 include::{examples-dir}/tracing/Application.java[lines=18..81]
@@ -287,7 +287,7 @@ different types of context mechanisms such as `ThreadLocal`, `Reactor Context` a
 
 The following example shows how to use this library in a custom `ChannelHandler`:
 
-[source,java,indent=0]
+[source,java,indent=1]
 .{examples-dir}/tracing/custom/Application.java
 ----
 include::{examples-dir}/tracing/custom/Application.java[lines=18..86]
@@ -310,7 +310,7 @@ The `TCP` server supports Unix Domain Sockets (UDS) when native transport is in 
 
 The following example shows how to use UDS support:
 
-[source,java,indent=0]
+[source,java,indent=1]
 .{examples-dir}/uds/Application.java
 ----
 include::{examples-dir}/uds/Application.java[lines=18..33]
