@@ -346,23 +346,23 @@ The following table provides information for the HTTP client metrics:
 |=======
 | metric name | type | description
 | reactor.netty.http.client.data.received | DistributionSummary | Amount of the data received, in bytes.
-See <<observability-metrics-data-received>>
+See xref:observability.adoc#observability-metrics-data-received[]
 | reactor.netty.http.client.data.sent | DistributionSummary | Amount of the data sent, in bytes.
-See <<observability-metrics-data-sent>>
+See xref:observability.adoc#observability-metrics-data-sent[]
 | reactor.netty.http.client.errors | Counter | Number of errors that occurred.
-See <<observability-metrics-errors-count>>
+See xref:observability.adoc#observability-metrics-errors-count[]
 | reactor.netty.http.client.tls.handshake.time | Timer | Time spent for TLS handshake.
-See <<observability-metrics-tls-handshake-time>>
+See xref:observability.adoc#observability-metrics-tls-handshake-time[]
 | reactor.netty.http.client.connect.time | Timer | Time spent for connecting to the remote address.
-See <<observability-metrics-connect-time>>
+See xref:observability.adoc#observability-metrics-connect-time[]
 | reactor.netty.http.client.address.resolver | Timer | Time spent for resolving the address.
-See <<observability-metrics-hostname-resolution-time>>
+See xref:observability.adoc#observability-metrics-hostname-resolution-time[]
 | reactor.netty.http.client.data.received.time | Timer | Time spent in consuming incoming data.
-See <<observability-metrics-http-client-data-received-time>>
+See xref:observability.adoc#observability-metrics-http-client-data-received-time[]
 | reactor.netty.http.client.data.sent.time | Timer | Time spent in sending outgoing data.
-See <<observability-metrics-http-client-data-sent-time>>
+See xref:observability.adoc#observability-metrics-http-client-data-sent-time[]
 | reactor.netty.http.client.response.time | Timer | Total time for the request/response
-See <<observability-metrics-http-client-response-time>>
+See xref:observability.adoc#observability-metrics-http-client-response-time[]
 |=======
 
 These additional metrics are also available:
@@ -375,9 +375,9 @@ The following table provides information for the HTTP client metrics when it is 
 |=======
 | metric name | type | description
 | reactor.netty.connection.provider.active.streams | Gauge | The number of the active HTTP/2 streams.
-See <<observability-metrics-active-streams>>
+See xref:observability.adoc#observability-metrics-active-streams[]
 | reactor.netty.connection.provider.pending.streams | Gauge | The number of requests that are waiting for opening HTTP/2 stream.
-See <<observability-metrics-pending-streams>>
+See xref:observability.adoc#observability-metrics-pending-streams[]
 |=======
 
 include::partial$alloc-metrics.adoc[]
@@ -421,13 +421,13 @@ The following table provides information for the HTTP client spans:
 |=======
 | contextual name | description
 | HTTP <HTTP METHOD> | Information and total time for the request.
-See <<observability-spans-http-client-response-span>>.
+See xref:observability.adoc#observability-spans-http-client-response-span[].
 | hostname resolution | Information and time spent for resolving the address.
-See <<observability-spans-hostname-resolution-span>>.
+See xref:observability.adoc#observability-spans-hostname-resolution-span[].
 | connect | Information and time spent for connecting to the remote address.
-See <<observability-spans-connect-span>>.
+See xref:observability.adoc#observability-spans-connect-span[].
 | tls handshake | Information and time spent for TLS handshake.
-See <<observability-spans-tls-handshake-span>>.
+See xref:observability.adoc#observability-spans-tls-handshake-span[].
 |=======
 
 The following example enables that integration. This concrete example uses `Brave` and reports the information to `Zipkin`.

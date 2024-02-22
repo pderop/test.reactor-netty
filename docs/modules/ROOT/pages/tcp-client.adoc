@@ -239,17 +239,17 @@ The following table provides information for the TCP client metrics:
 |=======
 | metric name | type | description
 | reactor.netty.tcp.client.data.received | DistributionSummary | Amount of the data received, in bytes.
-See <<observability-metrics-data-received>>
+See xref:observability.adoc#observability-metrics-data-received[]
 | reactor.netty.tcp.client.data.sent | DistributionSummary | Amount of the data sent, in bytes.
-See <<observability-metrics-data-sent>>
+See xref:observability.adoc#observability-metrics-data-sent[]
 | reactor.netty.tcp.client.errors | Counter | Number of errors that occurred.
-See <<observability-metrics-errors-count>>
+See xref:observability.adoc#observability-metrics-errors-count[]
 | reactor.netty.tcp.client.tls.handshake.time | Timer | Time spent for TLS handshake.
-See <<observability-metrics-tls-handshake-time>>
+See xref:observability.adoc#observability-metrics-tls-handshake-time[]
 | reactor.netty.tcp.client.connect.time | Timer | Time spent for connecting to the remote address.
-See <<observability-metrics-connect-time>>
+See xref:observability.adoc#observability-metrics-connect-time[]
 | reactor.netty.tcp.client.address.resolver | Timer | Time spent for resolving the address.
-See <<observability-metrics-hostname-resolution-time>>
+See xref:observability.adoc#observability-metrics-hostname-resolution-time[]
 |=======
 
 These additional metrics are also available:
@@ -288,11 +288,11 @@ The following table provides information for the TCP client spans:
 |=======
 | contextual name | description
 | hostname resolution | Information and time spent for resolving the address.
-See <<observability-spans-hostname-resolution-span>>.
+See xref:observability.adoc#observability-spans-hostname-resolution-span[].
 | connect | Information and time spent for connecting to the remote address.
-See <<observability-spans-connect-span>>.
+See xref:observability.adoc#observability-spans-connect-span[].
 | tls handshake | Information and time spent for TLS handshake.
-See <<observability-spans-tls-handshake-span>>.
+See xref:observability.adoc#observability-spans-tls-handshake-span[].
 |=======
 
 The following example enables that integration. This concrete example uses `Brave` and reports the information to `Zipkin`.
