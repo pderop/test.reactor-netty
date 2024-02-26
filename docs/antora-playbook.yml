@@ -10,7 +10,7 @@ antora:
       root_component_name: 'reactor-netty'
 site:
   title: Reactor Netty Reference Guide
-  url: https://pderop.github.io/test.reactor-netty/docs/reactor-netty/reference/
+  url: https://pderop.github.io/test.reactor-netty/docs/1.1.x/reference/
 content:
   sources:
     - url: ./..
