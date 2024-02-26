@@ -41,7 +41,7 @@ jobs:
         with:
           #token: ${{ secrets.DOCS_PAGES_TOKEN }}
           #repository-name: reactor/projectreactor.io
-          target-folder: reactor-netty/reference
+          target-folder: docs/reference
           folder: build/site/
           clean: false
           force: true
