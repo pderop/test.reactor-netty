@@ -9,7 +9,7 @@ antora:
       root_component_name: 'reactor-netty'
 site:
   title: Component1
-  url: https://pderop.github.io/test.reactor-netty/reactor-netty/reference/
+  url: https://pderop.github.io/test.reactor-netty/docs/reactor-netty/reference/
   #start_page: component1::inline-text-formatting.adoc
   #robots: allow
 content:
