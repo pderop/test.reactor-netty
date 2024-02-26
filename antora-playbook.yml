@@ -1,7 +1,7 @@
 antora:
   extensions:
     - '@springio/antora-extensions/partial-build-extension'
-    #- require: '@springio/antora-extensions/latest-version-extension'
+    - require: '@springio/antora-extensions/latest-version-extension'
     - require: '@springio/antora-extensions/inject-collector-cache-config-extension'
     - '@antora/collector-extension'
     - '@antora/atlas-extension'
@@ -9,7 +9,7 @@ antora:
       root_component_name: 'reactor-netty'
 site:
   title: Component1
-  url: https://pderop.github.io/test.reactor-netty/docs/reactor-netty/reference/
+  url: https://pderop.github.io/test.reactor-netty/docs/1.1.x/reference/
   #start_page: component1::inline-text-formatting.adoc
   #robots: allow
 content:
