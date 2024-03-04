@@ -8,10 +8,8 @@ antora:
     - require: '@springio/antora-extensions/root-component-extension'
       root_component_name: 'reactor-netty'
 site:
-  title: Component1
+  title: Reactor Netty
   url: https://pderop.github.io/test.reactor-netty/docs/reference/
-  #start_page: component1::inline-text-formatting.adoc
-  #robots: allow
 content:
   sources:
     - url: https://github.com/pderop/test.reactor-netty
