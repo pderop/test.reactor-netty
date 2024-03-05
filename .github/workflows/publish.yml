@@ -104,7 +104,6 @@ jobs:
       - name: Build Reactor Netty docs
         run: |-
             ./gradlew reactor-netty:build
-            jar tvf reactor-netty/build/distributions/reactor-netty-1.1.18-SNAPSHOT-docs.zip
       - name: Prepare javadoc for publish
         run: |-
             echo ${{ github.workspace }}
