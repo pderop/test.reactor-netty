@@ -97,7 +97,6 @@ jobs:
       - name: Build Antora docs
         run: |-
             ./gradlew docs:antora
-            find docs/build/site -name "*.pdf"
       - uses: actions/setup-java@387ac29b308b003ca37ba93a6cab5eb57c8f5f93
         with:
             distribution: 'temurin'
@@ -106,13 +105,22 @@ jobs:
         run: |-
             ./gradlew reactor-netty:build
             jar tvf reactor-netty/build/distributions/reactor-netty-1.1.18-SNAPSHOT-docs.zip
-      - name: Upload docs
-        uses: actions/upload-artifact@v4
+      - name: Prepare javadoc for publish
+        run: |-
+            cd ${{ process.env['RUNNER_TEMP'] }}
+            mkdir -p javadoc-${{ steps.version.outputs.fullVersion }}
+            cd javadoc-${{ steps.version.outputs.fullVersion }}
+            jar xf ${{ github.workspace }}/reactor-netty/build/distributions/reactor-netty-${{ steps.version.outputs.fullVersion }}-docs.zip
+            rm -f `find . -name "*.pdf"`
+      - name: Publish javadoc to gh-pages
+        uses: JamesIves/github-pages-deploy-action@v4
         with:
-            name: docs
-            path: reactor-netty/build/distributions/reactor-netty-1.1.18-SNAPSHOT-docs.zip
-            retention-days: 1
-            if-no-files-found: error
+            token: ${{ secrets.DOCS_PAGES_TOKEN }}
+            repository-name: pderop/test-antora-pages
+            target-folder: docs/netty/${{ steps.version.outputs.fullVersion }}/javadoc-api
+            folder: ${{ process.env['RUNNER_TEMP'] }}/javadoc-${{ steps.version.outputs.fullVersion }}
+            clean: false
+            force: true
       - name: deploy
 #        env:
 #            ORG_GRADLE_PROJECT_artifactory_publish_username: ${{secrets.ARTIFACTORY_SNAPSHOT_USERNAME}}
