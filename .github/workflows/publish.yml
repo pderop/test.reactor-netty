@@ -107,7 +107,7 @@ jobs:
             jar tvf reactor-netty/build/distributions/reactor-netty-1.1.18-SNAPSHOT-docs.zip
       - name: Prepare javadoc for publish
         run: |-
-            cd ${{ process.env['RUNNER_TEMP'] }}
+            cd ${{ env.RUNNER_TEMP }}
             mkdir -p javadoc-${{ steps.version.outputs.fullVersion }}
             cd javadoc-${{ steps.version.outputs.fullVersion }}
             jar xf ${{ github.workspace }}/reactor-netty/build/distributions/reactor-netty-${{ steps.version.outputs.fullVersion }}-docs.zip
@@ -118,7 +118,7 @@ jobs:
             token: ${{ secrets.DOCS_PAGES_TOKEN }}
             repository-name: pderop/test-antora-pages
             target-folder: docs/netty/${{ steps.version.outputs.fullVersion }}/javadoc-api
-            folder: ${{ process.env['RUNNER_TEMP'] }}/javadoc-${{ steps.version.outputs.fullVersion }}
+            folder: ${{ env.RUNNER_TEMP }}/javadoc-${{ steps.version.outputs.fullVersion }}
             clean: false
             force: true
       - name: deploy
