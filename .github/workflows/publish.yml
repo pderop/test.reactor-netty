@@ -107,6 +107,8 @@ jobs:
             jar tvf reactor-netty/build/distributions/reactor-netty-1.1.18-SNAPSHOT-docs.zip
       - name: Prepare javadoc for publish
         run: |-
+            echo ${{ github.workspace }}
+            find reactor-netty
             cd ${{ env.RUNNER_TEMP }}
             mkdir -p javadoc-${{ steps.version.outputs.fullVersion }}
             cd javadoc-${{ steps.version.outputs.fullVersion }}
