@@ -110,7 +110,7 @@ jobs:
             find reactor-netty
             cd ${{ env.RUNNER_TEMP }}
             mkdir -p javadoc-${{ needs.reactor-netty-core.outputs.fullVersion }}
-            cd javadoc-${{ steps.version.outputs.fullVersion }}
+            cd javadoc-${{ needs.reactor-netty-core.outputs.fullVersion }}
             jar xf ${{ github.workspace }}/reactor-netty/build/distributions/reactor-netty-${{ needs.reactor-netty-core.outputs.fullVersion }}-docs.zip
             rm -f `find . -name "*.pdf"`
       - name: Publish javadoc to gh-pages
