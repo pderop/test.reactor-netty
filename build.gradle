@@ -139,9 +139,9 @@ ext {
 					// With Reactive Streams 1.0.4 version there is
 					// javadoc: warning - Error fetching URL: https://www.reactive-streams.org/reactive-streams-1.0.4-javadoc/
 					"https://www.reactive-streams.org/reactive-streams-1.0.3-javadoc/",
-					"https://projectreactor.io/docs/core/release/api/",
+					"https://pderop.github.io/test.reactor-netty/docs/core/release/api/",
 					"https://netty.io/4.1/api/",
-					"https://pderop.github.io/test.reactor-netty/docs/release/api/",] as String[]
+					"https://pderop.github.io/test.reactor-netty/docs/netty/release/api/",] as String[]
 }
 
 nohttp {
