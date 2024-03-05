@@ -109,17 +109,17 @@ jobs:
             echo ${{ github.workspace }}
             find reactor-netty
             cd ${{ env.RUNNER_TEMP }}
-            mkdir -p javadoc-${{ steps.version.outputs.fullVersion }}
+            mkdir -p javadoc-${{ needs.reactor-netty-core.outputs.fullVersion }}
             cd javadoc-${{ steps.version.outputs.fullVersion }}
-            jar xf ${{ github.workspace }}/reactor-netty/build/distributions/reactor-netty-${{ steps.version.outputs.fullVersion }}-docs.zip
+            jar xf ${{ github.workspace }}/reactor-netty/build/distributions/reactor-netty-${{ needs.reactor-netty-core.outputs.fullVersion }}-docs.zip
             rm -f `find . -name "*.pdf"`
       - name: Publish javadoc to gh-pages
         uses: JamesIves/github-pages-deploy-action@v4
         with:
             token: ${{ secrets.DOCS_PAGES_TOKEN }}
             repository-name: pderop/test-antora-pages
-            target-folder: docs/netty/${{ steps.version.outputs.fullVersion }}/javadoc-api
-            folder: ${{ env.RUNNER_TEMP }}/javadoc-${{ steps.version.outputs.fullVersion }}
+            target-folder: docs/netty/${{ needs.reactor-netty-core.outputs.fullVersion }}/javadoc-api
+            folder: ${{ env.RUNNER_TEMP }}/javadoc-${{ needs.reactor-netty-core.outputs.fullVersion }}
             clean: false
             force: true
       - name: deploy
