@@ -118,6 +118,7 @@ jobs:
                 cp -r docs/build/site/* gh-pages-docs/netty/reference/
                 echo "XX GH PAGES:"
                 find gh-pages-docs
+                ls -la gh-pages-docs/netty/
           - name: Publish javadoc to gh-pages
             uses: JamesIves/github-pages-deploy-action@v4
             with:
