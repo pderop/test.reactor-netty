@@ -124,7 +124,7 @@ jobs:
             with:
                 token: ${{ secrets.DOCS_PAGES_TOKEN }}
                 repository-name: pderop/test-antora-pages
-                folder: docs-tmp
+                folder: gh-pages-docs
                 target-folder: docs
                 clean: false
                 force: true
