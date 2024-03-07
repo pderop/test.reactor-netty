@@ -108,9 +108,7 @@ jobs:
                 mkdir -p gh-pages-docs/netty/$FULL_VERSION/reference/html
                 mkdir -p gh-pages-docs/netty/$FULL_VERSION/reference/pdf
                 cp -r ${{ github.workspace }}/reactor-netty/build/docs/javadoc/* gh-pages-docs/netty/$FULL_VERSION/javadoc-api/
-                echo "XX"
-                find ${{ github.workspace }}/docs/buid/site
-                cp -r ${{ github.workspace }}/docs/buid/site/* gh-pages-docs/netty/$FULL_VERSION/reference/html/
+                cp -r ${{ github.workspace }}/docs/build/site/* gh-pages-docs/netty/$FULL_VERSION/reference/html/
                 cp ${{ github.workspace }}/docs/build/assembler/reactor-netty/*/reactor-netty-reference-guide.pdf gh-pages-docs/netty/$FULL_VERSION/reference/pdf/
                 cd gh-pages-docs/netty
                 if [ "$VERSION_TYPE" == "SNAPSHOT" ]; then
