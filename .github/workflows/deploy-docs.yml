@@ -6,8 +6,8 @@ on:
       build-refname:
         description: Enter git refname to build (e.g., main, netty5). Leave empty for a full build.
         required: false
-  push:
-    branches: docs-build
+#  push:
+#    branches: docs-build
 permissions:
   contents: write
   actions: write
