@@ -16,7 +16,7 @@
 
 antora {
 	version = '3.2.0-alpha.4'
-	playbook = "antora-playbook.yml"
+	playbook = findProperty('antora.playbook') ?: "antora-playbook.yml"
 	options = ['--clean', '--stacktrace']
 	environment = [
 			'ALGOLIA_API_KEY'   : 'da671ceec1f84f80f280884a6a91bde5',

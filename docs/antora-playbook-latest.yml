@@ -5,7 +5,6 @@ antora:
     - require: '@springio/antora-extensions/inject-collector-cache-config-extension'
     - '@antora/collector-extension'
     - '@antora/atlas-extension'
-    - '@antora/pdf-extension'
     - require: '@springio/antora-extensions/root-component-extension'
       root_component_name: 'reactor-netty'
 site:
@@ -13,10 +12,14 @@ site:
   url: https://pderop.github.io/test-antora-pages/docs/netty/reference/
 content:
   sources:
-    - url: ./..
-      branches: HEAD
+    - url: https://github.com/pderop/test.reactor-netty
+      branches:
+        - 'main'
+      tags:
+        - 'v1.1.*'
+        - '!v1.1.{0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16}' # Exclude v1.1.[0-16]
+        - '!v1.1.0(-{RC,M}*)' # Exclude v1.1.0-M1 and v1.1.0-RC*
       start_path: docs
-      worktrees: true
 asciidoc:
   attributes:
     page-stackoverflow-url: https://stackoverflow.com/tags/reactor-netty
@@ -24,22 +27,15 @@ asciidoc:
     hide-uri-scheme: '@'
     tabs-sync-option: '@'
     chomp: 'all'
-    doctype: book
-    icons: font
     toc2: true
-    sectnums: true
-    sectanchors: true
-    stylesdir: assets/stylesheets/
-    stylesheet: reactor.css
-    'source-highlighter': highlightjs
-    'highlightjsdir': assets/highlight/
-    'highlightjs-theme': railscasts
   extensions:
     - '@asciidoctor/tabs'
     - '@springio/asciidoctor-extensions'
   sourcemap: true
 urls:
+  latest_version_segment_strategy: redirect:to
   latest_version_segment: ''
+  redirect_facility: httpd
 runtime:
   log:
     failure_level: warn

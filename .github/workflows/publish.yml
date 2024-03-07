@@ -1,9 +1,9 @@
 name: publish
-#on:
-#  push:
-#    branches: # For branches, better to list them explicitly than regexp include
-#      - main
-#      - netty5
+on:
+  push:
+    branches: # For branches, better to list them explicitly than regexp include
+      - main
+      - netty5
 permissions: read-all
 jobs:
   # General job notes: we DON'T want to cancel any previous runs, especially in the case of a "back to snapshots" build right after a release push
@@ -74,51 +74,72 @@ jobs:
         id: reactor-netty-incubator-quic-checks
         run: echo "./gradlew reactor-netty-incubator-quic:check"
 
+  #deploy the antora doc to gh-pages
+  deployAntora:
+      name: deployAntora
+      runs-on: ubuntu-20.04
+      needs: [ reactor-netty-core ]
+      #environment: snapshots
+      env:
+          VERSION_TYPE: ${{ needs.reactor-netty-core.outputs.versionType }}
+          FULL_VERSION: ${{ needs.reactor-netty-core.outputs.fullVersion }}
+      steps:
+          - uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11
+          - name: Set up Ruby
+            uses: ruby/setup-ruby@v1
+            with:
+                ruby-version: 2.7.8
+          - name: Install asciidoctor-pdf
+            run: gem install asciidoctor-pdf
+          - uses: actions/setup-java@387ac29b308b003ca37ba93a6cab5eb57c8f5f93
+            with:
+                distribution: 'temurin'
+                java-version: '8'
+          - name: Build Reactor Netty javadoc
+            run: ./gradlew javadoc
+          - uses: actions/setup-java@387ac29b308b003ca37ba93a6cab5eb57c8f5f93
+            with:
+                distribution: 'temurin'
+                java-version: '17'
+          - name: Prepare gh-pages
+            run: |-
+                ./gradlew docs:antora -Pantora.playbook=antora-playbook.yml
+                mkdir -p gh-pages-docs/netty/$FULL_VERSION/javadoc-api
+                mkdir -p gh-pages-docs/netty/$FULL_VERSION/reference/html
+                mkdir -p gh-pages-docs/netty/$FULL_VERSION/reference/pdf
+                cp -r ${{ github.workspace }}/reactor-netty/build/docs/javadoc/* gh-pages-docs/netty/$FULL_VERSION/javadoc-api/
+                cp -r ${{ github.workspace }}/docs/buid/site/* gh-pages-docs/netty/$FULL_VERSION/reference/html/
+                cp ${{ github.workspace }}/docs/build/assembler/reactor-netty/*/reactor-netty-reference-guide.pdf gh-pages-docs/netty/$FULL_VERSION/reference/pdf/
+                cd gh-pages-docs/netty
+                if [ "$VERSION_TYPE" == "SNAPSHOT" ]; then
+                    ln -sf ../$FULL_VERSION current-SNAPSHOT
+                else
+                    ln -sf ../$FULL_VERSION current
+                fi
+                cd ${{ github.workspace }}
+                ./gradlew docs:clean docs:antora -Pantora.playbook=antora-playbook-latest.yml
+                mkdir -p gh-pages-docs/netty/reference/
+                cp -r docs/build/site/* gh-pages-docs/netty/reference/
+                echo "XX GH PAGES:"
+                find gh-pages-docs
+          - name: Publish javadoc to gh-pages
+            uses: JamesIves/github-pages-deploy-action@v4
+            with:
+                token: ${{ secrets.DOCS_PAGES_TOKEN }}
+                repository-name: pderop/test-antora-pages
+                folder: docs-tmp
+                target-folder: docs
+                clean: false
+                force: true
+
   #deploy the snapshot artifacts to Artifactory
   deploySnapshot:
     name: deploySnapshot
     runs-on: ubuntu-20.04
-    needs: [ reactor-netty-core, reactor-netty-http, reactor-netty-http-brave, reactor-netty-incubator-quic ]
+    needs: [ reactor-netty-core, reactor-netty-http, reactor-netty-http-brave, reactor-netty-incubator-quic, deployAntora ]
     if: needs.reactor-netty-core.outputs.versionType == 'SNAPSHOT'
     environment: snapshots
     steps:
-      - uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11
-      - name: Set up Ruby
-        uses: ruby/setup-ruby@v1
-        with:
-            ruby-version: 2.7.8
-      - name: Install asciidoctor-pdf
-        run: |
-            gem install asciidoctor-pdf
-      - uses: actions/setup-java@387ac29b308b003ca37ba93a6cab5eb57c8f5f93
-        with:
-          distribution: 'temurin'
-          java-version: '17'
-      - name: Build Antora docs
-        run: |-
-            ./gradlew docs:antora
-      - uses: actions/setup-java@387ac29b308b003ca37ba93a6cab5eb57c8f5f93
-        with:
-            distribution: 'temurin'
-            java-version: '8'
-      - name: Build Reactor Netty docs
-        run: |-
-            ./gradlew reactor-netty:build
-      - name: Prepare javadoc for publish
-        run: |-
-            mkdir -p tmp/javadoc-${{ needs.reactor-netty-core.outputs.fullVersion }}
-            cd tmp/javadoc-${{ needs.reactor-netty-core.outputs.fullVersion }}
-            jar xf ${{ github.workspace }}/reactor-netty/build/distributions/reactor-netty-${{ needs.reactor-netty-core.outputs.fullVersion }}-docs.zip
-            rm -f `find . -name "*.pdf"`
-      - name: Publish javadoc to gh-pages
-        uses: JamesIves/github-pages-deploy-action@v4
-        with:
-            token: ${{ secrets.DOCS_PAGES_TOKEN }}
-            repository-name: pderop/test-antora-pages
-            target-folder: docs/netty/${{ needs.reactor-netty-core.outputs.fullVersion }}/javadoc-api
-            folder: tmp/javadoc-${{ needs.reactor-netty-core.outputs.fullVersion }}
-            clean: false
-            force: true
       - name: deploy
 #        env:
 #            ORG_GRADLE_PROJECT_artifactory_publish_username: ${{secrets.ARTIFACTORY_SNAPSHOT_USERNAME}}
@@ -130,7 +151,7 @@ jobs:
   deployMilestone:
     name: deployMilestone
     runs-on: ubuntu-20.04
-    needs: [ reactor-netty-core, reactor-netty-http, reactor-netty-http-brave, reactor-netty-incubator-quic ]
+    needs: [ reactor-netty-core, reactor-netty-http, reactor-netty-http-brave, reactor-netty-incubator-quic, deployAntora ]
     if: needs.reactor-netty-core.outputs.versionType == 'MILESTONE'
     environment: releases
     steps:
@@ -151,7 +172,7 @@ jobs:
   deployRelease:
     name: deployRelease
     runs-on: ubuntu-20.04
-    needs: [ reactor-netty-core, reactor-netty-http, reactor-netty-http-brave, reactor-netty-incubator-quic ]
+    needs: [ reactor-netty-core, reactor-netty-http, reactor-netty-http-brave, reactor-netty-incubator-quic, deployAntora ]
     if: needs.reactor-netty-core.outputs.versionType == 'RELEASE'
     environment: releases
     steps:
