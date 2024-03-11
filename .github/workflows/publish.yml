@@ -106,9 +106,10 @@ jobs:
                 ./gradlew docs:antora -Pantora.playbook=antora-playbook.yml
                 mkdir -p gh-pages-docs/netty/$FULL_VERSION/javadoc-api
                 mkdir -p gh-pages-docs/netty/$FULL_VERSION/reference/html
+                > gh-pages-docs/.nojekyll
                 cp -r ${{ github.workspace }}/reactor-netty/build/docs/javadoc/* gh-pages-docs/netty/$FULL_VERSION/javadoc-api/
                 cp -r ${{ github.workspace }}/docs/build/site/* gh-pages-docs/netty/$FULL_VERSION/reference
-                [ "$VERSION_TYPE" == "SNAPSHOT" ] && mv ${{ github.workspace }}/docs/build/assembler/reactor-netty/*/reactor-netty-reference-guide.pdf gh-pages-docs/netty/$FULL_VERSION/reference/
+                [ "$VERSION_TYPE" == "SNAPSHOT" ] && rm -f gh-pages-docs/netty/$FULL_VERSION/reference/reactor-netty-reference-guide.pdf
                 cd gh-pages-docs/netty
                 [ "$VERSION_TYPE" == "SNAPSHOT" ] && ln -sf $FULL_VERSION current-SNAPSHOT || ln -sf $FULL_VERSION current
                 cd ${{ github.workspace }}
@@ -124,8 +125,16 @@ jobs:
                 target-folder: docs
                 clean: false
                 force: true
+          - name: Upload docs
+            uses: actions/upload-artifact@v4
+            with:
+                name: reference-doc
+                path: gh-pages-docs/netty/$FULL_VERSION/reference
+                retention-days: 1
+                if-no-files-found: error
 
-  #deploy the snapshot artifacts to Artifactory
+
+    #deploy the snapshot artifacts to Artifactory
   deploySnapshot:
     name: deploySnapshot
     runs-on: ubuntu-20.04
@@ -139,6 +148,16 @@ jobs:
 #            ORG_GRADLE_PROJECT_artifactory_publish_password: ${{secrets.ARTIFACTORY_PASSWORD}}
         run: |-
             echo "deploy snapshot artifacts to Artifactory ..."
+      - name: download docs
+        uses: actions/download-artifact@v4
+        with:
+            name: reference-doc
+            path: docs/build/site
+      - name: debug
+        run: |-
+            echo "Downloaded docs:"
+            find docs/build/site
+            echo "Publishing ..."
 
   #sign the milestone artifacts and deploy them to Artifactory
   deployMilestone:

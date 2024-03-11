@@ -1,6 +1,6 @@
 root_level: 0
 build:
-    publish: false
+    publish: true
 asciidoc:
     build:
         command: bundle exec asciidoctor-pdf -n -d book

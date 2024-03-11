@@ -51,6 +51,7 @@ task docsZip(type: Zip) {
 	duplicatesStrategy "fail"
 
 	def docsDir = file('../docs/build/site')
+	def isSnapshot = project.version.endsWith('-SNAPSHOT')
 
 	doFirst {
 		if (!docsDir.exists() || !Files.list(docsDir.toPath()).findFirst().isPresent()) {
@@ -61,21 +62,9 @@ task docsZip(type: Zip) {
 
 	from ('../docs/build/site') {
 		into 'docs'
-		exclude '**/reactor-netty-reference-guide.pdf'
-	}
-	// Configuration for moving the PDF to the root directory
-	def pdfFile = fileTree(docsDir).matching {
-		include "**/reactor-netty-reference-guide.pdf"
-	}.files.stream().findFirst().orElse(null)
-
-	if (pdfFile) {
-		into('docs') {
-			from(pdfFile) {
-				rename { "reactor-netty-reference-guide-${project.version}.pdf" }
-			}
+		if (isSnapshot) {
+			exclude '**/*.pdf'
 		}
-	} else {
-		logger.lifecycle("PDF not found from ../docs/site/.")
 	}
 }
 
