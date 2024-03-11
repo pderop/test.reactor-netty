@@ -129,7 +129,7 @@ jobs:
             uses: actions/upload-artifact@v4
             with:
                 name: reference-doc
-                path: gh-pages-docs/netty/$FULL_VERSION/reference
+                path: gh-pages-docs/netty/${{ env.FULL_VERSION }}/reference
                 retention-days: 1
                 if-no-files-found: error
 
