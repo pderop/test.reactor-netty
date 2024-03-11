@@ -3,6 +3,7 @@
 :javadoc: https://projectreactor.io/docs/netty/{project-version}/api
 :nettyjavadoc: https://netty.io/4.1/api
 :wirelogger: reactor.netty.tcp.TcpServer
+:stylesheet: stylesheets/reactor.css
 
 [[tcp-server]]
 = TCP Server
@@ -23,6 +24,7 @@ configure a `TcpServer` instance:
 
 [source,java,indent=1]
 .{examples-dir}/create/Application.java
+[%unbreakable]
 ----
 include::{examples-dir}/create/Application.java[lines=18..31]
 ----
@@ -39,8 +41,9 @@ which shuts the server down in a blocking fashion.
 
 To serve on a specific `host` and `port`, you can apply the following configuration to the `TCP` server:
 
-[source,java,indent=1]
+[source,java,indent=1, class="no-page-break"]
 .{examples-dir}/address/Application.java
+[%unbreakable]
 ----
 include::{examples-dir}/address/Application.java[lines=18..33]
 ----
@@ -52,6 +55,7 @@ All created servers will share resources such as `LoopResources` because they us
 
 [source,java,indent=1]
 .{examples-dir}/address/MultiAddressApplication.java
+[%unbreakable]
 ----
 include::{examples-dir}/address/MultiAddressApplication.java[lines=18..41]
 ----
@@ -74,6 +78,7 @@ When you need to preload these resources, you can configure the `TcpServer` as f
 
 [source,java,indent=1]
 .{examples-dir}/warmup/Application.java
+[%unbreakable]
 ----
 include::{examples-dir}/warmup/Application.java[lines=18..36]
 ----
@@ -88,6 +93,7 @@ to be able to write data. The following example shows how to attach an I/O handl
 
 [source,java,indent=1]
 .{examples-dir}/send/Application.java
+[%unbreakable]
 ----
 include::{examples-dir}/send/Application.java[lines=18..33]
 ----
@@ -102,6 +108,7 @@ to be able to read data. The following example shows how to use it:
 
 [source,java,indent=1]
 .{examples-dir}/read/Application.java
+[%unbreakable]
 ----
 include::{examples-dir}/read/Application.java[lines=18..32]
 ----
@@ -126,6 +133,7 @@ The following example uses the `doOnConnection` and `doOnChannelInit` callbacks:
 
 [source,java,indent=1]
 .{examples-dir}/lifecycle/Application.java
+[%unbreakable]
 ----
 include::{examples-dir}/lifecycle/Application.java[lines=18..39]
 ----
@@ -148,6 +156,7 @@ By default, the `TCP` server is configured with the following options:
 
 [source,java,indent=1]
 .{sourcedir}/reactor/netty/tcp/TcpServerBind.java
+[%unbreakable]
 ----
 include::{sourcedir}/reactor/netty/tcp/TcpServerBind.java[lines=40..48]
 ----
@@ -156,6 +165,7 @@ If additional options are necessary or changes to the current options are needed
 
 [source,java,indent=1]
 .{examples-dir}/channeloptions/Application.java
+[%unbreakable]
 ----
 include::{examples-dir}/channeloptions/Application.java[lines=18..33]
 ----
@@ -189,6 +199,7 @@ The following example uses `SslContextBuilder`:
 
 [source,java,indent=1]
 .{examples-dir}/security/Application.java
+[%unbreakable]
 ----
 include::{examples-dir}/security/Application.java[lines=18..40]
 ----
@@ -202,6 +213,7 @@ The following example uses a domain name containing a wildcard:
 
 [source,java,indent=1]
 .{examples-dir}/sni/Application.java
+[%unbreakable]
 ----
 include::{examples-dir}/sni/Application.java[lines=18..47]
 ----
@@ -237,6 +249,7 @@ The following example enables that integration:
 
 [source,java,indent=1]
 .{examples-dir}/metrics/Application.java
+[%unbreakable]
 ----
 include::{examples-dir}/metrics/Application.java[lines=18..32]
 ----
@@ -247,6 +260,7 @@ to provide your own integration with `Micrometer`, you can provide your own metr
 
 [source,java,indent=1]
 .{examples-dir}/metrics/custom/Application.java
+[%unbreakable]
 ----
 include::{examples-dir}/metrics/custom/Application.java[lines=18..35]
 ----
@@ -270,6 +284,7 @@ See the https://micrometer.io/docs/tracing#_micrometer_tracing_opentelemetry_set
 
 [source,java,indent=1]
 .{examples-dir}/tracing/Application.java
+[%unbreakable]
 ----
 include::{examples-dir}/tracing/Application.java[lines=18..81]
 ----
@@ -289,6 +304,7 @@ The following example shows how to use this library in a custom `ChannelHandler`
 
 [source,java,indent=1]
 .{examples-dir}/tracing/custom/Application.java
+[%unbreakable]
 ----
 include::{examples-dir}/tracing/custom/Application.java[lines=18..86]
 ----
@@ -312,6 +328,7 @@ The following example shows how to use UDS support:
 
 [source,java,indent=1]
 .{examples-dir}/uds/Application.java
+[%unbreakable]
 ----
 include::{examples-dir}/uds/Application.java[lines=18..33]
 ----

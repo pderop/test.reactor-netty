@@ -22,6 +22,7 @@ The following example shows how to create a `TcpClient`:
 
 [source,java,indent=0]
 .{examples-dir}/create/Application.java
+[%unbreakable]
 ----
 include::{examples-dir}/create/Application.java[lines=18..31]
 ----
@@ -41,6 +42,7 @@ The following example shows how to do so:
 
 [source,java,indent=0]
 .{examples-dir}/address/Application.java
+[%unbreakable]
 ----
 include::{examples-dir}/address/Application.java[lines=18..33]
 ----
@@ -62,6 +64,7 @@ When you need to preload these resources, you can configure the `TcpClient` as f
 
 [source,java,indent=0]
 .{examples-dir}/warmup/Application.java
+[%unbreakable]
 ----
 include::{examples-dir}/warmup/Application.java[lines=18..39]
 ----
@@ -78,6 +81,7 @@ to be able to write data.
 
 [source,java,indent=0]
 .{examples-dir}/send/Application.java
+[%unbreakable]
 ----
 include::{examples-dir}/send/Application.java[lines=18..35]
 ----
@@ -91,6 +95,7 @@ when using {javadoc}/reactor/netty/Connection.html#outbound--[`Connection#outbou
 
 [source,java,indent=0]
 .{examples-dir}/send/connection/Application.java
+[%unbreakable]
 ----
 include::{examples-dir}/send/connection/Application.java[lines=18..44]
 ----
@@ -107,6 +112,7 @@ to be able to read data. The following example shows how to do so:
 
 [source,java,indent=0]
 .{examples-dir}/read/Application.java
+[%unbreakable]
 ----
 include::{examples-dir}/read/Application.java[lines=18..34]
 ----
@@ -120,6 +126,7 @@ when using {javadoc}/reactor/netty/Connection.html#inbound--[`Connection#inbound
 
 [source,java,indent=0]
 .{examples-dir}/read/connection/Application.java
+[%unbreakable]
 ----
 include::{examples-dir}/read/connection/Application.java[lines=18..38]
 ----
@@ -146,6 +153,7 @@ The following example uses the `doOnConnected` and `doOnChannelInit` callbacks:
 
 [source,java,indent=0]
 .{examples-dir}/lifecycle/Application.java
+[%unbreakable]
 ----
 include::{examples-dir}/lifecycle/Application.java[lines=18..41]
 ----
@@ -176,6 +184,7 @@ If additional options are necessary or changes to the current options are needed
 
 [source,java,indent=0]
 .{examples-dir}/channeloptions/Application.java
+[%unbreakable]
 ----
 include::{examples-dir}/channeloptions/Application.java[lines=18..35]
 ----
@@ -211,6 +220,7 @@ The following example uses `SslContextBuilder`:
 
 [source,java,indent=0]
 .{examples-dir}/security/Application.java
+[%unbreakable]
 ----
 include::{examples-dir}/security/Application.java[lines=18..37]
 ----
@@ -222,6 +232,7 @@ When you need to change this default setting, you can configure the `TCP` client
 
 [source,java,indent=0]
 .{examples-dir}/sni/Application.java
+[%unbreakable]
 ----
 include::{examples-dir}/sni/Application.java[lines=18..41]
 ----
@@ -263,6 +274,7 @@ The following example enables that integration:
 
 [source,java,indent=0]
 .{examples-dir}/metrics/Application.java
+[%unbreakable]
 ----
 include::{examples-dir}/metrics/Application.java[lines=18..34]
 ----
@@ -273,6 +285,7 @@ to provide your own integration with `Micrometer`, you can provide your own metr
 
 [source,java,indent=0]
 .{examples-dir}/metrics/custom/Application.java
+[%unbreakable]
 ----
 include::{examples-dir}/metrics/custom/Application.java[lines=18..37]
 ----
@@ -300,6 +313,7 @@ See the https://micrometer.io/docs/tracing#_micrometer_tracing_opentelemetry_set
 
 [source,java,indent=0]
 .{examples-dir}/tracing/Application.java
+[%unbreakable]
 ----
 include::{examples-dir}/tracing/Application.java[lines=18..81]
 ----
@@ -319,6 +333,7 @@ The following example shows how to use this library in a custom `ChannelHandler`
 
 [source,java,indent=0]
 .{examples-dir}/tracing/custom/Application.java
+[%unbreakable]
 ----
 include::{examples-dir}/tracing/custom/Application.java[lines=18..80]
 ----
@@ -342,6 +357,7 @@ The following example shows how to use UDS support:
 
 [source,java,indent=0]
 .{examples-dir}/uds/Application.java
+[%unbreakable]
 ----
 include::{examples-dir}/uds/Application.java[lines=18..33]
 ----
@@ -356,6 +372,7 @@ When you need to change the default settings, you can configure the `TcpClient` 
 
 [source,java,indent=0]
 .{examples-dir}/resolver/Application.java
+[%unbreakable]
 ----
 include::{examples-dir}/resolver/Application.java[lines=18..36]
 ----
@@ -415,6 +432,7 @@ Sometimes, you may want to switch to the JVM built-in resolver. To do so, you ca
 
 [source,java,indent=0]
 .{examples-dir}/resolver/custom/Application.java
+[%unbreakable]
 ----
 include::{examples-dir}/resolver/custom/Application.java[lines=18..37]
 ----

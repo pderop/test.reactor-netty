@@ -23,6 +23,7 @@ The following example shows how to create an `HttpServer` instance:
 
 [source,java,indent=0]
 .{examples-dir}/create/Application.java
+[%unbreakable]
 ----
 include::{examples-dir}/create/Application.java[lines=18..31]
 ----
@@ -41,6 +42,7 @@ To serve on a specific `host` and `port`, you can apply the following configurat
 
 [source,java,indent=0]
 .{examples-dir}/address/Application.java
+[%unbreakable]
 ----
 include::{examples-dir}/address/Application.java[lines=18..33]
 ----
@@ -52,6 +54,7 @@ All created servers will share resources such as `LoopResources` because they us
 
 [source,java,indent=0]
 .{examples-dir}/address/MultiAddressApplication.java
+[%unbreakable]
 ----
 include::{examples-dir}/address/MultiAddressApplication.java[lines=18..41]
 ----
@@ -74,6 +77,7 @@ When you need to preload these resources, you can configure the `HttpServer` as 
 
 [source,java,indent=0]
 .{examples-dir}/warmup/Application.java
+[%unbreakable]
 ----
 include::{examples-dir}/warmup/Application.java[lines=18..36]
 ----
@@ -88,6 +92,7 @@ The following example shows how to do so:
 
 [source,java,indent=0]
 .{examples-dir}/routing/Application.java
+[%unbreakable]
 ----
 include::{examples-dir}/routing/Application.java[lines=18..41]
 ----
@@ -105,6 +110,7 @@ The following code shows how you can configure the `HTTP` server to serve `Serve
 
 [source,java,indent=0]
 .{examples-dir}/sse/Application.java
+[%unbreakable]
 ----
 include::{examples-dir}/sse/Application.java[lines=18..76]
 ----
@@ -116,6 +122,7 @@ The following code shows how you can configure the `HTTP` server to serve static
 
 [source,java,indent=0]
 .{examples-dir}/staticresources/Application.java
+[%unbreakable]
 ----
 include::{examples-dir}/staticresources/Application.java[lines=18..37]
 ----
@@ -131,6 +138,7 @@ to be able to write data. The following example uses the `handle(...)` method:
 
 [source,java,indent=0]
 .{examples-dir}/send/Application.java
+[%unbreakable]
 ----
 include::{examples-dir}/send/Application.java[lines=18..33]
 ----
@@ -147,6 +155,7 @@ The following example shows how to do so:
 
 [source,java,indent=0]
 .{examples-dir}/send/headers/Application.java
+[%unbreakable]
 ----
 include::{examples-dir}/send/headers/Application.java[lines=18..40]
 ----
@@ -168,6 +177,7 @@ The following example uses the `compress` method (set to `true`) to enable compr
 
 [source,java,indent=0]
 .{examples-dir}/compression/Application.java
+[%unbreakable]
 ----
 include::{examples-dir}/compression/Application.java[lines=18..38]
 ----
@@ -185,6 +195,7 @@ The following example uses the `handle(...)` method:
 
 [source,java,indent=0]
 .{examples-dir}/read/Application.java
+[%unbreakable]
 ----
 include::{examples-dir}/read/Application.java[lines=18..32]
 ----
@@ -200,6 +211,7 @@ The following example shows how to do so:
 
 [source,java,indent=0]
 .{examples-dir}/read/headers/Application.java
+[%unbreakable]
 ----
 include::{examples-dir}/read/headers/Application.java[lines=18..40]
 ----
@@ -213,6 +225,7 @@ When you receive data from the connected clients, you might want to access `POST
 
 [source,java,indent=0]
 .{examples-dir}/multipart/Application.java
+[%unbreakable]
 ----
 include::{examples-dir}/multipart/Application.java[lines=18..36]
 ----
@@ -222,6 +235,7 @@ When you need to change the default settings, you can configure the `HttpServer`
 
 [source,java,indent=0]
 .{examples-dir}/multipart/custom/Application.java
+[%unbreakable]
 ----
 include::{examples-dir}/multipart/custom/Application.java[lines=18..37]
 ----
@@ -261,6 +275,7 @@ The following example shows how to do so:
 
 [source,java,indent=0]
 .{examples-dir}/clientaddress/Application.java
+[%unbreakable]
 ----
 include::{examples-dir}/clientaddress/Application.java[lines=18..38]
 ----
@@ -273,6 +288,7 @@ The following example shows how to do so:
 
 [source,java,indent=0]
 .{examples-dir}/clientaddress/CustomForwardedHeaderHandlerApplication.java
+[%unbreakable]
 ----
 include::{examples-dir}/clientaddress/CustomForwardedHeaderHandlerApplication.java[lines=18..52]
 ----
@@ -295,11 +311,13 @@ By default, the `HTTP` server is configured with the following settings:
 
 [source,java,indent=0]
 .{sourcedir}/reactor/netty/http/HttpDecoderSpec.java
+[%unbreakable]
 ----
 include::{sourcedir}/reactor/netty/http/HttpDecoderSpec.java[lines=28..39]
 ----
 [source,java,indent=0]
 .{sourcedir}/reactor/netty/http/server/HttpRequestDecoderSpec.java
+[%unbreakable]
 ----
 include::{sourcedir}/reactor/netty/http/server/HttpRequestDecoderSpec.java[lines=41..46]
 ----
@@ -308,6 +326,7 @@ When you need to change these default settings, you can configure the `HTTP` ser
 
 [source,java,indent=0]
 .{examples-dir}/requestdecoder/Application.java
+[%unbreakable]
 ----
 include::{examples-dir}/requestdecoder/Application.java[lines=18..34]
 ----
@@ -335,6 +354,7 @@ The following example uses the `doOnConnection` and `doOnChannelInit` callbacks:
 
 [source,java,indent=0]
 .{examples-dir}/lifecycle/Application.java
+[%unbreakable]
 ----
 include::{examples-dir}/lifecycle/Application.java[lines=18..39]
 ----
@@ -349,6 +369,7 @@ to extend the default `TCP` server configuration:
 
 [source,java,indent=0]
 .{examples-dir}/channeloptions/Application.java
+[%unbreakable]
 ----
 include::{examples-dir}/channeloptions/Application.java[lines=18..33]
 ----

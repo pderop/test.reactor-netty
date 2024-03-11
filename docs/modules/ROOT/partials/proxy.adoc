@@ -17,6 +17,7 @@ The following example uses `ProxyProvider`:
 
 [source,java,indent=0]
 .{examples-dir}/proxy/Application.java
+[%unbreakable]
 ----
 include::{examples-dir}/proxy/Application.java[lines=18..42]
 ----

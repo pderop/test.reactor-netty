@@ -21,6 +21,7 @@ The following example shows how to do so:
 
 [source,java,indent=0]
 .{examples-dir}/connect/Application.java
+[%unbreakable]
 ----
 include::{examples-dir}/connect/Application.java[lines=18..30]
 ----
@@ -35,6 +36,7 @@ The following example uses `WebSocket`:
 
 [source,java,indent=0]
 .{examples-dir}/websocket/Application.java
+[%unbreakable]
 ----
 include::{examples-dir}/websocket/Application.java[lines=18..42]
 ----
@@ -46,6 +48,7 @@ In order to connect to a specific host and port, you can apply the following con
 
 [source,java,indent=0]
 .{examples-dir}/address/Application.java
+[%unbreakable]
 ----
 include::{examples-dir}/address/Application.java[lines=18..33]
 ----
@@ -67,6 +70,7 @@ When you need to preload these resources, you can configure the `HttpClient` as 
 
 [source,java,indent=0]
 .{examples-dir}/warmup/Application.java
+[%unbreakable]
 ----
 include::{examples-dir}/warmup/Application.java[lines=18..36]
 ----
@@ -87,6 +91,7 @@ if necessary. The following example sends `hello`:
 
 [source,java,indent=0]
 .{examples-dir}/send/Application.java
+[%unbreakable]
 ----
 include::{examples-dir}/send/Application.java[lines=18..33]
 ----
@@ -100,6 +105,7 @@ You can use the following configuration to do so:
 
 [source,java,indent=0]
 .{examples-dir}/send/headers/Application.java
+[%unbreakable]
 ----
 include::{examples-dir}/send/headers/Application.java[lines=18..36]
 ----
@@ -113,6 +119,7 @@ You can enable compression on the `HTTP` client, which means the request header
 
 [source,java,indent=0]
 .{examples-dir}/compression/Application.java
+[%unbreakable]
 ----
 include::{examples-dir}/compression/Application.java[lines=18..32]
 ----
@@ -133,6 +140,7 @@ The following example uses `followRedirect(true)`:
 
 [source,java,indent=0]
 .{examples-dir}/redirect/Application.java
+[%unbreakable]
 ----
 include::{examples-dir}/redirect/Application.java[lines=18..32]
 ----
@@ -146,6 +154,7 @@ The following example uses the `responseContent` method:
 
 [source,java,indent=0]
 .{examples-dir}/read/Application.java
+[%unbreakable]
 ----
 include::{examples-dir}/read/Application.java[lines=18..33]
 ----
@@ -163,6 +172,7 @@ The following example shows how to do so.
 
 [source,java,indent=0]
 .{examples-dir}/read/status/Application.java
+[%unbreakable]
 ----
 include::{examples-dir}/read/status/Application.java[lines=18..34]
 ----
@@ -183,11 +193,13 @@ By default, the `HTTP` client is configured with the following settings:
 
 [source,java,indent=0]
 .{sourcedir}/reactor/netty/http/HttpDecoderSpec.java
+[%unbreakable]
 ----
 include::{sourcedir}/reactor/netty/http/HttpDecoderSpec.java[lines=28..39]
 ----
 [source,java,indent=0]
 .{sourcedir}/reactor/netty/http/client/HttpResponseDecoderSpec.java
+[%unbreakable]
 ----
 include::{sourcedir}/reactor/netty/http/client/HttpResponseDecoderSpec.java[lines=44..52]
 ----
@@ -196,6 +208,7 @@ When you need to change these default settings, you can configure the `HTTP` cli
 
 [source,java,indent=0]
 .{examples-dir}/responsedecoder/Application.java
+[%unbreakable]
 ----
 include::{examples-dir}/responsedecoder/Application.java[lines=18..35]
 ----
@@ -233,6 +246,7 @@ The following example uses the `doOnConnected` and `doOnChannelInit` callbacks:
 
 [source,java,indent=0]
 .{examples-dir}/lifecycle/Application.java
+[%unbreakable]
 ----
 include::{examples-dir}/lifecycle/Application.java[lines=18..39]
 ----
@@ -247,6 +261,7 @@ to extend the default `TCP` client configuration (add an option, bind address et
 
 [source,java,indent=0]
 .{examples-dir}/channeloptions/Application.java
+[%unbreakable]
 ----
 include::{examples-dir}/channeloptions/Application.java[lines=18..54]
 ----
@@ -278,6 +293,7 @@ The following example uses `SslContextBuilder`:
 
 [source,java,indent=0]
 .{examples-dir}/security/Application.java
+[%unbreakable]
 ----
 include::{examples-dir}/security/Application.java[lines=18..35]
 ----
@@ -289,6 +305,7 @@ When you need to change this default setting, you can configure the `HTTP` clien
 
 [source,java,indent=0]
 .{examples-dir}/sni/Application.java
+[%unbreakable]
 ----
 include::{examples-dir}/sni/Application.java[lines=18..39]
 ----
@@ -310,6 +327,7 @@ The following listing presents a simple `H2` example:
 
 [source,java,indent=0]
 .{examples-dir}/http2/H2Application.java
+[%unbreakable]
 ----
 include::{examples-dir}/http2/H2Application.java[lines=18..42]
 ----
@@ -320,6 +338,7 @@ The following listing presents a simple `H2C` example:
 
 [source,java,indent=0]
 .{examples-dir}/http2/H2CApplication.java
+[%unbreakable]
 ----
 include::{examples-dir}/http2/H2CApplication.java[lines=18..41]
 ----
@@ -329,6 +348,7 @@ include::{examples-dir}/http2/H2CApplication.java[lines=18..41]
 
 [source,java,indent=0]
 .{sourcedir}/reactor/netty/http/HttpProtocol.java
+[%unbreakable]
 ----
 include::{sourcedir}/reactor/netty/http/HttpProtocol.java[lines=24..52]
 ----
@@ -388,6 +408,7 @@ The following example enables that integration:
 
 [source,java,indent=0]
 .{examples-dir}/metrics/Application.java
+[%unbreakable]
 ----
 include::{examples-dir}/metrics/Application.java[lines=18..51]
 ----
@@ -406,6 +427,7 @@ to provide your own integration with `Micrometer`, you can provide your own metr
 
 [source,java,indent=0]
 .{examples-dir}/metrics/custom/Application.java
+[%unbreakable]
 ----
 include::{examples-dir}/metrics/custom/Application.java[lines=18..35]
 ----

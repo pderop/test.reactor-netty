@@ -28,6 +28,13 @@ asciidoc:
     tabs-sync-option: '@'
     chomp: 'all'
     toc2: true
+    sectnums: true
+    sectanchors: true
+    stylesdir: stylesheets/
+    stylesheet: reactor.css
+    'source-highlighter': highlightjs
+    'highlightjsdir': assets/highlight/
+    'highlightjs-theme': railscasts
   extensions:
     - '@asciidoctor/tabs'
     - '@springio/asciidoctor-extensions'

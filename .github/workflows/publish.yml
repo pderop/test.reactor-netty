@@ -106,11 +106,9 @@ jobs:
                 ./gradlew docs:antora -Pantora.playbook=antora-playbook.yml
                 mkdir -p gh-pages-docs/netty/$FULL_VERSION/javadoc-api
                 mkdir -p gh-pages-docs/netty/$FULL_VERSION/reference/html
-                mkdir -p gh-pages-docs/netty/$FULL_VERSION/reference/pdf
                 cp -r ${{ github.workspace }}/reactor-netty/build/docs/javadoc/* gh-pages-docs/netty/$FULL_VERSION/javadoc-api/
-                cp -r ${{ github.workspace }}/docs/build/site/* gh-pages-docs/netty/$FULL_VERSION/reference/html/
-                mv ${{ github.workspace }}/docs/build/assembler/reactor-netty/*/reactor-netty-reference-guide.pdf gh-pages-docs/netty/$FULL_VERSION/reference/pdf/
-                rm -f $(find gh-pages-docs/netty/$FULL_VERSION/reference/html/ -name "*.pdf")
+                cp -r ${{ github.workspace }}/docs/build/site/* gh-pages-docs/netty/$FULL_VERSION/reference
+                [ "$VERSION_TYPE" == "SNAPSHOT" ] && mv ${{ github.workspace }}/docs/build/assembler/reactor-netty/*/reactor-netty-reference-guide.pdf gh-pages-docs/netty/$FULL_VERSION/reference/
                 cd gh-pages-docs/netty
                 [ "$VERSION_TYPE" == "SNAPSHOT" ] && ln -sf $FULL_VERSION current-SNAPSHOT || ln -sf $FULL_VERSION current
                 cd ${{ github.workspace }}

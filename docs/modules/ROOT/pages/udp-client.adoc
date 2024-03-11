@@ -22,6 +22,7 @@ The following example shows how to create and connect a UDP client:
 
 [source,java,indent=0]
 .{examples-dir}/create/Application.java
+[%unbreakable]
 ----
 include::{examples-dir}/create/Application.java[lines=18..32]
 ----
@@ -40,6 +41,7 @@ To connect to a specific `host` and `port`, you can apply the following configur
 
 [source,java,indent=0]
 .{examples-dir}/address/Application.java
+[%unbreakable]
 ----
 include::{examples-dir}/address/Application.java[lines=18..34]
 ----
@@ -60,6 +62,7 @@ When you need to preload these resources, you can configure the `UdpClient` as f
 
 [source,java,indent=0]
 .{examples-dir}/warmup/Application.java
+[%unbreakable]
 ----
 include::{examples-dir}/warmup/Application.java[lines=18..40]
 ----
@@ -77,6 +80,7 @@ The following example shows how to send `hello`:
 
 [source,java,indent=0]
 .{examples-dir}/send/Application.java
+[%unbreakable]
 ----
 include::{examples-dir}/send/Application.java[lines=18..37]
 ----
@@ -92,6 +96,7 @@ The following example shows how to consume data:
 
 [source,java,indent=0]
 .{examples-dir}/read/Application.java
+[%unbreakable]
 ----
 include::{examples-dir}/read/Application.java[lines=18..35]
 ----
@@ -118,6 +123,7 @@ The following example uses the `doOnConnected` and `doOnChannelInit` callbacks:
 
 [source,java,indent=0]
 .{examples-dir}/lifecycle/Application.java
+[%unbreakable]
 ----
 include::{examples-dir}/lifecycle/Application.java[lines=18..40]
 ----
@@ -140,6 +146,7 @@ By default, the `UDP` client is configured with the following options:
 
 [source,java,indent=0]
 .{sourcedir}/reactor/netty/udp/UdpClientConnect.java
+[%unbreakable]
 ----
 include::{sourcedir}/reactor/netty/udp/UdpClientConnect.java[lines=37..42]
 ----
@@ -148,6 +155,7 @@ If you need additional options or need to change the current options, you can ap
 
 [source,java,indent=0]
 .{examples-dir}/channeloptions/Application.java
+[%unbreakable]
 ----
 include::{examples-dir}/channeloptions/Application.java[lines=18..36]
 ----
@@ -196,6 +204,7 @@ The following example enables that integration:
 
 [source,java,indent=0]
 .{examples-dir}/metrics/Application.java
+[%unbreakable]
 ----
 include::{examples-dir}/metrics/Application.java[lines=18..36]
 ----
@@ -206,6 +215,7 @@ to provide your own integration with `Micrometer`, you can provide your own metr
 
 [source,java,indent=0]
 .{examples-dir}/metrics/custom/Application.java
+[%unbreakable]
 ----
 include::{examples-dir}/metrics/custom/Application.java[lines=18..37]
 ----
@@ -219,6 +229,7 @@ The following example shows how to use UDS support:
 
 [source,java,indent=0]
 .{examples-dir}/uds/Application.java
+[%unbreakable]
 ----
 include::{examples-dir}/uds/Application.java[lines=18..42]
 ----
