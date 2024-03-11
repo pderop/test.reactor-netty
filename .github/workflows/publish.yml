@@ -88,9 +88,9 @@ jobs:
           - name: Set up Ruby
             uses: ruby/setup-ruby@v1
             with:
-                ruby-version: 2.7.8
+                ruby-version: 3.3.0
           - name: Install asciidoctor-pdf
-            run: gem install asciidoctor-pdf
+            run: gem install asciidoctor-pdf rouge
           - uses: actions/setup-java@387ac29b308b003ca37ba93a6cab5eb57c8f5f93
             with:
                 distribution: 'temurin'
