@@ -161,8 +161,10 @@ jobs:
         run: |-
             echo "Downloaded generated site:"
             find docs/build/site
-            echo "Publishing ..."
+            echo "Running gradlew reactor-netty:build ..."
             ./gradlew reactor-netty:build
+            echo "build ..."
+            find reactor-netty
             jar tvf reactor-netty/build/distributions/*-docs.zip
 
   #sign the milestone artifacts and deploy them to Artifactory
