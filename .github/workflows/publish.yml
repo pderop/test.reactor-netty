@@ -168,8 +168,7 @@ jobs:
             find docs/build/site
             echo "Running gradlew reactor-netty:build ..."
             ./gradlew reactor-netty:build
-            echo "build ..."
-            find reactor-netty
+            echo "Generated reactor-netty distribution docs zip:"
             jar tvf reactor-netty/build/distributions/*-docs.zip
 
   #sign the milestone artifacts and deploy them to Artifactory
