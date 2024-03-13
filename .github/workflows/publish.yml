@@ -109,9 +109,13 @@ jobs:
                 > gh-pages-docs/.nojekyll
                 cp -r ${{ github.workspace }}/reactor-netty/build/docs/javadoc/* gh-pages-docs/netty/$FULL_VERSION/javadoc-api/
                 cp -r ${{ github.workspace }}/docs/build/site/* gh-pages-docs/netty/$FULL_VERSION/reference
-                [ "$VERSION_TYPE" == "SNAPSHOT" ] && rm -f gh-pages-docs/netty/$FULL_VERSION/reference/reactor-netty-reference-guide.pdf
+                [ "$VERSION_TYPE" != "SNAPSHOT" ] && cp docs/build/assembler/reactor-netty/*/*.pdf gh-pages-docs/netty/$FULL_VERSION/reference/reactor-netty-reference-guide-$FULL_VERSION.pdf
                 cd gh-pages-docs/netty
-                [ "$VERSION_TYPE" == "SNAPSHOT" ] && ln -sf $FULL_VERSION current-SNAPSHOT || ln -sf $FULL_VERSION current
+                [ "$VERSION_TYPE" == "SNAPSHOT" ] && DIR_NAME="current-SNAPSHOT" || DIR_NAME="current"
+                mkdir "$DIR_NAME"
+                cd "$DIR_NAME"
+                ln -sf "../$FULL_VERSION/javadoc-api"
+                ln -sf "../$FULL_VERSION/javadoc-api"
                 cd ${{ github.workspace }}
                 ./gradlew docs:clean docs:antora -Pantora.playbook=antora-playbook-reference.yml
                 mkdir -p gh-pages-docs/netty/reference/

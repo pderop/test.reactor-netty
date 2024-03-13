@@ -1,6 +1,7 @@
 root_level: 0
+#component_versions: '*'
 build:
-    publish: true
+    publish: false
 asciidoc:
     build:
         command: bundle exec asciidoctor-pdf -n -d book
