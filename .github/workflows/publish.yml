@@ -159,9 +159,11 @@ jobs:
             path: docs/build/site
       - name: debug
         run: |-
-            echo "Downloaded docs:"
+            echo "Downloaded generated site:"
             find docs/build/site
             echo "Publishing ..."
+            ./gradlew reactor-netty:build
+            jar tvf reactor-netty/build/distributions/*-docs.zip
 
   #sign the milestone artifacts and deploy them to Artifactory
   deployMilestone:
