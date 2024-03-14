@@ -116,8 +116,8 @@ jobs:
   build-docs2:
       uses: ./.github/workflows/build-docs-job.yml
       with:
-        playbook: 'antora-playbook.yml'
-        fetch-depth: '1'
+        playbook: antora-playbook.yml
+        fetch-depth: 1
 
   #deploy the snapshot artifacts to Artifactory
   deploySnapshot:

@@ -4,12 +4,10 @@ on:
   workflow_call:
     inputs:
       playbook:
-        description: 'Playbook file name'
         required: false
         type: string
         default: 'antora-playbook.yml'
       fetch-depth:
-        description: 'Checkout fetch depth'
         required: fakse
         type: string
         default: '1'
