@@ -114,12 +114,10 @@ jobs:
                 path: reactor-netty/build/docs
 
   build-docs2:
-      runs-on: ubuntu-20.04
-      steps:
-        - uses: ./.github/workflows/build-docs-job.yml
-          with:
-            playbook: 'antora-playbook.yml'
-            fetch-depth: '1'
+      uses: ./.github/workflows/build-docs-job.yml
+      with:
+        playbook: 'antora-playbook.yml'
+        fetch-depth: '1'
 
   #deploy the snapshot artifacts to Artifactory
   deploySnapshot:
