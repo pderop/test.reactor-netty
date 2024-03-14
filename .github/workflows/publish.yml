@@ -184,10 +184,9 @@ jobs:
       name: deploy-docs
       needs: [ reactor-netty-core, tagRelease, tagMilestone, deployRelease, deployMilestone, deploySnapshot ]
       if: always() # This job will run regardless of the status of previous jobs
-      runs-on: ubuntu-20.04
       env:
-          FULL_VERSION: ${{ needs.reactor-netty-core.outputs.fullVersion }}
-          VERSION_TYOE: ${{ needs.reactor-netty-core.outputs.versionType }}
+        FULL_VERSION: ${{ needs.reactor-netty-core.outputs.fullVersion }}
+        VERSION_TYOE: ${{ needs.reactor-netty-core.outputs.versionType }}
       uses: ./.github/workflows/deploy-docs-job.yml
       with:
         full-version: ${{ env.FULL_VERSION }}
