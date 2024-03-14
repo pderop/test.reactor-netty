@@ -75,7 +75,11 @@ task docsZip(type: Zip) {
 			}
 		}
 	} else {
-		logger.lifecycle("PDF file not found at: ${pdfFile}. Skipping inclusion in the zip.")
+		if (isSnapshot) {
+			logger.lifecycle("PDF not included in SNAPSHOT version");
+		} else {
+			logger.lifecycle("PDF file not found at: ${pdfFile}. Skipping inclusion in the zip.")
+		}
 	}
 }
 
