@@ -8,7 +8,7 @@ on:
         required: false
         type: string
         default: 'antora-playbook.yml'
-    fetch-depth:
+      fetch-depth:
         description: 'Checkout fetch depth'
         required: fakse
         type: string
