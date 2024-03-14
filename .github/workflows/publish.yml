@@ -78,10 +78,6 @@ jobs:
   build-docs:
       name: build-docs
       runs-on: ubuntu-20.04
-      needs: [ reactor-netty-core ]
-      env:
-          VERSION_TYPE: ${{ needs.reactor-netty-core.outputs.versionType }}
-          FULL_VERSION: ${{ needs.reactor-netty-core.outputs.fullVersion }}
       steps:
           - uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11
           - name: Set up Ruby
@@ -101,8 +97,7 @@ jobs:
                 distribution: 'temurin'
                 java-version: '17'
           - name: build antora
-            run: |-
-                ./gradlew docs:antora -Pantora.playbook=antora-playbook.yml
+            run: ./gradlew antora -Pantora.playbook=antora-playbook.yml
           - name: Upload site
             uses: actions/upload-artifact@v4
             with:
@@ -118,11 +113,20 @@ jobs:
                 if-no-files-found: error
                 path: reactor-netty/build/docs
 
-    #deploy the snapshot artifacts to Artifactory
+  build-docs2:
+    name: build-docs2
+    runs-on: ubuntu-20.04
+    steps:
+        -use: ./.github/workflows/build-docs-job.yml
+        with:
+            playbook: 'antora-playbook.yml'
+            fetch-depth: '1'
+
+  #deploy the snapshot artifacts to Artifactory
   deploySnapshot:
     name: deploySnapshot
     runs-on: ubuntu-20.04
-    needs: [ reactor-netty-core, reactor-netty-http, reactor-netty-http-brave, reactor-netty-incubator-quic, build-docs]
+    needs: [ reactor-netty-core, reactor-netty-http, reactor-netty-http-brave, reactor-netty-incubator-quic, build-docs2]
     if: needs.reactor-netty-core.outputs.versionType == 'SNAPSHOT'
     environment: snapshots
     steps:
