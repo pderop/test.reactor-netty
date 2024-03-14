@@ -1,0 +1,55 @@
+name: deploy docs job
+
+on:
+  workflow_call:
+    inputs:
+      full-version:
+        required: true
+        type: string
+      version-type:
+        required: true
+        type: string
+      component:
+        required: true
+        type: string
+
+jobs:
+  deploy-docs:
+    name: deploy-docs
+    runs-on: ubuntu-20.04
+    env:
+      FULL_VERSION: ${{ inputs.full-version }}
+      VERSION_TYPE: ${{ inputs.version-type }}
+      COMPONENT: ${{ inputs.component }}
+    steps:
+      - name: Download site
+        uses: actions/download-artifact@v4
+        with:
+          name: site
+          path: tmp
+      - name: Download javadoc
+        uses: actions/download-artifact@v4
+        with:
+            name: javadoc
+            path: tmp
+      - name: Prepare gh-pages
+        run: |-
+            mkdir gh-pages-docs
+            > gh-pages-docs/.nojekyll
+            mkdir -p gh-pages-docs/$COMPONENT/$FULL_VERSION/javadoc-api
+            mkdir -p gh-pages-docs/$COMPONENT/$FULL_VERSION/reference/html
+            cp -r tmp/javadoc/* gh-pages-docs/$COMPONENT/$FULL_VERSION/javadoc-api/
+            cp -r tmp/build/site/* gh-pages-docs/$COMPONENT/$FULL_VERSION/reference/html/
+            [ "$VERSION_TYPE" != "SNAPSHOT" ] && cp tmp/build/assembler/*/*/*.pdf gh-pages-docs/$COMPONENT/$FULL_VERSION/reference/pdf/reactor-netty-reference.pdf
+      - name: Publish docs
+        uses: JamesIves/github-pages-deploy-action@v4
+        with:
+          token: ${{ secrets.DOCS_PAGES_TOKEN }}
+          repository-name: pderop/test-antora-pages
+          folder: gh-pages-docs
+          target-folder: docs
+          clean: false
+          force: true
+
+
+
