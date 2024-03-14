@@ -22,6 +22,7 @@ jobs:
       VERSION_TYPE: ${{ inputs.version-type }}
       COMPONENT: ${{ inputs.component }}
     steps:
+      - uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11
       - name: Download site
         uses: actions/download-artifact@v4
         with:
