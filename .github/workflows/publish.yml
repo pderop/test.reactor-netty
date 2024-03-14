@@ -74,25 +74,21 @@ jobs:
         id: reactor-netty-incubator-quic-checks
         run: echo "./gradlew reactor-netty-incubator-quic:check"
 
-#  build-docs:
-#      uses: ./.github/workflows/build-docs-job.yml
-#      with:
-#        playbook: antora-playbook.yml
-#        fetch-depth: 1
+  build-docs:
+      uses: ./.github/workflows/build-docs-job.yml
+      with:
+        playbook: antora-playbook.yml
+        fetch-depth: 1
 
   #deploy the snapshot artifacts to Artifactory
   deploySnapshot:
     name: deploySnapshot
     runs-on: ubuntu-20.04
-    needs: [ reactor-netty-core, reactor-netty-http, reactor-netty-http-brave, reactor-netty-incubator-quic]
+    needs: [ reactor-netty-core, reactor-netty-http, reactor-netty-http-brave, reactor-netty-incubator-quic docs-build]
     if: needs.reactor-netty-core.outputs.versionType == 'SNAPSHOT'
     environment: snapshots
     steps:
       - uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11
-      - uses: ./.github/workflows/build-docs-job.yml
-        with:
-          playbook: antora-playbook.yml
-          fetch-depth: 1
       - uses: actions/setup-java@9704b39bf258b59bc04b50fa2dd55e9ed76b47a8
         with:
           distribution: 'temurin'
