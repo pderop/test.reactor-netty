@@ -51,6 +51,7 @@ task docsZip(type: Zip) {
 	duplicatesStrategy "fail"
 
 	def docsDir = file('../docs/build/site')
+	def isSnapshot = project.version.endsWith('-SNAPSHOT')
 	def version = project.version.takeWhile { it != '-' }
 	def pdfFile = file("../docs/build/assembler/reactor-netty/${version}/reactor-netty-reference-guide.pdf")
 
@@ -65,7 +66,7 @@ task docsZip(type: Zip) {
 		into 'docs'
 	}
 
-	if (pdfFile.exists()) {
+	if (!isSnapshot && pdfFile.exists()) {
 		into('docs') {
 			from(pdfFile) {
 				rename { fileName ->

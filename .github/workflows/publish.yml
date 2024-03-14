@@ -75,11 +75,10 @@ jobs:
         run: echo "./gradlew reactor-netty-incubator-quic:check"
 
   #deploy the antora doc to gh-pages
-  deployAntora:
-      name: deployAntora
+  build-docs:
+      name: build-docs
       runs-on: ubuntu-20.04
       needs: [ reactor-netty-core ]
-      #environment: snapshots
       env:
           VERSION_TYPE: ${{ needs.reactor-netty-core.outputs.versionType }}
           FULL_VERSION: ${{ needs.reactor-netty-core.outputs.fullVersion }}
@@ -89,60 +88,41 @@ jobs:
             uses: ruby/setup-ruby@v1
             with:
                 ruby-version: 3.3.0
-          - name: Install asciidoctor-pdf
+          - name: Install asciidoctor-pdf / rouge
             run: gem install asciidoctor-pdf rouge
           - uses: actions/setup-java@387ac29b308b003ca37ba93a6cab5eb57c8f5f93
             with:
                 distribution: 'temurin'
                 java-version: '8'
-          - name: Build Reactor Netty javadoc
+          - name: Build javadoc
             run: ./gradlew javadoc
           - uses: actions/setup-java@387ac29b308b003ca37ba93a6cab5eb57c8f5f93
             with:
                 distribution: 'temurin'
                 java-version: '17'
-          - name: Prepare gh-pages
+          - name: build antora
             run: |-
                 ./gradlew docs:antora -Pantora.playbook=antora-playbook.yml
-                mkdir -p gh-pages-docs/netty/$FULL_VERSION/javadoc-api
-                mkdir -p gh-pages-docs/netty/$FULL_VERSION/reference/html
-                > gh-pages-docs/.nojekyll
-                cp -r ${{ github.workspace }}/reactor-netty/build/docs/javadoc/* gh-pages-docs/netty/$FULL_VERSION/javadoc-api/
-                cp -r ${{ github.workspace }}/docs/build/site/* gh-pages-docs/netty/$FULL_VERSION/reference
-                [ "$VERSION_TYPE" != "SNAPSHOT" ] && cp docs/build/assembler/reactor-netty/*/*.pdf gh-pages-docs/netty/$FULL_VERSION/reference/reactor-netty-reference-guide-$FULL_VERSION.pdf
-                cd gh-pages-docs/netty
-                [ "$VERSION_TYPE" == "SNAPSHOT" ] && DIR_NAME="current-SNAPSHOT" || DIR_NAME="current"
-                mkdir "$DIR_NAME"
-                cd "$DIR_NAME"
-                ln -sf "../$FULL_VERSION/javadoc-api"
-                ln -sf "../$FULL_VERSION/javadoc-api"
-                cd ${{ github.workspace }}
-                ./gradlew docs:clean docs:antora -Pantora.playbook=antora-playbook-reference.yml
-                mkdir -p gh-pages-docs/netty/reference/
-                cp -r docs/build/site/* gh-pages-docs/netty/reference/
-          - name: Publish docs to gh-pages
-            uses: JamesIves/github-pages-deploy-action@v4
-            with:
-                token: ${{ secrets.DOCS_PAGES_TOKEN }}
-                repository-name: pderop/test-antora-pages
-                folder: gh-pages-docs
-                target-folder: docs
-                clean: false
-                force: true
-          - name: Upload docs
+          - name: Upload site
             uses: actions/upload-artifact@v4
             with:
-                name: reference-doc
-                path: gh-pages-docs/netty/${{ env.FULL_VERSION }}/reference
+                name: site
                 retention-days: 1
                 if-no-files-found: error
-
+                path: docs/build
+          - name: Upload javadoc
+            uses: actions/upload-artifact@v4
+            with:
+                name: javadoc
+                retention-days: 1
+                if-no-files-found: error
+                path: reactor-netty/build/docs
 
     #deploy the snapshot artifacts to Artifactory
   deploySnapshot:
     name: deploySnapshot
     runs-on: ubuntu-20.04
-    needs: [ reactor-netty-core, reactor-netty-http, reactor-netty-http-brave, reactor-netty-incubator-quic, deployAntora ]
+    needs: [ reactor-netty-core, reactor-netty-http, reactor-netty-http-brave, reactor-netty-incubator-quic, build-docs]
     if: needs.reactor-netty-core.outputs.versionType == 'SNAPSHOT'
     environment: snapshots
     steps:
@@ -151,25 +131,22 @@ jobs:
         with:
           distribution: 'temurin'
           java-version: '8'
-      - name: deploy
-#        env:
-#            ORG_GRADLE_PROJECT_artifactory_publish_username: ${{secrets.ARTIFACTORY_SNAPSHOT_USERNAME}}
-#            ORG_GRADLE_PROJECT_artifactory_publish_password: ${{secrets.ARTIFACTORY_PASSWORD}}
-        run: |-
-            echo "deploy snapshot artifacts to Artifactory ..."
-      - name: download docs
+      - name: Download site
         uses: actions/download-artifact@v4
         with:
-            name: reference-doc
-            path: docs/build/site
-      - name: debug
-        run: |-
-            echo "Downloaded generated site:"
-            find docs/build/site
-            echo "Running gradlew reactor-netty:build ..."
-            ./gradlew reactor-netty:build
-            echo "Generated reactor-netty distribution docs zip:"
-            jar tvf reactor-netty/build/distributions/*-docs.zip
+            name: site
+            path: docs/build
+      - name: deploy
+        env:
+#          ORG_GRADLE_PROJECT_artifactory_publish_username: ${{secrets.ARTIFACTORY_SNAPSHOT_USERNAME}}
+#          ORG_GRADLE_PROJECT_artifactory_publish_password: ${{secrets.ARTIFACTORY_PASSWORD}}
+        run: |
+          #./gradlew assemble artifactoryPublish -Partifactory_publish_contextUrl=https://repo.spring.io -Partifactory_publish_repoKey=libs-snapshot-local
+          ./gradlew assemble publishToMavenLocal
+          echo "XX: reactor-netty/build ..."
+          find reactor-netty/build
+          echo "XX: docsZip ..."
+          jar tvf reactor-netty/build/distributions/reactor-netty-*-docs.zip
 
   #sign the milestone artifacts and deploy them to Artifactory
   deployMilestone:

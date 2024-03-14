@@ -52,6 +52,7 @@ configurations {
 
 dependencies {
 	adoc "io.micrometer:micrometer-docs-generator:$micrometerDocsVersion"
+	asciidoctorGems 'rubygems:rouge'
 }
 
 def observationsOutputDir = file("${buildDir}/docs/generated/observation/").absolutePath

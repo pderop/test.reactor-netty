@@ -32,6 +32,7 @@ plugins {
 	id 'org.antora' version '1.0.0'
 	id 'io.spring.antora.generate-antora-yml' version '0.0.1'
 	id 'org.asciidoctor.jvm.pdf'
+	id 'org.asciidoctor.jvm.gems'
 }
 
 apply from: "${rootDir}/gradle/antora-docs.gradle"
