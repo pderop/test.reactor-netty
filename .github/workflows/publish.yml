@@ -184,13 +184,10 @@ jobs:
       name: deploy-docs
       needs: [ reactor-netty-core, tagRelease, tagMilestone, deployRelease, deployMilestone, deploySnapshot ]
       if: always() # This job will run regardless of the status of previous jobs
-      env:
-        FULL_VERSION: ${{ needs.reactor-netty-core.outputs.fullVersion }}
-        VERSION_TYOE: ${{ needs.reactor-netty-core.outputs.versionType }}
       uses: ./.github/workflows/deploy-docs-job.yml
       with:
-        full-version: ${{ env.FULL_VERSION }}
-        version-type: ${{ env.VERSION_TYPE }}
+        full-version: ${{ needs.reactor-netty-core.outputs.fullVersion }}
+        version-type: ${{ needs.reactor-netty-core.outputs.versionType }}
         component: netty
 
 # For Gradle configuration of signing, see https://docs.gradle.org/current/userguide/signing_plugin.html#sec:in-memory-keys
