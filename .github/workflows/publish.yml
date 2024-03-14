@@ -74,60 +74,25 @@ jobs:
         id: reactor-netty-incubator-quic-checks
         run: echo "./gradlew reactor-netty-incubator-quic:check"
 
-  #deploy the antora doc to gh-pages
-  build-docs:
-      name: build-docs
-      runs-on: ubuntu-20.04
-      steps:
-          - uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11
-          - name: Set up Ruby
-            uses: ruby/setup-ruby@v1
-            with:
-                ruby-version: 3.3.0
-          - name: Install asciidoctor-pdf / rouge
-            run: gem install asciidoctor-pdf rouge
-          - uses: actions/setup-java@387ac29b308b003ca37ba93a6cab5eb57c8f5f93
-            with:
-                distribution: 'temurin'
-                java-version: '8'
-          - name: Build javadoc
-            run: ./gradlew javadoc
-          - uses: actions/setup-java@387ac29b308b003ca37ba93a6cab5eb57c8f5f93
-            with:
-                distribution: 'temurin'
-                java-version: '17'
-          - name: build antora
-            run: ./gradlew antora -Pantora.playbook=antora-playbook.yml
-          - name: Upload site
-            uses: actions/upload-artifact@v4
-            with:
-                name: site
-                retention-days: 1
-                if-no-files-found: error
-                path: docs/build
-          - name: Upload javadoc
-            uses: actions/upload-artifact@v4
-            with:
-                name: javadoc
-                retention-days: 1
-                if-no-files-found: error
-                path: reactor-netty/build/docs
-
-  build-docs2:
-      uses: ./.github/workflows/build-docs-job.yml
-      with:
-        playbook: antora-playbook.yml
-        fetch-depth: 1
+#  build-docs:
+#      uses: ./.github/workflows/build-docs-job.yml
+#      with:
+#        playbook: antora-playbook.yml
+#        fetch-depth: 1
 
   #deploy the snapshot artifacts to Artifactory
   deploySnapshot:
     name: deploySnapshot
     runs-on: ubuntu-20.04
-    needs: [ reactor-netty-core, reactor-netty-http, reactor-netty-http-brave, reactor-netty-incubator-quic, build-docs2]
+    needs: [ reactor-netty-core, reactor-netty-http, reactor-netty-http-brave, reactor-netty-incubator-quic]
     if: needs.reactor-netty-core.outputs.versionType == 'SNAPSHOT'
     environment: snapshots
     steps:
       - uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11
+      - uses: ./.github/workflows/build-docs-job.yml
+        with:
+          playbook: antora-playbook.yml
+          fetch-depth: 1
       - uses: actions/setup-java@9704b39bf258b59bc04b50fa2dd55e9ed76b47a8
         with:
           distribution: 'temurin'

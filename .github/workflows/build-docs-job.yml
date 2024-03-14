@@ -20,9 +20,9 @@ jobs:
             PLAYBOOK: ${{ inputs.playbook }}
             FETCH_DEPTH: ${{ inputs.fetch-depth }}
         steps:
-            - uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11
-              with:
-                  fetch-depth: ${{ env.FETCH_DEPTH }}
+#            - uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11
+#              with:
+#                  fetch-depth: ${{ env.FETCH_DEPTH }}
             - name: Set up Ruby
               uses: ruby/setup-ruby@v1
               with:
