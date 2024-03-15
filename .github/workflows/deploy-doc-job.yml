@@ -46,6 +46,20 @@ jobs:
                 pdf=$(find tmp/assembler -name "*.pdf" 2>/dev/null)
                 [ -n "$pdf" ] && cp $pdf gh-pages-docs/$COMPONENT/$FULL_VERSION/reference/pdf/
             fi
+      - uses: actions/setup-java@387ac29b308b003ca37ba93a6cab5eb57c8f5f93
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+      - name: Download autoln
+        uses: scheinbeck/downloadify@v1
+        with:
+            url: https://github.com/spring-io/autoln/releases/download/latest/autoln-1.0.0-SNAPSHOT.zip
+            destination: .
+      - name: Run autoln
+        env:
+            AUTOLN: ./autoln-1.0.0-SNAPSHOT/bin/autoln
+        run: |-
+            $AUTOLN print --project-dir gh-pages-docs/$COMPONENT
       - name: Publish docs
         uses: JamesIves/github-pages-deploy-action@v4
         with:
