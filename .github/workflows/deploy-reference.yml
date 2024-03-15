@@ -1,4 +1,4 @@
-name: Deploy Docs
+name: build reference
 run-name: ${{ format('{0} ({1})', github.workflow, github.event.inputs.build-refname || 'all') }}
 on:
   workflow_dispatch:
@@ -6,8 +6,6 @@ on:
       build-refname:
         description: Enter git refname to build (e.g., main, netty5). Leave empty for a full build.
         required: false
-  push:
-    branches: docs-build
 
 jobs:
   build-reference:
