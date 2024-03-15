@@ -190,8 +190,10 @@ jobs:
   debug:
       name: debug
       needs: [ reactor-netty-core, tagRelease, tagMilestone, deploySnapshot ]
+      runs-on: ubuntu-20.04
       steps:
-        - run: |-
+          - name: tag
+            run: |-
               echo "reactor-netty-core result: ${{ needs.reactor-netty-core.result }}"
               echo "tagRelease result: ${{ needs.tagRelease.result }}"
               echo "tagMilestone result: ${{ needs.tagMilestone.result }}"
