@@ -36,4 +36,4 @@ jobs:
           ./gradlew antora
       - name: Copy the cache to be included in the site
         run: cp -rf build/antora/inject-collector-cache-config-extension/.cache build/site/
-      - name:
+      - n

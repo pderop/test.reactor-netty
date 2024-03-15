@@ -8,7 +8,7 @@ antora:
     - require: '@springio/antora-extensions/root-component-extension'
       root_component_name: 'reactor-netty'
 site:
-  title: Reactor Netty
+  title: Reactor Netty Reference Guide
   url: https://pderop.github.io/test-antora-pages/docs/netty/reference/
 content:
   sources:
@@ -42,6 +42,5 @@ runtime:
     format: pretty
 ui:
   bundle:
-    url: https://github.com/spring-io/antora-ui-spring/releases/download/v0.3.6/ui-bundle.zip
-    #url: https://github.com/reactor/antora-ui-projectreactor/releases/download/latest/ui-bundle.zip
+    url: https://github.com/reactor/antora-ui-projectreactor/releases/download/latest/ui-bundle.zip
     snapshot: true

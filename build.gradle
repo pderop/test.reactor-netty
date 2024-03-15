@@ -1,11 +1,18 @@
 plugins {
 	id 'base'
 	id 'org.antora' version '1.0.0'
+	id 'io.spring.antora.generate-antora-yml' version '0.0.1'
+	id 'org.asciidoctor.jvm.gems' version '3.3.2'
 }
 
 antora {
 	version = '3.2.0-alpha.4'
 	options = [clean: true, fetch: true, stacktrace: true]
+	environment = [
+			'ALGOLIA_API_KEY'   : 'da671ceec1f84f80f280884a6a91bde5',
+			'ALGOLIA_APP_ID'    : 'TGS4XRGX3V',
+			'ALGOLIA_INDEX_NAME': 'reactor'
+	]
 	dependencies = [
 			'@antora/atlas-extension': '1.0.0-alpha.1',
 			'@antora/collector-extension': '1.0.0-alpha.3',
@@ -13,4 +20,8 @@ antora {
 			'@springio/antora-extensions': '1.8.2',
 			'@springio/asciidoctor-extensions': '1.0.0-alpha.9',
 	]
+}
+
+dependencies {
+	asciidoctorGems 'rubygems:rouge'
 }
