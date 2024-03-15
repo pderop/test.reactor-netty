@@ -81,20 +81,16 @@ jobs:
           target-folder: docs
           clean: false
           force: true
-      - name: cleanup javadoc artifact
+      - name: cleanup doc artifact
         if: always()
-        uses: jimschubert/delete-artifacts-action@v1
+        uses: joutvhu/delete-artifact@v2
         with:
-            log_level: 'debug'
-            artifact_name: doc
-            min_bytes: '0'
+          name: doc
       - name: cleanup javadoc artifact
         if: always() && inputs.full-version != '' && inputs.version-type != ''
-        uses: jimschubert/delete-artifacts-action@v1
+        uses: joutvhu/delete-artifact@v2
         with:
-            log_level: 'debug'
-            artifact_name: javadoc
-            min_bytes: '0'
+            name: javadoc
 
 
 
