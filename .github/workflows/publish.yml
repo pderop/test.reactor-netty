@@ -191,6 +191,7 @@ jobs:
       name: debug
       needs: [ reactor-netty-core, tagRelease, tagMilestone, deploySnapshot ]
       runs-on: ubuntu-20.04
+      if: always()
       steps:
           - name: tag
             run: |-
