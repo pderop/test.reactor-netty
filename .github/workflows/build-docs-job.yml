@@ -32,12 +32,6 @@ jobs:
             - uses: actions/setup-java@387ac29b308b003ca37ba93a6cab5eb57c8f5f93
               with:
                   distribution: 'temurin'
-                  java-version: '8'
-            - name: Build javadoc
-              run: ./gradlew javadoc
-            - uses: actions/setup-java@387ac29b308b003ca37ba93a6cab5eb57c8f5f93
-              with:
-                  distribution: 'temurin'
                   java-version: '17'
             - name: build antora
               run: ./gradlew antora -Pantora.playbook=${{ env.PLAYBOOK }}
@@ -48,11 +42,4 @@ jobs:
                   retention-days: 1
                   if-no-files-found: error
                   path: docs/build
-            - name: Upload javadoc
-              uses: actions/upload-artifact@v4
-              with:
-                  name: javadoc
-                  retention-days: 1
-                  if-no-files-found: error
-                  path: reactor-netty/build/docs
 

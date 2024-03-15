@@ -40,8 +40,8 @@ jobs:
             mkdir -p gh-pages-docs/$COMPONENT/$FULL_VERSION/javadoc-api
             mkdir -p gh-pages-docs/$COMPONENT/$FULL_VERSION/reference/html
             cp -r tmp/javadoc/* gh-pages-docs/$COMPONENT/$FULL_VERSION/javadoc-api/
-            cp -r tmp/build/site/* gh-pages-docs/$COMPONENT/$FULL_VERSION/reference/html/
-            [ "$VERSION_TYPE" != "SNAPSHOT" ] && cp tmp/build/assembler/*/*/*.pdf gh-pages-docs/$COMPONENT/$FULL_VERSION/reference/pdf/reactor-netty-reference.pdf
+            cp -r tmp/site/* gh-pages-docs/$COMPONENT/$FULL_VERSION/reference/html/
+            [ "$VERSION_TYPE" != "SNAPSHOT" ] && cp tmp/assembler/*/*/*.pdf gh-pages-docs/$COMPONENT/$FULL_VERSION/reference/pdf/reactor-netty-reference.pdf
       - name: Publish docs
         uses: JamesIves/github-pages-deploy-action@v4
         with:

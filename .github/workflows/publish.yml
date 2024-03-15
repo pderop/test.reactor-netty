@@ -93,7 +93,7 @@ jobs:
         with:
           distribution: 'temurin'
           java-version: '8'
-      - name: Download site
+      - name: download site
         uses: actions/download-artifact@v4
         with:
             name: site
@@ -105,6 +105,13 @@ jobs:
         run: |
           #./gradlew assemble artifactoryPublish -Partifactory_publish_contextUrl=https://repo.spring.io -Partifactory_publish_repoKey=libs-snapshot-local
           ./gradlew assemble publishToMavenLocal
+      - name: upload javadoc
+        uses: actions/upload-artifact@v4
+        with:
+          name: javadoc
+          retention-days: 1
+          if-no-files-found: error
+          path: reactor-netty/build/docs
 
   #sign the milestone artifacts and deploy them to Artifactory
   deployMilestone:
@@ -182,7 +189,7 @@ jobs:
 
   deploy-docs:
       name: deploy-docs
-      needs: [ reactor-netty-core, tagRelease, tagMilestone, deployRelease, deployMilestone, deploySnapshot ]
+      needs: [ reactor-netty-core, tagRelease, tagMilestone, deploySnapshot ]
       if: always() # This job will run regardless of the status of previous jobs
       uses: ./.github/workflows/deploy-docs-job.yml
       with:
