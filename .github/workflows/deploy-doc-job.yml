@@ -55,6 +55,8 @@ jobs:
         with:
             url: https://github.com/spring-io/autoln/releases/download/latest/autoln-1.0.0-SNAPSHOT.zip
             destination: .
+      - name: Unzip autoln
+        run: unzip autoln-1.0.0-SNAPSHOT.zip
       - name: Run autoln
         env:
             AUTOLN: ./autoln-1.0.0-SNAPSHOT/bin/autoln
