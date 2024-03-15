@@ -192,6 +192,7 @@ jobs:
       needs: [ reactor-netty-core, tagRelease, tagMilestone, deploySnapshot ]
       if: always() # This job will run regardless of the status of previous jobs
       uses: ./.github/workflows/deploy-docs-job.yml
+      secrets: inherit
       with:
         full-version: ${{ needs.reactor-netty-core.outputs.fullVersion }}
         version-type: ${{ needs.reactor-netty-core.outputs.versionType }}

@@ -43,7 +43,7 @@ jobs:
             mkdir -p gh-pages-docs/$COMPONENT/$FULL_VERSION/reference/pdf
             cp -r tmp/javadoc/* gh-pages-docs/$COMPONENT/$FULL_VERSION/javadoc-api/
             cp -r tmp/site/* gh-pages-docs/$COMPONENT/$FULL_VERSION/reference/html/
-            find gh-pages-docs
+            find tmp
       - name: Publish docs
         uses: JamesIves/github-pages-deploy-action@v4
         with:
