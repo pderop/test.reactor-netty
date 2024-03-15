@@ -1,4 +1,4 @@
-name: deploy docs job
+name: deploy doc job
 
 on:
   workflow_call:
@@ -14,8 +14,8 @@ on:
         type: string
 
 jobs:
-  deploy-docs:
-    name: deploy-docs
+  deploy-doc:
+    name: deploy-doc
     runs-on: ubuntu-20.04
     env:
       FULL_VERSION: ${{ inputs.full-version }}
@@ -23,10 +23,10 @@ jobs:
       COMPONENT: ${{ inputs.component }}
     steps:
       - uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11
-      - name: Download site
+      - name: Download doc
         uses: actions/download-artifact@v4
         with:
-          name: site
+          name: doc
           path: tmp
       - name: Download javadoc
         uses: actions/download-artifact@v4

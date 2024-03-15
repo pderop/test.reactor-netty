@@ -187,8 +187,8 @@ jobs:
           git tag -m "Release version ${{ needs.reactor-netty-core.outputs.fullVersion }}" v${{ needs.reactor-netty-core.outputs.fullVersion }} ${{ github.sha }}
           git push --tags
 
-  deploy-docs:
-      name: deploy-docs
+  deploy-doc:
+      name: deploy-doc
       needs: [ reactor-netty-core, tagRelease, tagMilestone, deploySnapshot ]
       if: |
         always() &&
@@ -196,7 +196,7 @@ jobs:
         (needs.tagRelease.result == 'skipped' || needs.tagRelease.result == 'success') &&
         (needs.tagMilestone.result == 'skipped' || needs.tagMilestone.result == 'success') &&
         (needs.deploySnapshot.result == 'skipped' || needs.deploySnapshot.result == 'success')
-      uses: ./.github/workflows/deploy-docs-job.yml
+      uses: ./.github/workflows/deploy-doc-job.yml
       secrets: inherit
       with:
         full-version: ${{ needs.reactor-netty-core.outputs.fullVersion }}
