@@ -85,6 +85,8 @@ jobs:
   cleanup:
     runs-on: ubuntu-20.04
     needs: [ deploy-doc ]
+    permissions:
+      contents: write
     if: always()
     steps:
       - name: cleanup javadoc artifact
