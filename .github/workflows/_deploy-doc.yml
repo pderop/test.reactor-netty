@@ -35,13 +35,13 @@ jobs:
           name: doc
           path: tmp
       - name: Download javadoc
-        if: github.event.inputs.full-version != '' && github.event.inputs.version-type != ''
+        if: inputs.full-version != '' && inputs.version-type != ''
         uses: actions/download-artifact@v4
         with:
             name: javadoc
             path: tmp
       - name: Prepare doc for a specific version
-        if: github.event.inputs.full-version != '' && github.event.inputs.version-type != ''
+        if: inputs.full-version != '' && inputs.version-type != ''
         run: |-
             mkdir gh-pages-docs
             > gh-pages-docs/.nojekyll
@@ -55,7 +55,7 @@ jobs:
                 [ -n "$pdf" ] && cp $pdf gh-pages-docs/$COMPONENT/$FULL_VERSION/reference/pdf/
             fi
       - name: Prepare reference doc
-        if: github.event.inputs.full-version == '' && github.event.inputs.version-type == ''
+        if: inputs.full-version == '' && inputs.version-type == ''
         run: |-
             mkdir gh-pages-docs
             > gh-pages-docs/.nojekyll
@@ -66,7 +66,7 @@ jobs:
           distribution: 'temurin'
           java-version: '17'
       - name: Auto ln
-        if: github.event.inputs.full-version != '' && github.event.inputs.version-type != ''
+        if: inputs.full-version != '' && inputs.version-type != ''
         run: |
             wget https://github.com/spring-io/autoln/releases/download/latest/autoln-1.0.0-SNAPSHOT.zip
             unzip autoln-1.0.0-SNAPSHOT.zip
