@@ -81,6 +81,16 @@ jobs:
           target-folder: docs
           clean: false
           force: true
+      - name: cleanup doc artifact
+        if: always()
+        uses: joutvhu/delete-artifact@v2
+        with:
+          name: doc
+      - name: cleanup javadoc artifact
+        if: always() && inputs.full-version != '' && inputs.version-type != ''
+        uses: joutvhu/delete-artifact@v2
+        with:
+            name: javadoc
 
 
 
