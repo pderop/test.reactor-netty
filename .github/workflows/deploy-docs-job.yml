@@ -42,7 +42,6 @@ jobs:
             mkdir -p gh-pages-docs/$COMPONENT/$FULL_VERSION/reference/pdf
             cp -r tmp/javadoc/* gh-pages-docs/$COMPONENT/$FULL_VERSION/javadoc-api/
             cp -r tmp/site/* gh-pages-docs/$COMPONENT/$FULL_VERSION/reference/html/
-            find tmp
             if [ "$VERSION_TYPE" != "SNAPSHOT" ]; then
                 pdf=$(find tmp/assembler -name "*.pdf" 2>/dev/null)
                 [ -n "$pdf" ] && cp $pdf gh-pages-docs/$COMPONENT/$FULL_VERSION/reference/pdf/
