@@ -7,6 +7,7 @@ plugins {
 
 antora {
 	version = '3.2.0-alpha.4'
+	playbook = findProperty('antora.playbook') ?: "docs/antora-playbook.yml"
 	options = [clean: true, fetch: true, stacktrace: true]
 	environment = [
 			'ALGOLIA_API_KEY'   : 'da671ceec1f84f80f280884a6a91bde5',

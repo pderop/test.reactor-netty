@@ -8,32 +8,11 @@ on:
         required: false
   push:
     branches: docs-build
-permissions:
-  contents: write
-  actions: write
+
 jobs:
-  build:
+  build-reference:
 #    if: github.repository_owner == 'reactor'
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v3
-        with:
-          fetch-depth: 0
-      - name: Set Up Gradle
-        uses: spring-io/spring-gradle-build-action@v2
-        with:
-          java-version: '17'
-          distribution: temurin
-      - name: Set up refname build
-        if: github.event.inputs.build-refname
-        run: |
-          git fetch --depth 1 https://github.com/$GITHUB_REPOSITORY ${{ github.event.inputs.build-refname }}
-          echo BUILD_VERSION=$(git cat-file --textconv FETCH_HEAD:gradle.properties | sed -n '/^version=/ { s/^version=//;p }') >> $GITHUB_ENV
-          echo BUILD_REFNAME=${{ github.event.inputs.build-refname }} >> $GITHUB_ENV
-      - name: Run Antora
-        run: |-
-          ./gradlew antora
-      - name: Copy the cache to be included in the site
-        run: cp -rf build/antora/inject-collector-cache-config-extension/.cache build/site/
-      - n
+    uses: ./.github/workflows/build-antora-job.yml
+    with:
+      build-refname: ${{ github.event.inputs.build-refname }}
+      fetch-depth: 0
