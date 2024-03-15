@@ -75,7 +75,7 @@ jobs:
         run: echo "./gradlew reactor-netty-incubator-quic:check"
 
   build-antora:
-      uses: ./.github/workflows/_build-antora.yml
+      uses: ./.github/workflows/_build-doc.yml
 
   #deploy the snapshot artifacts to Artifactory
   deploySnapshot:
