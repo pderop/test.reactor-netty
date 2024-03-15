@@ -56,7 +56,7 @@ jobs:
             unzip autoln-1.0.0-SNAPSHOT.zip
       - name: Run autoln
         run: |-
-            ./autoln-1.0.0-SNAPSHOT/bin/autolnprint --project-dir gh-pages-docs/$COMPONENT
+            ./autoln-1.0.0-SNAPSHOT/bin/autoln create --project-dir gh-pages-docs/$COMPONENT
             ls -ltr gh-pages-docs/$COMPONENT
       - name: Publish docs
         uses: JamesIves/github-pages-deploy-action@v4
