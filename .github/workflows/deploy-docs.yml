@@ -12,7 +12,7 @@ on:
 jobs:
   build-reference:
 #    if: github.repository_owner == 'reactor'
-    uses: ./.github/workflows/build-antora-job.yml@main
+    uses: ./.github/workflows/build-antora-job.yml
     with:
       build-refname: ${{ github.event.inputs.build-refname }}
       fetch-depth: 0
