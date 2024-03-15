@@ -1,12 +1,7 @@
 name: deploy doc
-run-name: ${{ format('{0} ({1})', github.workflow, github.event.inputs.build-refname || 'all') }}
 
 on:
   workflow_dispatch:
-    inputs:
-      build-refname:
-        description: Enter git refname to build (e.g., main, netty5). Leave empty for a full build.
-        required: false
 
 jobs:
   # get current version, make javadoc, and upload it to github so we can later deploy it to the site
