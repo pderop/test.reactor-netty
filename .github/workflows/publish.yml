@@ -204,10 +204,11 @@ jobs:
       name: deploy-docs
       needs: [ reactor-netty-core, tagRelease, tagMilestone, deploySnapshot ]
       if: |
+        always() &&
         needs.reactor-netty-core.result == 'success' &&
-        (always() && needs.tagRelease.result == 'skipped' || needs.tagRelease.result == 'success') &&
-        (always() && needs.tagMilestone.result == 'skipped' || needs.tagMilestone.result == 'success') &&
-        (always() && needs.deploySnapshot.result == 'skipped' || needs.deploySnapshot.result == 'success')
+        (needs.tagRelease.result == 'skipped' || needs.tagRelease.result == 'success') &&
+        (needs.tagMilestone.result == 'skipped' || needs.tagMilestone.result == 'success') &&
+        (needs.deploySnapshot.result == 'skipped' || needs.deploySnapshot.result == 'success')
       uses: ./.github/workflows/deploy-docs-job.yml
       secrets: inherit
       with:
