@@ -3,10 +3,6 @@ name: build docs job
 on:
   workflow_call:
     inputs:
-      playbook:
-        required: false
-        type: string
-        default: 'antora-playbook.yml'
       fetch-depth:
         required: false
         type: string
@@ -45,7 +41,7 @@ jobs:
                   echo BUILD_VERSION=$(git cat-file --textconv FETCH_HEAD:gradle.properties | sed -n '/^version=/ { s/^version=//;p }') >> $GITHUB_ENV
                   echo BUILD_REFNAME=$BUILD_REFNAME >> $GITHUB_ENV
             - name: build antora
-              run: ./gradlew antora -Pantora.playbook=${{ env.PLAYBOOK }}
+              run: ./gradlew antora
             - name: Copy the cache to be included in the site
               run: |-
                   [ -d docs/build/antora/inject-collector-cache-config-extension/.cache ] && cp -rf docs/build/antora/inject-collector-cache-config-extension/.cache docs/build/site/
