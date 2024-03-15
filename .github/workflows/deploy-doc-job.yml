@@ -12,6 +12,10 @@ on:
       component:
         required: true
         type: string
+      autoln:
+          required: false
+          type: boolean
+          default: true
 
 jobs:
   deploy-doc:
@@ -50,12 +54,11 @@ jobs:
         with:
           distribution: 'temurin'
           java-version: '17'
-      - name: Download autoln
+      - name: Auto ln
+        if: inputs.autoln
         run: |
             wget https://github.com/spring-io/autoln/releases/download/latest/autoln-1.0.0-SNAPSHOT.zip
             unzip autoln-1.0.0-SNAPSHOT.zip
-      - name: Run autoln
-        run: |-
             ./autoln-1.0.0-SNAPSHOT/bin/autoln create --project-dir gh-pages-docs/$COMPONENT
             ls -ltr gh-pages-docs/$COMPONENT
       - name: Publish docs
