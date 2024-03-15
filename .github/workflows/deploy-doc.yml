@@ -17,7 +17,7 @@ jobs:
         uses: actions/setup-java@387ac29b308b003ca37ba93a6cab5eb57c8f5f93
         with:
           distribution: 'temurin'
-          java-version: '17'
+          java-version: '8'
       - name: interpret version
         id: version
         #we only run the qualifyVersionGha task so that no other console printing can hijack this step's output
@@ -26,13 +26,6 @@ jobs:
         run: ./gradlew qualifyVersionGha
       - name: make javadoc
         run: ./gradlew javadoc
-      - name: upload javadoc
-        uses: actions/upload-artifact@v4
-        with:
-          name: javadoc
-          retention-days: 1
-          if-no-files-found: error
-          path: reactor-netty/build/docs
       - name: upload javadoc
         uses: actions/upload-artifact@v4
         with:
