@@ -44,8 +44,7 @@ jobs:
     needs: [ reactor-netty-core, build-doc ]
     uses: ./.github/workflows/_deploy-doc.yml
     secrets: inherit
-    permissions:
-        contents: write
+    permissions: write-all
     with:
       full-version: ${{ needs.reactor-netty-core.outputs.fullVersion }}
       version-type: ${{ needs.reactor-netty-core.outputs.versionType }}
