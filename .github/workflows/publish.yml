@@ -191,7 +191,7 @@ jobs:
       name: deploy-docs
       needs: [ reactor-netty-core, tagRelease, tagMilestone, deploySnapshot ]
       if: |
-        contains(needs.reactor-netty-core.result, 'success') &&
+        needs.reactor-netty-core.result == 'success' &&
         (needs.reactor-netty-core.outputs.versionType != 'RELEASE' || needs.tagRelease.result == 'success') &&
         (needs.reactor-netty-core.outputs.versionType != 'MILESTONE' || needs.tagMilestone.result == 'success') &&
         (needs.reactor-netty-core.outputs.versionType != 'SNAPSHOT' || needs.deploySnapshot.result == 'success') &&
