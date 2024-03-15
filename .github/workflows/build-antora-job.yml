@@ -47,7 +47,8 @@ jobs:
             - name: build antora
               run: ./gradlew antora -Pantora.playbook=${{ env.PLAYBOOK }}
             - name: Copy the cache to be included in the site
-              run: cp -rf docs/build/antora/inject-collector-cache-config-extension/.cache build/site/
+              run: |-
+                  [ -d docs/build/antora/inject-collector-cache-config-extension/.cache ] && cp -rf docs/build/antora/inject-collector-cache-config-extension/.cache build/site/
             - name: Upload site
               uses: actions/upload-artifact@v4
               with:
