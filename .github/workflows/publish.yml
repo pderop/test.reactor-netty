@@ -76,9 +76,6 @@ jobs:
 
   build-antora:
       uses: ./.github/workflows/build-antora-job.yml
-      with:
-        playbook: antora-playbook.yml
-        fetch-depth: 1
 
   #deploy the snapshot artifacts to Artifactory
   deploySnapshot:
