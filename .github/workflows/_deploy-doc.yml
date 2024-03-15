@@ -81,24 +81,16 @@ jobs:
           target-folder: docs
           clean: false
           force: true
-
-  cleanup:
-    runs-on: ubuntu-20.04
-    needs: [ deploy-doc ]
-    permissions:
-      contents: write
-    if: always()
-    steps:
       - name: cleanup javadoc artifact
-        uses: geekyeggo/delete-artifact@v4
+        if: always()
+        uses: geekyeggo/delete-artifact@v2
         with:
-          name: doc
+            name: doc
       - name: cleanup javadoc artifact
         if: always() && inputs.full-version != '' && inputs.version-type != ''
         uses: geekyeggo/delete-artifact@v4
         with:
-          name: javadoc
-
+            name: javadoc
 
 
 

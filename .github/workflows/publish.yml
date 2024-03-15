@@ -195,7 +195,6 @@ jobs:
         (needs.deploySnapshot.result == 'skipped' || needs.deploySnapshot.result == 'success')
       uses: ./.github/workflows/_deploy-doc.yml
       secrets: inherit
-      permissions: write-all
       with:
         full-version: ${{ needs.reactor-netty-core.outputs.fullVersion }}
         version-type: ${{ needs.reactor-netty-core.outputs.versionType }}
