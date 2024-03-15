@@ -39,6 +39,7 @@ jobs:
             > gh-pages-docs/.nojekyll
             mkdir -p gh-pages-docs/$COMPONENT/$FULL_VERSION/javadoc-api
             mkdir -p gh-pages-docs/$COMPONENT/$FULL_VERSION/reference/html
+            mkdir -p gh-pages-docs/$COMPONENT/$FULL_VERSION/reference/pdf
             cp -r tmp/javadoc/* gh-pages-docs/$COMPONENT/$FULL_VERSION/javadoc-api/
             cp -r tmp/site/* gh-pages-docs/$COMPONENT/$FULL_VERSION/reference/html/
             [ "$VERSION_TYPE" != "SNAPSHOT" ] && cp tmp/assembler/*/*/*.pdf gh-pages-docs/$COMPONENT/$FULL_VERSION/reference/pdf/reactor-netty-reference.pdf
