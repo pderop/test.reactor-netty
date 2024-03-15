@@ -11,6 +11,10 @@ on:
         required: false
         type: string
         default: '1'
+      build-refname:
+          required: false
+          type: string
+          default: ''
 
 jobs:
     build-antora:
@@ -19,6 +23,7 @@ jobs:
         env:
             PLAYBOOK: ${{ inputs.playbook }}
             FETCH_DEPTH: ${{ inputs.fetch-depth }}
+            BUILD_REFNAME: ${{ inputs.build-refname }}
         steps:
             - uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11
               with:
@@ -33,6 +38,12 @@ jobs:
               with:
                   distribution: 'temurin'
                   java-version: '17'
+            - name: Set up refname build
+              if: github.event.inputs.build-refname
+              run: |
+                  git fetch --depth 1 https://github.com/$GITHUB_REPOSITORY $BUILD_REFNAME
+                  echo BUILD_VERSION=$(git cat-file --textconv FETCH_HEAD:gradle.properties | sed -n '/^version=/ { s/^version=//;p }') >> $GITHUB_ENV
+                  echo BUILD_REFNAME=$BUILD_REFNAME >> $GITHUB_ENV
             - name: build antora
               run: ./gradlew antora -Pantora.playbook=${{ env.PLAYBOOK }}
             - name: Upload site
