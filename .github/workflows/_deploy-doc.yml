@@ -13,9 +13,11 @@ on:
       full-version: # if left empty, it means we'll build the reference doc which include latest major/snapshot versions
         required: false
         type: string
+        default: ''
       version-type: # if left empty, it means we'll build the reference doc which include latest major/snapshot versions
         required: false
         type: string
+        default: ''
 
 jobs:
   deploy-doc:
