@@ -192,9 +192,9 @@ jobs:
       needs: [ reactor-netty-core, tagRelease, tagMilestone, deploySnapshot ]
       if: |
         contains(needs.reactor-netty-core.result, 'success') &&
-        (!needs.tagRelease || contains(needs.tagRelease.result, 'success')) &&
-        (!needs.tagMilestone || contains(needs.tagMilestone.result, 'success')) &&
-        (!needs.deploySnapshot || contains(needs.deploySnapshot.result, 'success'))
+        (needs.reactor-netty-core.outputs.versionType != 'RELEASE' || contains(needs.tagRelease.result, 'success')) &&
+        (needs.reactor-netty-core.outputs.versionType != 'MILESTONE || contains(needs.tagMilestone.result, 'success')) &&
+        (needs.reactor-netty-core.outputs.versionType != 'SNAPSHOT' || contains(needs.deploySnapshot.result, 'success'))
       uses: ./.github/workflows/deploy-docs-job.yml
       secrets: inherit
       with:
