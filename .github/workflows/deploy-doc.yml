@@ -9,9 +9,18 @@ on:
         required: false
 
 jobs:
+  # build antora reference doc
   build-reference:
 #    if: github.repository_owner == 'reactor'
     uses: ./.github/workflows/_build-doc.yml
     with:
       build-refname: ${{ github.event.inputs.build-refname }}
       fetch-depth: 0
+
+  # deploy it to the site
+  deploy-reference:
+    uses: ./.github/workflows/_deploy-doc.yml
+    secrets: inherit
+    with:
+      component: netty
+
