@@ -187,6 +187,16 @@ jobs:
           git tag -m "Release version ${{ needs.reactor-netty-core.outputs.fullVersion }}" v${{ needs.reactor-netty-core.outputs.fullVersion }} ${{ github.sha }}
           git push --tags
 
+  debug:
+      name: debug
+      needs: [ reactor-netty-core, tagRelease, tagMilestone, deploySnapshot ]
+      steps:
+        - run: |-
+              echo "reactor-netty-core result: ${{ needs.reactor-netty-core.result }}"
+              echo "tagRelease result: ${{ needs.tagRelease.result }}"
+              echo "tagMilestone result: ${{ needs.tagMilestone.result }}"
+              echo "deploySnapshot result: ${{ needs.deploySnapshot.result }}"
+
   deploy-docs:
       name: deploy-docs
       needs: [ reactor-netty-core, tagRelease, tagMilestone, deploySnapshot ]
