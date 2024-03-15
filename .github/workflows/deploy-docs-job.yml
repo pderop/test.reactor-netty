@@ -44,6 +44,10 @@ jobs:
             cp -r tmp/javadoc/* gh-pages-docs/$COMPONENT/$FULL_VERSION/javadoc-api/
             cp -r tmp/site/* gh-pages-docs/$COMPONENT/$FULL_VERSION/reference/html/
             find tmp
+            echo "XX"
+            ls tmp/assembler/*/*
+            ls gh-pages-docs/$COMPONENT/$FULL_VERSION/reference
+            [ "$VERSION_TYPE" != "SNAPSHOT" ] && cp tmp/assembler/*/*/*.pdf gh-pages-docs/$COMPONENT/$FULL_VERSION/reference/pdf/
       - name: Publish docs
         uses: JamesIves/github-pages-deploy-action@v4
         with:
