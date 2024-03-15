@@ -1,4 +1,4 @@
-name: _build docs job
+name: _build antora job
 
 on:
   workflow_call:
