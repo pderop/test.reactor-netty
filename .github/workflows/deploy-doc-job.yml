@@ -51,17 +51,13 @@ jobs:
           distribution: 'temurin'
           java-version: '17'
       - name: Download autoln
-        uses: scheinbeck/downloadify@v1
-        with:
-            url: https://github.com/spring-io/autoln/releases/download/latest/autoln-1.0.0-SNAPSHOT.zip
-            destination: .
-      - name: Unzip autoln
-        run: unzip autoln-1.0.0-SNAPSHOT.zip
+        run: |
+            wget https://github.com/spring-io/autoln/releases/download/latest/autoln-1.0.0-SNAPSHOT.zip
+            unzip autoln-1.0.0-SNAPSHOT.zip
       - name: Run autoln
-        env:
-            AUTOLN: ./autoln-1.0.0-SNAPSHOT/bin/autoln
         run: |-
-            $AUTOLN print --project-dir gh-pages-docs/$COMPONENT
+            ./autoln-1.0.0-SNAPSHOT/bin/autolnprint --project-dir gh-pages-docs/$COMPONENT
+            ls -ltr gh-pages-docs/$COMPONENT
       - name: Publish docs
         uses: JamesIves/github-pages-deploy-action@v4
         with:
