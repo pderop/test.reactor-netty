@@ -1,4 +1,4 @@
-name: build docs job
+name: _build docs job
 
 on:
   workflow_call:

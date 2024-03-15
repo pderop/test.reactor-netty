@@ -1,4 +1,4 @@
-name: deploy doc job
+name: _deploy doc job
 
 on:
   workflow_call:
