@@ -9,9 +9,54 @@ on:
         required: false
 
 jobs:
-  build-reference:
-#    if: github.repository_owner == 'reactor'
+  # get current version, make javadoc, and upload it to github so we can later deploy it to the site
+  reactor-netty-core:
+    name: reactor-netty-core
+    runs-on: ubuntu-20.04
+    outputs:
+      versionType: ${{ steps.version.outputs.versionType }}
+      fullVersion: ${{ steps.version.outputs.fullVersion }}
+    steps:
+      - uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11
+      - name: setup java
+        uses: actions/setup-java@387ac29b308b003ca37ba93a6cab5eb57c8f5f93
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+      - name: interpret version
+        id: version
+        #we only run the qualifyVersionGha task so that no other console printing can hijack this step's output
+        #output: versionType, fullVersion
+        #fails if versionType is BAD, which interrupts the workflow
+        run: ./gradlew qualifyVersionGha
+      - name: make javadoc
+        run: ./gradlew javadoc
+      - name: upload javadoc
+        uses: actions/upload-artifact@v4
+        with:
+          name: javadoc
+          retention-days: 1
+          if-no-files-found: error
+          path: reactor-netty/build/docs
+      - name: upload javadoc
+        uses: actions/upload-artifact@v4
+        with:
+          name: javadoc
+          retention-days: 1
+          if-no-files-found: error
+          path: reactor-netty/build/docs
+
+  # build antora doc
+  build-doc:
     uses: ./.github/workflows/_build-doc.yml
+
+  # deploy doc + javadoc into the site
+  deploy-doc:
+#    if: github.repository_owner == 'reactor'
+    needs: [ reactor-netty-core, build-doc ]
+    uses: ./.github/workflows/_deploy-doc.yml
+    secrets: inherit
     with:
-      build-refname: ${{ github.event.inputs.build-refname }}
-      fetch-depth: 0
+      full-version: ${{ needs.reactor-netty-core.outputs.fullVersion }}
+      version-type: ${{ needs.reactor-netty-core.outputs.versionType }}
+      component: netty
