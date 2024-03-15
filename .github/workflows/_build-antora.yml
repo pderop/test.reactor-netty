@@ -45,7 +45,7 @@ jobs:
             - name: Copy the cache to be included in the site
               run: |-
                   [ -d docs/build/antora/inject-collector-cache-config-extension/.cache ] && cp -rf docs/build/antora/inject-collector-cache-config-extension/.cache docs/build/site/
-            - name: Upload site
+            - name: Upload doc
               uses: actions/upload-artifact@v4
               with:
                   name: doc
