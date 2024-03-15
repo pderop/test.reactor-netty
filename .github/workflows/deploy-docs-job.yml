@@ -35,6 +35,7 @@ jobs:
             path: tmp
       - name: Prepare gh-pages
         run: |-
+            set -x
             mkdir gh-pages-docs
             > gh-pages-docs/.nojekyll
             mkdir -p gh-pages-docs/$COMPONENT/$FULL_VERSION/javadoc-api
@@ -42,7 +43,7 @@ jobs:
             mkdir -p gh-pages-docs/$COMPONENT/$FULL_VERSION/reference/pdf
             cp -r tmp/javadoc/* gh-pages-docs/$COMPONENT/$FULL_VERSION/javadoc-api/
             cp -r tmp/site/* gh-pages-docs/$COMPONENT/$FULL_VERSION/reference/html/
-            [ "$VERSION_TYPE" != "SNAPSHOT" ] && cp tmp/assembler/*/*/*.pdf gh-pages-docs/$COMPONENT/$FULL_VERSION/reference/pdf/
+            find gh-pages-docs
       - name: Publish docs
         uses: JamesIves/github-pages-deploy-action@v4
         with:
