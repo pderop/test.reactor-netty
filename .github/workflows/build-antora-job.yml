@@ -13,8 +13,8 @@ on:
         default: '1'
 
 jobs:
-    build-docs:
-        name: build-docs
+    build-antora:
+        name: build-antora
         runs-on: ubuntu-20.04
         env:
             PLAYBOOK: ${{ inputs.playbook }}

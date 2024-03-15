@@ -74,8 +74,8 @@ jobs:
         id: reactor-netty-incubator-quic-checks
         run: echo "./gradlew reactor-netty-incubator-quic:check"
 
-  build-docs:
-      uses: ./.github/workflows/build-docs-job.yml
+  build-antora:
+      uses: ./.github/workflows/build-antora-job.yml
       with:
         playbook: antora-playbook.yml
         fetch-depth: 1
@@ -84,7 +84,7 @@ jobs:
   deploySnapshot:
     name: deploySnapshot
     runs-on: ubuntu-20.04
-    needs: [ reactor-netty-core, reactor-netty-http, reactor-netty-http-brave, reactor-netty-incubator-quic, build-docs ]
+    needs: [ reactor-netty-core, reactor-netty-http, reactor-netty-http-brave, reactor-netty-incubator-quic, build-antora ]
     if: needs.reactor-netty-core.outputs.versionType == 'SNAPSHOT'
     environment: snapshots
     steps:
@@ -186,19 +186,6 @@ jobs:
           git config --local user.email "${{ env.CI_COMMIT_EMAIL }}"
           git tag -m "Release version ${{ needs.reactor-netty-core.outputs.fullVersion }}" v${{ needs.reactor-netty-core.outputs.fullVersion }} ${{ github.sha }}
           git push --tags
-
-  debug:
-      name: debug
-      needs: [ reactor-netty-core, tagRelease, tagMilestone, deploySnapshot ]
-      runs-on: ubuntu-20.04
-      if: always()
-      steps:
-          - name: tag
-            run: |-
-              echo "reactor-netty-core result: ${{ needs.reactor-netty-core.result }}"
-              echo "tagRelease result: ${{ needs.tagRelease.result }}"
-              echo "tagMilestone result: ${{ needs.tagMilestone.result }}"
-              echo "deploySnapshot result: ${{ needs.deploySnapshot.result }}"
 
   deploy-docs:
       name: deploy-docs
