@@ -93,10 +93,10 @@ jobs:
         with:
           distribution: 'temurin'
           java-version: '8'
-      - name: download site
+      - name: download doc
         uses: actions/download-artifact@v4
         with:
-            name: site
+            name: doc
             path: docs/build
       - name: deploy
 #        env:
