@@ -194,7 +194,7 @@ jobs:
         needs.reactor-netty-core.result == 'success' &&
         (needs.tagRelease.result == 'skipped' || needs.tagRelease.result == 'success') &&
         (needs.tagMilestone.result == 'skipped' || needs.tagMilestone.result == 'success') &&
-        (needs.deploySnapshot.result == 'skipped' || needs.deploySnapshot.result == 'success') &&
+        (needs.deploySnapshot.result == 'skipped' || needs.deploySnapshot.result == 'success')
       uses: ./.github/workflows/deploy-docs-job.yml
       secrets: inherit
       with:
