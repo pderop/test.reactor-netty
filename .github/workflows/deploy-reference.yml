@@ -1,5 +1,6 @@
 name: build reference
 run-name: ${{ format('{0} ({1})', github.workflow, github.event.inputs.build-refname || 'all') }}
+
 on:
   workflow_dispatch:
     inputs:
