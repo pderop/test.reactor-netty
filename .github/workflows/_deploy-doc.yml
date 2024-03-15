@@ -83,12 +83,12 @@ jobs:
           force: true
       - name: cleanup javadoc artifact
         if: always()
-        uses: geekyeggo/delete-artifact@v3
+        uses: geekyeggo/delete-artifact@v2
         with:
             name: doc
       - name: cleanup javadoc artifact
         if: always() && inputs.full-version != '' && inputs.version-type != ''
-        uses: geekyeggo/delete-artifact@v3
+        uses: geekyeggo/delete-artifact@v2
         with:
             name: javadoc
 
