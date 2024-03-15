@@ -83,14 +83,19 @@ jobs:
           force: true
       - name: cleanup javadoc artifact
         if: always()
-        uses: geekyeggo/delete-artifact@v2
+        uses: jimschubert/delete-artifacts-action@v1
         with:
-            name: doc
+            log_level: 'debug'
+            artifact_name: doc
+            min_bytes: '0'
       - name: cleanup javadoc artifact
         if: always() && inputs.full-version != '' && inputs.version-type != ''
-        uses: geekyeggo/delete-artifact@v2
+      - name: Delete Artifact by Name
+        uses: jimschubert/delete-artifacts-action@v1
         with:
-            name: javadoc
+            log_level: 'debug'
+            artifact_name: javadoc
+            min_bytes: '0'
 
 
 
