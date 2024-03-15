@@ -35,7 +35,7 @@ jobs:
                   distribution: 'temurin'
                   java-version: '17'
             - name: Set up refname build
-              if: github.event.inputs.build-refname
+              if: inputs.build-refname
               run: |
                   git fetch --depth 1 https://github.com/$GITHUB_REPOSITORY $BUILD_REFNAME
                   echo BUILD_VERSION=$(git cat-file --textconv FETCH_HEAD:gradle.properties | sed -n '/^version=/ { s/^version=//;p }') >> $GITHUB_ENV
