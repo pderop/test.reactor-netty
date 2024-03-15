@@ -15,3 +15,4 @@ jobs:
     with:
       build-refname: ${{ github.event.inputs.build-refname }}
       fetch-depth: 0
+-

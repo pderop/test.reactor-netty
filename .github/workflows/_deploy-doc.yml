@@ -1,21 +1,21 @@
 name: _deploy doc job
 
+##
+# Reusable job used to deploy antota docs into the site.
+##
+
 on:
   workflow_call:
     inputs:
-      full-version:
-        required: true
-        type: string
-      version-type:
-        required: true
-        type: string
       component:
         required: true
         type: string
-      autoln:
-          required: false
-          type: boolean
-          default: true
+      full-version: # if left empty, it means we'll build the reference doc which include latest major/snapshot versions
+        required: false
+        type: string
+      version-type: # if left empty, it means we'll build the reference doc which include latest major/snapshot versions
+        required: false
+        type: string
 
 jobs:
   deploy-doc:
@@ -33,11 +33,13 @@ jobs:
           name: doc
           path: tmp
       - name: Download javadoc
+        if: github.event.inputs.full-version != '' && github.event.inputs.version-type != ''
         uses: actions/download-artifact@v4
         with:
             name: javadoc
             path: tmp
-      - name: Prepare gh-pages
+      - name: Prepare doc for a specific version
+        if: github.event.inputs.full-version != '' && github.event.inputs.version-type != ''
         run: |-
             mkdir gh-pages-docs
             > gh-pages-docs/.nojekyll
@@ -50,12 +52,19 @@ jobs:
                 pdf=$(find tmp/assembler -name "*.pdf" 2>/dev/null)
                 [ -n "$pdf" ] && cp $pdf gh-pages-docs/$COMPONENT/$FULL_VERSION/reference/pdf/
             fi
+      - name: Prepare reference doc
+        if: github.event.inputs.full-version == '' && github.event.inputs.version-type == ''
+        run: |-
+            mkdir gh-pages-docs
+            > gh-pages-docs/.nojekyll
+            mkdir -p gh-pages-docs/$COMPONENT/reference
+            cp -r tmp/site/* gh-pages-docs/$COMPONENT/reference/
       - uses: actions/setup-java@387ac29b308b003ca37ba93a6cab5eb57c8f5f93
         with:
           distribution: 'temurin'
           java-version: '17'
       - name: Auto ln
-        if: inputs.autoln
+        if: github.event.inputs.full-version != '' && github.event.inputs.version-type != ''
         run: |
             wget https://github.com/spring-io/autoln/releases/download/latest/autoln-1.0.0-SNAPSHOT.zip
             unzip autoln-1.0.0-SNAPSHOT.zip
