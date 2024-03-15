@@ -19,6 +19,7 @@ jobs:
 
   # deploy it to the site
   deploy-reference:
+    needs: [ build-reference ]
     uses: ./.github/workflows/_deploy-doc.yml
     secrets: inherit
     with:
