@@ -90,7 +90,6 @@ jobs:
             min_bytes: '0'
       - name: cleanup javadoc artifact
         if: always() && inputs.full-version != '' && inputs.version-type != ''
-      - name: Delete Artifact by Name
         uses: jimschubert/delete-artifacts-action@v1
         with:
             log_level: 'debug'
