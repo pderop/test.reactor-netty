@@ -187,9 +187,7 @@ jobs:
     steps:
       - uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11
       - name: tag
-        run: |
-#          git config --local user.name "${{ env.CI_COMMIT_AUTHOR }}"
-#          git config --local user.email "${{ env.CI_COMMIT_EMAIL }}"
+        run: |-
           git config --global user.name "${{ github.event.repository.name }}"
           git config --global user.email "$GITHUB_TRIGGERING_ACTOR@users.noreply.github.com"
           git tag -m "Release version ${{ needs.reactor-netty-core.outputs.fullVersion }}" v${{ needs.reactor-netty-core.outputs.fullVersion }} ${{ github.sha }}
