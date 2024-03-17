@@ -8,6 +8,6 @@ asciidoc:
     attributes:
         source-highlighter: rouge
         pdf-theme: ./pdf-theme.yml
-        pdf-dest: reactor-netty-reference-guide.pdf  # Set the desired output path here
+        pdf-dest: reactor-netty-reference-guide.pdf
 
 
