@@ -135,7 +135,7 @@ jobs:
   deployRelease:
     name: deployRelease
     runs-on: ubuntu-20.04
-    needs: [ reactor-netty-core, reactor-netty-http, reactor-netty-http-brave, reactor-netty-incubator-quic ]
+    needs: [ reactor-netty-core, reactor-netty-http, reactor-netty-http-brave, reactor-netty-incubator-quic, build-doc ]
     if: needs.reactor-netty-core.outputs.versionType == 'RELEASE'
     environment: releases
     steps:
@@ -152,7 +152,16 @@ jobs:
           ORG_GRADLE_PROJECT_signingPassword: ${{secrets.SIGNING_PASSPHRASE}}
           ORG_GRADLE_PROJECT_sonatypeUsername: ${{secrets.SONATYPE_USERNAME}}
           ORG_GRADLE_PROJECT_sonatypePassword: ${{secrets.SONATYPE_PASSWORD}}
-        run: echo "Release artifacts and deploy them to Artifactory"
+        run: |-
+            echo "Release artifacts and deploy them to Artifactory"
+            ./gradlew assemble publishToMavenLocal
+      - name: upload javadoc
+        uses: actions/upload-artifact@v4
+        with:
+            name: javadoc
+            retention-days: 1
+            if-no-files-found: error
+            path: reactor-netty/build/docs
 
   tagMilestone:
     name: Tag milestone
@@ -179,8 +188,10 @@ jobs:
       - uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11
       - name: tag
         run: |
-          git config --local user.name "${{ env.CI_COMMIT_AUTHOR }}"
-          git config --local user.email "${{ env.CI_COMMIT_EMAIL }}"
+#          git config --local user.name "${{ env.CI_COMMIT_AUTHOR }}"
+#          git config --local user.email "${{ env.CI_COMMIT_EMAIL }}"
+          git config --global user.name "${{ github.event.repository.name }}"
+          git config --global user.email "$GITHUB_TRIGGERING_ACTOR@users.noreply.github.com"
           git tag -m "Release version ${{ needs.reactor-netty-core.outputs.fullVersion }}" v${{ needs.reactor-netty-core.outputs.fullVersion }} ${{ github.sha }}
           git push --tags
 
