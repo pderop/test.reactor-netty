@@ -1,4 +1,4 @@
-name: deploy doc
+name: deploy reference doc
 run-name: ${{ format('{0} ({1})', github.workflow, github.event.inputs.build-refname || 'all') }}
 
 on:
