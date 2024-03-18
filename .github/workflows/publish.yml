@@ -75,7 +75,8 @@ jobs:
         run: echo "./gradlew reactor-netty-incubator-quic:check"
 
   build-doc:
-      uses: ./.github/workflows/_build-doc.yml
+      #uses: ./.github/workflows/_build-doc.yml
+      uses: pderop/test.reactor.netty/.github/workflows/_build-doc.yml@docs-build
 
   #deploy the snapshot artifacts to Artifactory
   deploySnapshot:
