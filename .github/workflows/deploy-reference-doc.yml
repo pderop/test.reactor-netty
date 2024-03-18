@@ -1,0 +1,21 @@
+name: deploy reference doc
+on:
+  workflow_dispatch:
+
+permissions:
+  actions: write
+
+jobs:
+  dispatch:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout docs-build
+        uses: actions/checkout@v4
+        with:
+          ref: docs-build
+
+      - name: Dispatch docs-build
+        run: gh workflow run deploy-reference-doc.yml -r $(git rev-parse --abbrev-ref HEAD)
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
