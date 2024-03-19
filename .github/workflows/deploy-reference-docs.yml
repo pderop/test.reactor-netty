@@ -1,0 +1,63 @@
+# Workflow used to build and deploy the reference site (without javadoc, in docs/netty/reference/
+
+name: deploy reference docs
+run-name: ${{ format('{0} ({1})', github.workflow, github.event.inputs.build-refname || 'all') }}
+
+on:
+  workflow_dispatch:
+    inputs:
+      build-refname:
+        description: Enter git refname to build (e.g., main, netty5). Leave empty for a full build.
+        required: false
+
+jobs:
+  env:
+    COMPONENT: netty
+  build:
+    if: github.repository_owner == 'pderop' #TODO replace by reactor
+    runs-on: ubuntu-20.04
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 5
+      - name: Set up Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: 3.3.0
+      - name: Install asciidoctor-pdf / rouge
+        run: gem install asciidoctor-pdf rouge
+      - name: Setup java 17
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+      - name: Set up refname (partial reference doc build)
+        if: inputs.build-refname
+        run: |
+          git fetch --depth 1 https://github.com/$GITHUB_REPOSITORY ${{ inputs.build-refname }}
+          echo BUILD_REFNAME=${{ inputs.build-refname }} >> $GITHUB_ENV
+          echo BUILD_VERSION=$(git cat-file --textconv FETCH_HEAD:gradle.properties | sed -n '/^version=/ { s/^version=//;p }') >> $GITHUB_ENV
+      - name: Build antora
+        run: ./gradlew antora
+      - name: Copy the cache to be included in the site
+        run: |-
+          [ -d docs/build/antora/inject-collector-cache-config-extension/.cache ] && cp -rf docs/build/antora/inject-collector-cache-config-extension/.cache docs/build/site/
+      - name: Prepare reference doc
+        run: |-
+          mkdir gh-pages-docs
+          > gh-pages-docs/.nojekyll
+          mkdir -p gh-pages-docs/$COMPONENT/reference
+          cp -r build/site/* gh-pages-docs/$COMPONENT/reference/
+      - name: Publish reference doc
+        uses: JamesIves/github-pages-deploy-action@v4
+        with:
+          token: ${{ secrets.DOCS_PAGES_TOKEN }}
+          repository-name: pderop/test-antora-pages #TODO use a secret
+          folder: gh-pages-docs
+          target-folder: docs
+          clean: false
+          force: true
+
+
+

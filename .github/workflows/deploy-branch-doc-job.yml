@@ -1,0 +1,81 @@
+name: deploy branch doc job
+
+on:
+  workflow_call:
+    inputs:
+      component:
+        required: true
+        type: string
+      full-version:
+        required: true
+        type: string
+      version-type:
+        required: true
+        type: string
+      docs-build-artifact:
+        required: true
+        type: string
+jobs:
+  deploy:
+    runs-on: ubuntu-20.04
+    env:
+      COMPONENT: ${{ inputs.component }}
+      FULL_VERSION: ${{ inputs.full-version }}
+      VERSION_TYPE: ${{ inputs.version-type }}
+      DOCS_BUILD_ARTIFACT: ${{ inputs.docs-build-artifact }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Setup java 8
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '8'
+      - name: Build javadoc
+        run: ./gradlew javadoc
+      - name: Download docs/build artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: ${{ env.DOCS_BUILD_ARTIFACT }}
+          path: tmp
+      - name: Prepare doc for a branch doc
+        run: |-
+          mkdir gh-pages-docs
+          > gh-pages-docs/.nojekyll
+          mkdir -p gh-pages-docs/$COMPONENT/$FULL_VERSION/javadoc-api
+          mkdir -p gh-pages-docs/$COMPONENT/$FULL_VERSION/reference/html
+          mkdir -p gh-pages-docs/$COMPONENT/$FULL_VERSION/reference/pdf
+          cp -r reactor-netty/build/docs/javadoc/* gh-pages-docs/$COMPONENT/$FULL_VERSION/javadoc-api/
+          cp -r tmp/site/* gh-pages-docs/$COMPONENT/$FULL_VERSION/reference/html/
+          if [ "$VERSION_TYPE" != "SNAPSHOT" ]; then
+              pdf=$(find tmp/assembler -name "*.pdf" 2>/dev/null)
+              [ -n "$pdf" ] && cp $pdf gh-pages-docs/$COMPONENT/$FULL_VERSION/reference/pdf/
+          fi
+      - name: Setup java 17
+        uses: actions/setup-java&v4
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+      - name: Setup symbolic links using autoln
+        run: |
+          wget https://github.com/spring-io/autoln/releases/download/latest/autoln-1.0.0-SNAPSHOT.zip
+          unzip autoln-1.0.0-SNAPSHOT.zip
+          ./autoln-1.0.0-SNAPSHOT/bin/autoln create --project-dir gh-pages-docs/$COMPONENT
+          ls -ltr gh-pages-docs/$COMPONENT
+      - name: Publish docs
+        uses: JamesIves/github-pages-deploy-action@v4
+        with:
+          token: ${{ secrets.DOCS_PAGES_TOKEN }}
+          repository-name: pderop/test-antora-pages # replace by a secret
+          folder: gh-pages-docs
+          target-folder: docs
+          clean: false
+          force: true
+      - name: Cleanup doc docs/build artifact
+        if: always()
+        uses: joutvhu/delete-artifact@v2
+        with:
+          name: ${{ env.DOCS_BUILD_ARTIFACT }}
+
+
+
