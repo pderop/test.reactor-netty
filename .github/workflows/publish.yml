@@ -75,7 +75,9 @@ jobs:
         run: echo "./gradlew reactor-netty-incubator-quic:check"
 
   build-doc:
-      uses: pderop/test.reactor-netty/.github/workflows/_build-doc.yml@docs-build
+      uses: pderop/test.reactor-netty/.github/workflows/build-branch-doc-job.yml@docs-build
+      with:
+          output-artifact: docs-build
 
   #deploy the snapshot artifacts to Artifactory
   deploySnapshot:
@@ -90,27 +92,20 @@ jobs:
         with:
           distribution: 'temurin'
           java-version: '8'
-      - name: download doc
+      - name: Download docs/build
         uses: actions/download-artifact@v4
         with:
-            name: doc
+            name: docs-build
             path: docs/build
       - name: deploy
 #        env:
 #          ORG_GRADLE_PROJECT_artifactory_publish_username: ${{secrets.ARTIFACTORY_SNAPSHOT_USERNAME}}
 #          ORG_GRADLE_PROJECT_artifactory_publish_password: ${{secrets.ARTIFACTORY_PASSWORD}}
         run: |
-          #./gradlew assemble artifactoryPublish -Partifactory_publish_contextUrl=https://repo.spring.io -Partifactory_publish_repoKey=libs-snapshot-local
-          ./gradlew assemble publishToMavenLocal
-      - name: upload javadoc
-        uses: actions/upload-artifact@v4
-        with:
-          name: javadoc
-          retention-days: 1
-          if-no-files-found: error
-          path: reactor-netty/build/docs
+          ./gradlew assemble reactor-netty
+          unzip -l reactor-netty/build/distributions/reactor-netty-${{ needs.reactor-netty-core.outputs.fullVersion }}-docs.zip
 
-  #sign the milestone artifacts and deploy them to Artifactory
+    #sign the milestone artifacts and deploy them to Artifactory
   deployMilestone:
     name: deployMilestone
     runs-on: ubuntu-20.04
@@ -123,13 +118,21 @@ jobs:
         with:
           distribution: 'temurin'
           java-version: '8'
+      - name: Download docs/build
+        uses: actions/download-artifact@v4
+        with:
+            name: docs-build
+            path: docs/build
       - name: deploy
         env:
           ORG_GRADLE_PROJECT_artifactory_publish_username: ${{secrets.ARTIFACTORY_USERNAME}}
           ORG_GRADLE_PROJECT_artifactory_publish_password: ${{secrets.ARTIFACTORY_PASSWORD}}
           ORG_GRADLE_PROJECT_signingKey: ${{secrets.SIGNING_KEY}}
           ORG_GRADLE_PROJECT_signingPassword: ${{secrets.SIGNING_PASSPHRASE}}
-        run: echo "deploy milestone artifacts to artifactory"
+        run: |-
+          echo "deploy milestone artifacts to artifactory"
+          ./gradlew assemble reactor-netty
+          unzip -l reactor-netty/build/distributions/reactor-netty-${{ needs.reactor-netty-core.outputs.fullVersion }}-docs.zip
 
   #sign the release artifacts and deploy them to Artifactory
   deployRelease:
@@ -144,10 +147,10 @@ jobs:
         with:
           distribution: 'temurin'
           java-version: '8'
-      - name: download doc
+      - name: Download docs/build
         uses: actions/download-artifact@v4
         with:
-            name: doc
+            name: docs-build
             path: docs/build
       - name: deploy
 #        env:
@@ -159,14 +162,8 @@ jobs:
 #          ORG_GRADLE_PROJECT_sonatypePassword: ${{secrets.SONATYPE_PASSWORD}}
         run: |-
             echo "Release artifacts and deploy them to Artifactory"
-            ./gradlew assemble publishToMavenLocal
-      - name: upload javadoc
-        uses: actions/upload-artifact@v4
-        with:
-            name: javadoc
-            retention-days: 1
-            if-no-files-found: error
-            path: reactor-netty/build/docs
+            ./gradlew assemble reactor-netty
+            unzip -l reactor-netty/build/distributions/reactor-netty-${{ needs.reactor-netty-core.outputs.fullVersion }}-docs.zip
 
   tagMilestone:
     name: Tag milestone
@@ -198,7 +195,7 @@ jobs:
           git tag -m "Release version ${{ needs.reactor-netty-core.outputs.fullVersion }}" v${{ needs.reactor-netty-core.outputs.fullVersion }} ${{ github.sha }}
           git push --tags
 
-  deploy-doc:
+  deploy-branch-doc:
       name: deploy-doc
       needs: [ reactor-netty-core, tagRelease, tagMilestone, deploySnapshot ]
       if: |
@@ -207,12 +204,13 @@ jobs:
         (needs.tagRelease.result == 'skipped' || needs.tagRelease.result == 'success') &&
         (needs.tagMilestone.result == 'skipped' || needs.tagMilestone.result == 'success') &&
         (needs.deploySnapshot.result == 'skipped' || needs.deploySnapshot.result == 'success')
-      uses: pderop/test.reactor-netty/.github/workflows/_deploy-doc.yml@docs-build
+      uses: pderop/test.reactor-netty/.github/workflows/deploy-branch-doc.yml@docs-build
       secrets: inherit
       with:
+        component: netty
         full-version: ${{ needs.reactor-netty-core.outputs.fullVersion }}
         version-type: ${{ needs.reactor-netty-core.outputs.versionType }}
-        component: netty
+        docs-build-artifact: docs-build
 
 # For Gradle configuration of signing, see https://docs.gradle.org/current/userguide/signing_plugin.html#sec:in-memory-keys
 # publishMavenJavaPublicationToSonatypeRepository only sends to a staging repository

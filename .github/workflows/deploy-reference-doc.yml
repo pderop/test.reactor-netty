@@ -1,4 +1,4 @@
-name: deploy reference docs
+name: deploy reference doc
 on:
   workflow_dispatch:
 
@@ -17,6 +17,6 @@ jobs:
           fetch-depth: 1
 
       - name: Dispatch (partial build)
-        run: gh workflow run deploy-reference-docs.yml -r $(git rev-parse --abbrev-ref HEAD) -f build-refname=${{ github.ref_name }}
+        run: gh workflow run deploy-reference-doc.yml -r $(git rev-parse --abbrev-ref HEAD) -f build-refname=${{ github.ref_name }}
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
