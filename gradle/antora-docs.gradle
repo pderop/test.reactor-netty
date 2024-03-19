@@ -18,6 +18,15 @@ antora {
 	version = '3.2.0-alpha.4'
 	playbook = findProperty('antora.playbook') ?: "antora-playbook.yml"
 	options = ['--clean', '--stacktrace']
+
+	// Enable antora pdf extension only if the -Ppdf-extension is set
+	// (note that the asciidoctor-pdf command must available in this case)
+	boolean enablePdfExtension = project.hasProperty('pdf-extension')
+
+	if (enablePdfExtension) {
+		options.add('--extension=pdf-extension')
+	}
+
 	environment = [
 			'ALGOLIA_API_KEY'   : 'da671ceec1f84f80f280884a6a91bde5',
 			'ALGOLIA_APP_ID'    : 'TGS4XRGX3V',

@@ -5,7 +5,9 @@ antora:
     - require: '@springio/antora-extensions/inject-collector-cache-config-extension'
     - '@antora/collector-extension'
     - '@antora/atlas-extension'
-    - '@antora/pdf-extension'
+    - id: pdf-extension # pdf-extension is enabled from antora-docs.gradle
+      require: '@antora/pdf-extension'
+      enabled: false
     - require: '@springio/antora-extensions/root-component-extension'
       root_component_name: 'reactor-netty'
 site:
