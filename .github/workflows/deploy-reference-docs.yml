@@ -8,14 +8,15 @@ permissions:
 jobs:
   build:
     runs-on: ubuntu-latest
+    #if: github.repository_owner == 'reactor'
     steps:
       - name: Checkout docs-build
         uses: actions/checkout@v4
         with:
           ref: docs-build
+          fetch-depth: 1
 
-      - name: Dispatch docs-build
-        run: gh workflow run deploy-reference-doc.yml -r $(git rev-parse --abbrev-ref HEAD)
+      - name: Dispatch (partial build)
+        run: gh workflow run deploy-reference-docs.yml -r $(git rev-parse --abbrev-ref HEAD) -f build-refname=${{ github.ref_name }}
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
