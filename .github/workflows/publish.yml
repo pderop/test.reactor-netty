@@ -204,7 +204,7 @@ jobs:
         (needs.tagRelease.result == 'skipped' || needs.tagRelease.result == 'success') &&
         (needs.tagMilestone.result == 'skipped' || needs.tagMilestone.result == 'success') &&
         (needs.deploySnapshot.result == 'skipped' || needs.deploySnapshot.result == 'success')
-      uses: pderop/test.reactor-netty/.github/workflows/deploy-branch-doc.yml@docs-build
+      uses: pderop/test.reactor-netty/.github/workflows/deploy-branch-doc-job.yml@docs-build
       secrets: inherit
       with:
         component: netty
