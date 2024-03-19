@@ -196,10 +196,11 @@ jobs:
           git push --tags
 
   deploy-branch-doc:
-      needs: [ reactor-netty-core, tagRelease, tagMilestone, deploySnapshot ]
+      needs: [ reactor-netty-core, build-branch-doc, tagRelease, tagMilestone, deploySnapshot ]
       if: |
         always() &&
         needs.reactor-netty-core.result == 'success' &&
+        needs.build-branch-doc == 'success' &&
         (needs.tagRelease.result == 'skipped' || needs.tagRelease.result == 'success') &&
         (needs.tagMilestone.result == 'skipped' || needs.tagMilestone.result == 'success') &&
         (needs.deploySnapshot.result == 'skipped' || needs.deploySnapshot.result == 'success')
