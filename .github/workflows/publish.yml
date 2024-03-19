@@ -102,7 +102,7 @@ jobs:
 #          ORG_GRADLE_PROJECT_artifactory_publish_username: ${{secrets.ARTIFACTORY_SNAPSHOT_USERNAME}}
 #          ORG_GRADLE_PROJECT_artifactory_publish_password: ${{secrets.ARTIFACTORY_PASSWORD}}
         run: |
-          ./gradlew assemble reactor-netty
+          ./gradlew reactor-netty:build
           unzip -l reactor-netty/build/distributions/reactor-netty-${{ needs.reactor-netty-core.outputs.fullVersion }}-docs.zip
 
     #sign the milestone artifacts and deploy them to Artifactory
@@ -131,7 +131,7 @@ jobs:
           ORG_GRADLE_PROJECT_signingPassword: ${{secrets.SIGNING_PASSPHRASE}}
         run: |-
           echo "deploy milestone artifacts to artifactory"
-          ./gradlew assemble reactor-netty
+          ./gradlew reactor-netty:build
           unzip -l reactor-netty/build/distributions/reactor-netty-${{ needs.reactor-netty-core.outputs.fullVersion }}-docs.zip
 
   #sign the release artifacts and deploy them to Artifactory
@@ -162,7 +162,7 @@ jobs:
 #          ORG_GRADLE_PROJECT_sonatypePassword: ${{secrets.SONATYPE_PASSWORD}}
         run: |-
             echo "Release artifacts and deploy them to Artifactory"
-            ./gradlew assemble reactor-netty
+            ./gradlew reactor-netty:build
             unzip -l reactor-netty/build/distributions/reactor-netty-${{ needs.reactor-netty-core.outputs.fullVersion }}-docs.zip
 
   tagMilestone:
