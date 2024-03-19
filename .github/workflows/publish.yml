@@ -74,7 +74,7 @@ jobs:
         id: reactor-netty-incubator-quic-checks
         run: echo "./gradlew reactor-netty-incubator-quic:check"
 
-  build-doc:
+  build-branch-doc:
       uses: pderop/test.reactor-netty/.github/workflows/build-branch-doc-job.yml@docs-build
       with:
           output-artifact: docs-build
@@ -83,7 +83,7 @@ jobs:
   deploySnapshot:
     name: deploySnapshot
     runs-on: ubuntu-20.04
-    needs: [ reactor-netty-core, reactor-netty-http, reactor-netty-http-brave, reactor-netty-incubator-quic, build-doc ]
+    needs: [ reactor-netty-core, reactor-netty-http, reactor-netty-http-brave, reactor-netty-incubator-quic, build-branch-doc ]
     if: needs.reactor-netty-core.outputs.versionType == 'SNAPSHOT'
     environment: snapshots
     steps:
@@ -109,7 +109,7 @@ jobs:
   deployMilestone:
     name: deployMilestone
     runs-on: ubuntu-20.04
-    needs: [ reactor-netty-core, reactor-netty-http, reactor-netty-http-brave, reactor-netty-incubator-quic ]
+    needs: [ reactor-netty-core, reactor-netty-http, reactor-netty-http-brave, reactor-netty-incubator-quic, build-branch-doc ]
     if: needs.reactor-netty-core.outputs.versionType == 'MILESTONE'
     environment: releases
     steps:
@@ -138,7 +138,7 @@ jobs:
   deployRelease:
     name: deployRelease
     runs-on: ubuntu-20.04
-    needs: [ reactor-netty-core, reactor-netty-http, reactor-netty-http-brave, reactor-netty-incubator-quic, build-doc ]
+    needs: [ reactor-netty-core, reactor-netty-http, reactor-netty-http-brave, reactor-netty-incubator-quic, build-branch-doc ]
     if: needs.reactor-netty-core.outputs.versionType == 'RELEASE'
     environment: releases
     steps:
@@ -196,7 +196,6 @@ jobs:
           git push --tags
 
   deploy-branch-doc:
-      name: deploy-doc
       needs: [ reactor-netty-core, tagRelease, tagMilestone, deploySnapshot ]
       if: |
         always() &&
