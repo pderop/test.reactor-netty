@@ -1,7 +1,7 @@
-# Workflow used to build and deploy the reference site (without javadoc, in docs/netty/reference/
-
 name: deploy reference docs
 run-name: ${{ format('{0} ({1})', github.workflow, github.event.inputs.build-refname || 'all') }}
+
+# Workflow used to build and deploy the reference site (without javadoc, in docs/netty/reference/
 
 on:
   workflow_dispatch:
