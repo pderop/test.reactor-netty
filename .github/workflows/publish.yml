@@ -165,13 +165,6 @@ jobs:
             ./gradlew reactor-netty:build
             unzip -l reactor-netty/build/distributions/reactor-netty-${{ needs.reactor-netty-core.outputs.fullVersion }}-docs.zip
       - name: deploy docs
-        uses: pderop/test.reactor-netty/.github/workflows/deploy-branch-doc-job.yml@docs-build
-        secrets: inherit
-        with:
-          component: netty
-          full-version: ${{ needs.reactor-netty-core.outputs.fullVersion }}
-          version-type: ${{ needs.reactor-netty-core.outputs.versionType }}
-          docs-build-artifact: docs-build
 
   tagMilestone:
     name: Tag milestone
@@ -203,21 +196,21 @@ jobs:
           git tag -m "Release version ${{ needs.reactor-netty-core.outputs.fullVersion }}" v${{ needs.reactor-netty-core.outputs.fullVersion }} ${{ github.sha }}
           git push --tags
 
-#  deploy-branch-doc:
-#      needs: [ reactor-netty-core, tagRelease, tagMilestone, deploySnapshot ]
-#      if: |
-#        always() &&
-#        needs.reactor-netty-core.result == 'success' &&
-#        (needs.tagRelease.result == 'skipped' || needs.tagRelease.result == 'success') &&
-#        (needs.tagMilestone.result == 'skipped' || needs.tagMilestone.result == 'success') &&
-#        (needs.deploySnapshot.result == 'skipped' || needs.deploySnapshot.result == 'success')
-#      uses: pderop/test.reactor-netty/.github/workflows/deploy-branch-doc-job.yml@docs-build
-#      secrets: inherit
-#      with:
-#        component: netty
-#        full-version: ${{ needs.reactor-netty-core.outputs.fullVersion }}
-#        version-type: ${{ needs.reactor-netty-core.outputs.versionType }}
-#        docs-build-artifact: docs-build
+  deploy-branch-doc:
+      needs: [ reactor-netty-core, tagRelease, tagMilestone, deploySnapshot ]
+      if: |
+        always() &&
+        needs.reactor-netty-core.result == 'success' &&
+        (needs.tagRelease.result == 'skipped' || needs.tagRelease.result == 'success') &&
+        (needs.tagMilestone.result == 'skipped' || needs.tagMilestone.result == 'success') &&
+        (needs.deploySnapshot.result == 'skipped' || needs.deploySnapshot.result == 'success')
+      uses: pderop/test.reactor-netty/.github/workflows/deploy-branch-doc-job.yml@docs-build
+      secrets: inherit
+      with:
+        component: netty
+        full-version: ${{ needs.reactor-netty-core.outputs.fullVersion }}
+        version-type: ${{ needs.reactor-netty-core.outputs.versionType }}
+        docs-build-artifact: docs-build
 
 # For Gradle configuration of signing, see https://docs.gradle.org/current/userguide/signing_plugin.html#sec:in-memory-keys
 # publishMavenJavaPublicationToSonatypeRepository only sends to a staging repository
