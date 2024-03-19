@@ -1,4 +1,4 @@
-name: deploy reference doc
+name: deploy reference docs
 on:
   workflow_dispatch:
 
