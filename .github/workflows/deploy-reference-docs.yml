@@ -48,7 +48,7 @@ jobs:
           mkdir gh-pages-docs
           > gh-pages-docs/.nojekyll
           mkdir -p gh-pages-docs/$COMPONENT/reference
-          cp -r build/site/* gh-pages-docs/$COMPONENT/reference/
+          cp -r docs/build/site/* gh-pages-docs/$COMPONENT/reference/
       - name: Publish reference doc
         uses: JamesIves/github-pages-deploy-action@v4
         with:
