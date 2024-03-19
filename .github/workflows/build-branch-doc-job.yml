@@ -14,10 +14,10 @@ jobs:
             OUTPUT_ARTIFACT: ${{ inputs.output-artifact }}
         steps:
             - uses: actions/checkout@v4
-#            - name: Set up ruby
-#              uses: ruby/setup-ruby@v1
-#              with:
-#                  ruby-version: 3.3.0
+            - name: Set up ruby
+              uses: ruby/setup-ruby@v1
+              with:
+                  ruby-version: 3.3.0
 #            - name: Install asciidoctor-pdf / rouge
 #              run: gem install asciidoctor-pdf rouge
             - name: Setup java 17
