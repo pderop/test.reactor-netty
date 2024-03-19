@@ -11,11 +11,11 @@ on:
         required: false
 
 jobs:
-  env:
-    COMPONENT: netty
   build:
     if: github.repository_owner == 'pderop' #TODO replace by reactor
     runs-on: ubuntu-20.04
+    env:
+      COMPONENT: netty
     steps:
       - name: Checkout
         uses: actions/checkout@v4
