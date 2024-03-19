@@ -164,7 +164,6 @@ jobs:
             echo "Release artifacts and deploy them to Artifactory"
             ./gradlew reactor-netty:build
             unzip -l reactor-netty/build/distributions/reactor-netty-${{ needs.reactor-netty-core.outputs.fullVersion }}-docs.zip
-      - name: deploy docs
 
   tagMilestone:
     name: Tag milestone
