@@ -36,7 +36,7 @@ asciidoc:
 urls:
   latest_version_segment_strategy: redirect:to
   latest_version_segment: ''
-  redirect_facility: httpd
+  redirect_facility: static # in pulsar, they use "httpd" because the doc is pushed to apache, not gh-pages
 runtime:
   log:
     failure_level: warn
