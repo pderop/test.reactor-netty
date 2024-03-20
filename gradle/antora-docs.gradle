@@ -14,17 +14,31 @@
  * limitations under the License.
  */
 
+def isCommandAvailable(String command) {
+	def result = exec {
+		commandLine 'which', command
+		ignoreExitValue true
+		standardOutput = new ByteArrayOutputStream()
+		errorOutput = new ByteArrayOutputStream()
+	}
+	return result.exitValue == 0
+}
+
 antora {
 	version = '3.2.0-alpha.4'
 	playbook = findProperty('antora.playbook') ?: "antora-playbook.yml"
 	options = ['--clean', '--stacktrace']
 
-	// Enable antora pdf extension only if the -Ppdf-extension is set
-	// (note that the asciidoctor-pdf command must available in this case)
-	boolean enablePdfExtension = project.hasProperty('pdf-extension')
+	def version = project.version
+	def forcePdf = project.hasProperty('forcePdf')
 
-	if (enablePdfExtension) {
-		options.add('--extension=pdf-extension')
+	if (!version.endsWith("-SNAPSHOT") || forcePdf) {
+		if (isCommandAvailable('asciidoctor-pdf')) {
+			logger.log(LogLevel.DEBUG, "enabling antora pdf-extension")
+			options.add('--extension=pdf-extension')
+		} else {
+			logger.lifecycle("PDF not generated, asciidoctor-pdf not found from the PATH.")
+		}
 	}
 
 	environment = [
