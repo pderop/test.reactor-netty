@@ -15,7 +15,7 @@ content:
     - url: https://github.com/pderop/test.reactor-netty
       branches:
         - 'main'
-        - '1.1.x'
+#        - '1.1.x'
       tags:
         - 'v1.1.*'
         - 'v1.2.*'
