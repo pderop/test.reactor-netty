@@ -56,7 +56,7 @@ jobs:
           repository-name: pderop/test-antora-pages #TODO use a secret
           folder: gh-pages-docs
           target-folder: docs
-          clean: false
+          clean: true
           force: true
 
 
