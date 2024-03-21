@@ -73,8 +73,9 @@ jobs:
           force: true
       - name: Cleanup doc docs/build artifact
         if: always()
-        uses: MichaelMelena/remove-artifacts@v1
+        uses: joernott/rm-artifacts@v1
         with:
-          artifacts: ${{ env.DOCS_BUILD_ARTIFACT }}
+          name: ${{ env.DOCS_BUILD_ARTIFACT }}
+          failOnError: false
 
 
