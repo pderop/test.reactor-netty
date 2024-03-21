@@ -50,4 +50,3 @@ ui:
   bundle:
     url: https://github.com/reactor/antora-ui-projectreactor/releases/download/latest/ui-bundle.zip
     snapshot: true
-

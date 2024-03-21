@@ -6,5 +6,4 @@
 * xref:http-client.adoc[]
 * xref:udp-server.adoc[]
 * xref:udp-client.adoc[]
-* xref:observability.adoc[]
-* xref:faq.adoc[]
+* xref:appendices.adoc[]

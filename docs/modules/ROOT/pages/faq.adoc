@@ -1,5 +1,5 @@
 [[faq]]
-= Frequently Asked Questions
+== Frequently Asked Questions
 
 This section covers the following content:
 
@@ -10,16 +10,16 @@ This section covers the following content:
 * xref:faq.adoc#faq.connection-closed[How can I debug "Connection prematurely closed BEFORE response"?]
 
 [[faq.proxy-connect-method]]
-== Connection to the proxy cannot be established
+=== Connection to the proxy cannot be established
 include::partial$proxy.adoc[tag=proxy-connect-method]
 
 [[faq.logging-prefix]]
-== What is it meaning of the information that is prepended to every log record?
+=== What is it meaning of the information that is prepended to every log record?
 Reactor Netty adds information for the connection at the beginning of every log record (when this is possible).
 There is a slight difference in the details for the connection when you use `TCP`, `UDP`, `HTTP/1.1` or `HTTP/2`.
 
 [[tcp-and-udp]]
-=== TCP and UDP
+==== TCP and UDP
 In case of `TCP` and `UDP`, the following is added at the beginning of every log record: the id of the underlying connection, local and remote addresses.
 
 [source,text,indent=0]
@@ -38,7 +38,7 @@ Format
 ----
 
 [[http/1-1]]
-=== HTTP/1.1
+==== HTTP/1.1
 In case of `HTTP/1.1`, the following is added at the beginning of every log record: the id of the underlying connection,
 the serial number of the request received on that connection, local and remote addresses.
 
@@ -59,7 +59,7 @@ Format
 ----
 
 [[http/2]]
-=== HTTP/2
+==== HTTP/2
 In case of `HTTP/2`, the following is added at the beginning of every log record: the id of the underlying connection,
 local and remote addresses, the id of the stream received on that connection.
 
@@ -80,13 +80,13 @@ Format
 ----
 
 [[faq.logging-correlation]]
-== How can I extract all log records for a particular HTTP request?
+=== How can I extract all log records for a particular HTTP request?
 Reactor Netty adds information for the connection at the beginning of every log record (when this is possible).
 Use the id of the connection in order to extract all log records for a particular HTTP request.
 For more information see xref:faq.adoc#faq.logging-prefix[What is it meaning of the information that is prepended to every log record?]
 
 [[faq.memory-leaks]]
-== How can I debug a memory leak?
+=== How can I debug a memory leak?
 By default, Reactor Netty uses direct memory as this is more performant
 when there are many native I/O operations (working with sockets), as this can remove the copying operations.
 As allocation and deallocation are expensive operations, Reactor Netty also uses pooled buffers by default.
@@ -110,7 +110,7 @@ NOTE: Consider reducing the used memory when debugging memory leak issues (e.g `
 The less memory the application has, the sooner the memory leak will happen.
 
 [[faq.connection-closed]]
-== How can I debug "Connection prematurely closed BEFORE response"?
+=== How can I debug "Connection prematurely closed BEFORE response"?
 By default, Reactor Netty clients use connection pooling. When a connection is acquired from the connection pool, it is checked to see whether it is still open.
 However, the connection can be closed at any time after the acquisition. There are many reasons that can cause a connection to be closed.
 In most cases, the client might not send directly to the server. Instead, there might be other network components (proxies, load balancers, and so on) between them.

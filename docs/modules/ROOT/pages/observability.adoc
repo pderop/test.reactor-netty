@@ -1,9 +1,9 @@
 [[observability]]
-= Observability
+== Observability
 :page-section-summary-toc: 1
 
 [[observability-metadata]]
-== Observability metadata
+=== Observability metadata
 
 include::partial$_metrics.adoc[]
 
