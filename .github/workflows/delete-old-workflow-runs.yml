@@ -1,6 +1,8 @@
 name: delete old workflow runs
 on:
     workflow_dispatch:
+    schedule:
+        - cron: '0 0 * * *'  # This cron schedule triggers the workflow every night at midnight (UTC time)
 
 jobs:
     del_runs:
