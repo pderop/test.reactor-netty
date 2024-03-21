@@ -75,6 +75,9 @@ jobs:
       - name: Get docs-build artifact id
         if: always()
         run: | # grab the id of the artifact we just created
+          gh api -H 'Accept: application/vnd.github+json' ${{github.event.workflow_run.artifacts_url}}
+          gh api -H 'Accept: application/vnd.github+json' ${{github.event.workflow_run.artifacts_url}} --jq .artifacts[].id
+          gh api -H 'Accept: application/vnd.github+json' ${{github.event.workflow_run.artifacts_url}} --jq ".artifacts[] | select(.name == \"$DOCS_BUILD_ARTIFACT\") | .id")
           echo "ARTIFACT_ID=$(gh api -H 'Accept: application/vnd.github+json' ${{github.event.workflow_run.artifacts_url}} --jq .artifacts[].id)" >> $GITHUB_ENV
         env:
           GITHUB_TOKEN: ${{ secrets.GH_REPO_ACCESS_PAT }}
