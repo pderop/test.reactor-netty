@@ -25,7 +25,7 @@ jobs:
               with:
                   distribution: 'temurin'
                   java-version: '17'
-            - name: Build antora
+            - name: Build antora -PforcePdf
               run: ./gradlew antora
             - name: Copy the cache to be included in the site
               run: |-
