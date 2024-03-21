@@ -1,14 +1,6 @@
 [[faq]]
 == Frequently Asked Questions
 
-This section covers the following content:
-
-* xref:faq.adoc#faq.proxy-connect-method[Connection to the proxy cannot be established]
-* xref:faq.adoc#faq.logging-prefix[What is it meaning of the information that is prepended to every log record?]
-* xref:faq.adoc#faq.logging-correlation[How can I extract all log records for a particular HTTP request?]
-* xref:faq.adoc#faq.memory-leaks[How can I debug a memory leak?]
-* xref:faq.adoc#faq.connection-closed[How can I debug "Connection prematurely closed BEFORE response"?]
-
 [[faq.proxy-connect-method]]
 === Connection to the proxy cannot be established
 include::partial$proxy.adoc[tag=proxy-connect-method]
