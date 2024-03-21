@@ -73,9 +73,11 @@ jobs:
           force: true
       - name: Cleanup doc docs/build artifact
         if: always()
-        uses: joutvhu/delete-artifact@v1 #v2 is not working with GHES
+        uses: jimschubert/delete-artifacts-action@v1
         with:
-          name: ${{ env.DOCS_BUILD_ARTIFACT }}
+          log_level: 'debug'
+          artifact_name: ${{ env.DOCS_BUILD_ARTIFACT }}
+          min_bytes: '0'
 
 
 
