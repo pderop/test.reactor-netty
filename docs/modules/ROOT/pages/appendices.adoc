@@ -1,0 +1,9 @@
+= Appendices
+:sectnums:
+:toc:
+
+[appendix]
+include::faq.adoc[]
+
+[appendix]
+include::observability.adoc[]
