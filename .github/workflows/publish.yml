@@ -198,6 +198,7 @@ jobs:
 
   deploy-branch-doc:
       needs: [ reactor-netty-core, tagRelease, tagMilestone, deploySnapshot ]
+      permissions: write-all
       if: |
         always() &&
         needs.reactor-netty-core.result == 'success' &&
