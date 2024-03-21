@@ -72,11 +72,12 @@ jobs:
           target-folder: docs
           clean: false
           force: true
-      - name: Delete docs/build artifact
+      - name: Delete docs-build artifact
         if: always()
         run: |-
           set -x
-          ARTIFACTS_URL="https://api.github.com/repos/${GITHUB_REPOSITORY}/actions/runs/${GITHUB_RUN_ID}/artifacts"
+          ARTIFACTS_URL="/repos/${GITHUB_REPOSITORY}/actions/runs/${GITHUB_RUN_ID}/artifacts"
+          gh api -H 'Accept: application/vnd.github+json' $ARTIFACTS_URL | jq -r '. | select(.name == "'$DOCS_BUILD_ARTIFACT'") | .id'
           ARTIFACT_ID=$(gh api -H 'Accept: application/vnd.github+json' $ARTIFACTS_URL | jq -r '. | select(.name == "'$DOCS_BUILD_ARTIFACT'") | .id')
           echo "XX: ARTIFACT_ID=$ARTIFACT_ID"
           gh api --method DELETE -H 'Accept: application/vnd.github+json' /repos/${{github.repository}}/actions/artifacts/$ARTIFACT_ID}
