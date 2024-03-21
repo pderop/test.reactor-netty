@@ -72,16 +72,13 @@ jobs:
           target-folder: docs
           clean: false
           force: true
-      - name: Get docs-build artifact id
+      - name: Delete docs/build artifact
         if: always()
-        run: | # grab the id of the artifact we just created
-          gh api -H 'Accept: application/vnd.github+json' ${{github.event.workflow_run.artifacts_url}} | jq -r '. | select(.name == "'$DOCS_BUILD_ARTIFACT'") | .id'
-          echo "ARTIFACT_ID=$(gh api -H 'Accept: application/vnd.github+json' ${{github.event.workflow_run.artifacts_url}} | jq -r '. | select(.name == "'$DOCS_BUILD_ARTIFACT'") | .id')" >> $GITHUB_ENV
+        run: |-
+          set -x
+          ARTIFACT_ID=$(gh api -H 'Accept: application/vnd.github+json' ${{github.event.workflow_run.artifacts_url}} | jq -r '. | select(.name == "'$DOCS_BUILD_ARTIFACT'") | .id')
+          echo "XX: ARTIFACT_ID=$ARTIFACT_ID"
+          gh api --method DELETE -H 'Accept: application/vnd.github+json' /repos/${{github.repository}}/actions/artifacts/$ARTIFACT_ID}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      - name: Delete docs/build artifact
-        run: |-
-          gh api --method DELETE -H 'Accept: application/vnd.github+json' /repos/${{github.repository}}/actions/artifacts/${{env.ARTIFACT_ID}}
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
