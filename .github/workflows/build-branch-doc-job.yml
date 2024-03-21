@@ -31,7 +31,7 @@ jobs:
               run: |-
                   [ -d docs/build/antora/inject-collector-cache-config-extension/.cache ] && cp -rf docs/build/antora/inject-collector-cache-config-extension/.cache docs/build/site/
             - name: Upload docs/build to output artifact
-              uses: actions/upload-artifact@v4
+              uses: actions/upload-artifact@v3 # don't use v4, delete-artifact@v1 only supports v3 and delete-artifact@v2 does not support GHES
               with:
                   name: ${{ env.OUTPUT_ARTIFACT }}
                   retention-days: 1
