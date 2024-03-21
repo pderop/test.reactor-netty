@@ -73,9 +73,9 @@ jobs:
           force: true
       - name: Cleanup doc docs/build artifact
         if: always()
-        uses: joernott/rm-artifacts@v1
+        uses: joutvhu/delete-artifact@v1 # v1 is only supported by GHES, and upload-artifact v3 must be used, not v4
         with:
           name: ${{ env.DOCS_BUILD_ARTIFACT }}
-          failOnError: false
+
 
 
