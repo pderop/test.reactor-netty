@@ -73,7 +73,7 @@ jobs:
           force: true
       - name: Cleanup doc docs/build artifact
         if: always()
-        uses: joutvhu/delete-artifact@v2
+        uses: joutvhu/delete-artifact@v1 #v2 is not working with GHES
         with:
           name: ${{ env.DOCS_BUILD_ARTIFACT }}
 
