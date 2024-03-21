@@ -73,11 +73,22 @@ jobs:
           force: true
       - name: Cleanup doc docs/build artifact
         if: always()
-        uses: jimschubert/delete-artifacts-action@v1
+        uses: philips-labs/action-delete-artifacts@v1.0.0
         with:
-          log_level: 'debug'
-          artifact_name: ${{ env.DOCS_BUILD_ARTIFACT }}
-          min_bytes: '0'
+          # Optional, GitHub token, a Personal Access Token with `repo` scope if needed
+          # Required, if artifact is from a different repo
+          # Required, if repo is private a Personal Access Token with `repo` scope is needed
+          github_token: ${{secrets.GITHUB_TOKEN}}
+          # Required, workflow file name or ID
+          workflow: build-branch-doc-job.yml
+          # Optional, uploaded artifact name,
+          # will delete all artifacts if not specified
+          name: ${{ env.DOCS_BUILD_ARTIFACT }}
+          # Optional, the status or conclusion of a completed workflow to search for
+          # Can be one of a workflow conclusion:
+          #   "failure", "success", "neutral", "cancelled", "skipped", "timed_out", "action_required"
+          # Default is set to success
+          workflow_conclusion: success
 
 
 
