@@ -47,11 +47,9 @@ jobs:
           mkdir -p gh-pages-docs/$COMPONENT/$FULL_VERSION/reference/pdf
           cp -r reactor-netty/build/docs/javadoc/* gh-pages-docs/$COMPONENT/$FULL_VERSION/javadoc-api/
           cp -r tmp/site/* gh-pages-docs/$COMPONENT/$FULL_VERSION/reference/html/
-          pdf=$(find tmp/assembler -name "*.pdf" 2>/dev/null)
-          if [ -n "$pdf" ] && [ -f "$pdf" ]; then
-            cp $pdf gh-pages-docs/$COMPONENT/$FULL_VERSION/reference/pdf/
-          else
-            echo "PDF not found, won't be copied to the site."
+          if [ -d tmp/assembler ]; then
+            pdf=$(find tmp/assembler -name "*.pdf" 2>/dev/null)
+            [ -n "$pdf" ] && cp $pdf gh-pages-docs/$COMPONENT/$FULL_VERSION/reference/pdf/
           fi
       - name: Setup java 17
         uses: actions/setup-java@v4
