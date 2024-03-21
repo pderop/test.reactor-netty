@@ -76,7 +76,7 @@ jobs:
         run: echo "./gradlew reactor-netty-incubator-quic:check"
 
   build-branch-doc:
-      uses: pderop/test.reactor-netty/.github/workflows/build-branch-doc-job.yml@docs-build
+      uses: .github/workflows/build-branch-doc-job.yml
       with:
           output-artifact: docs-build
 
@@ -196,7 +196,7 @@ jobs:
           git tag -m "Release version ${{ needs.reactor-netty-core.outputs.fullVersion }}" v${{ needs.reactor-netty-core.outputs.fullVersion }} ${{ github.sha }}
           git push --tags
 
-  deploy-branch-doc:
+  cleanup-uploads:
       needs: [ reactor-netty-core, tagRelease, tagMilestone, deploySnapshot ]
       if: |
         always() &&
