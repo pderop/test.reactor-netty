@@ -92,7 +92,7 @@ jobs:
               run_id: context.payload.workflow_run.id
             });
             
-            const matchArtifact = allArtifacts.data.artifacts.find(artifact => artifact.name === $$DOCS_BUILD_ARTIFACT);
+            const matchArtifact = allArtifacts.data.artifacts.find(artifact => artifact.name === $DOCS_BUILD_ARTIFACT);
 
             if (matchArtifact) {
               await github.rest.actions.deleteArtifact({
