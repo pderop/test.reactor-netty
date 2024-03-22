@@ -72,12 +72,37 @@ jobs:
           target-folder: docs
           clean: false
           force: true
+#      - name: Delete docs-build artifact
+#        if: always()
+#        run: |-
+#          ARTIFACTS_URL="/repos/${GITHUB_REPOSITORY}/actions/runs/${GITHUB_RUN_ID}/artifacts"
+#          ARTIFACT_ID=$(gh api -H 'Accept: application/vnd.github+json' $ARTIFACTS_URL | jq -r '.artifacts[] | select(.name == "'$DOCS_BUILD_ARTIFACT'") | .id')
+#          gh api --method DELETE -H 'Accept: application/vnd.github+json' /repos/${{github.repository}}/actions/artifacts/$ARTIFACT_ID}
+#        env:
+#          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Delete docs-build artifact
         if: always()
-        run: |-
-          ARTIFACTS_URL="/repos/${GITHUB_REPOSITORY}/actions/runs/${GITHUB_RUN_ID}/artifacts"
-          ARTIFACT_ID=$(gh api -H 'Accept: application/vnd.github+json' $ARTIFACTS_URL | jq -r '.artifacts[] | select(.name == "'$DOCS_BUILD_ARTIFACT'") | .id')
-          gh api --method DELETE -H 'Accept: application/vnd.github+json' /repos/${{github.repository}}/actions/artifacts/$ARTIFACT_ID}
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        uses: actions/github-script@v6
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const allArtifacts = await github.rest.actions.listWorkflowRunArtifacts({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              run_id: context.payload.workflow_run.id
+            });
+            
+            const matchArtifact = allArtifacts.data.artifacts.find(artifact => artifact.name === $$DOCS_BUILD_ARTIFACT);
+
+            if (matchArtifact) {
+              await github.rest.actions.deleteArtifact({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                artifact_id: matchArtifact.id
+              });
+
+              console.log('Artifact $$DOCS_BUILD_ARTIFACT deleted successfully.');
+            } else {
+              console.log('No artifact named $DOCS_BUILD_ARTIFACT found.');
+            }
 
