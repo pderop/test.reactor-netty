@@ -6,6 +6,10 @@ on:
       - 1.1.x
       - netty5
 permissions: read-all
+
+env:
+  DOCS_BUILD_ARTIFACT: docs-build
+
 jobs:
   # General job notes: we DON'T want to cancel any previous runs, especially in the case of a "back to snapshots" build right after a release push
   # We specify the ubuntu version to minimize the chances we have to deal with a migration during a release
@@ -75,12 +79,38 @@ jobs:
         id: reactor-netty-incubator-quic-checks
         run: echo "./gradlew reactor-netty-incubator-quic:check"
 
+  # build antora doc for the current branch, and upload docs/build results to workflow run.
+  # Each deploy jobs can then download it, in order to let the docs-zip be built properly
+  # (see reactor-netty/build.gradle which includes docs/build/site and optionally docs/assembly/.../pdf into the target docs.zip)
   build-branch-doc:
-      uses: .github/workflows/build-branch-doc-job.yml
-      with:
-          output-artifact: docs-build
+    runs-on: ubuntu-20.04
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up Ruby for asciidoctor-pdf
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: 3.3.0
+      - name: Install asciidoctor-pdf / rouge
+        run: gem install asciidoctor-pdf rouge
+      - name: Setup java 17 for antora
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+      - name: Build antora doc for the current branch
+        run: ./gradlew antora
+      - name: Copy the cache to be included in the site
+        run: |-
+          [ -d docs/build/antora/inject-collector-cache-config-extension/.cache ] && cp -rf docs/build/antora/inject-collector-cache-config-extension/.cache docs/build/site/
+      - name: Upload docs/build to current workflow run
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ env.DOCS_BUILD_ARTIFACT }}
+          retention-days: 1
+          if-no-files-found: error
+          path: docs/build
 
-  #deploy the snapshot artifacts to Artifactory
+    #deploy the snapshot artifacts to Artifactory
   deploySnapshot:
     name: deploySnapshot
     runs-on: ubuntu-20.04
@@ -93,10 +123,10 @@ jobs:
         with:
           distribution: 'temurin'
           java-version: '8'
-      - name: Download docs/build
+      - name: Download antora docs/build
         uses: actions/download-artifact@v4
         with:
-            name: docs-build
+            name: ${{ env.DOCS_BUILD_ARTIFACT }}
             path: docs/build
       - name: deploy
 #        env:
@@ -119,10 +149,10 @@ jobs:
         with:
           distribution: 'temurin'
           java-version: '8'
-      - name: Download docs/build
+      - name: Download antora docs/build
         uses: actions/download-artifact@v4
         with:
-            name: docs-build
+            name: ${{ env.DOCS_BUILD_ARTIFACT }}
             path: docs/build
       - name: deploy
         env:
@@ -148,10 +178,10 @@ jobs:
         with:
           distribution: 'temurin'
           java-version: '8'
-      - name: Download docs/build
+      - name: Download antora docs/build
         uses: actions/download-artifact@v4
         with:
-            name: docs-build
+            name: ${{ env.DOCS_BUILD_ARTIFACT }}
             path: docs/build
       - name: deploy
 #        env:
@@ -196,21 +226,16 @@ jobs:
           git tag -m "Release version ${{ needs.reactor-netty-core.outputs.fullVersion }}" v${{ needs.reactor-netty-core.outputs.fullVersion }} ${{ github.sha }}
           git push --tags
 
-  cleanup-uploads:
-      needs: [ reactor-netty-core, tagRelease, tagMilestone, deploySnapshot ]
-      if: |
-        always() &&
-        needs.reactor-netty-core.result == 'success' &&
-        (needs.tagRelease.result == 'skipped' || needs.tagRelease.result == 'success') &&
-        (needs.tagMilestone.result == 'skipped' || needs.tagMilestone.result == 'success') &&
-        (needs.deploySnapshot.result == 'skipped' || needs.deploySnapshot.result == 'success')
-      uses: pderop/test.reactor-netty/.github/workflows/deploy-branch-doc-job.yml@docs-build
-      secrets: inherit
-      with:
-        component: netty
-        full-version: ${{ needs.reactor-netty-core.outputs.fullVersion }}
-        version-type: ${{ needs.reactor-netty-core.outputs.versionType }}
-        docs-build-artifact: docs-build
+  cleanup:
+    needs: [ reactor-netty-core, tagRelease, tagMilestone, deploySnapshot ]
+    if: always() # cleanup always run after all needed jobs, regardless of whether they were successful
+    permissions: write-all
+    run: |-
+      ARTIFACTS_URL="/repos/${GITHUB_REPOSITORY}/actions/runs/${GITHUB_RUN_ID}/artifacts"
+      ARTIFACT_ID=$(gh api -H 'Accept: application/vnd.github+json' -H 'X-GitHub-Api-Version: 2022-11-28' $ARTIFACTS_URL | jq -r '.artifacts[] | select(.name == "'$DOCS_BUILD_ARTIFACT'") | .id')
+      [ -n "$ARTIFACT_ID" ] && gh api --method DELETE -H 'Accept: application/vnd.github+json' -H 'X-GitHub-Api-Version: 2022-11-28' /repos/${{github.repository}}/actions/artifacts/$ARTIFACT_ID}
+    env:
+      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
 # For Gradle configuration of signing, see https://docs.gradle.org/current/userguide/signing_plugin.html#sec:in-memory-keys
 # publishMavenJavaPublicationToSonatypeRepository only sends to a staging repository
