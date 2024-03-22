@@ -158,15 +158,14 @@ jobs:
             name: ${{ env.DOCS_BUILD_ARTIFACT }}
             path: docs/build
       - name: deploy
-        env:
-          ORG_GRADLE_PROJECT_artifactory_publish_username: ${{secrets.ARTIFACTORY_USERNAME}}
-          ORG_GRADLE_PROJECT_artifactory_publish_password: ${{secrets.ARTIFACTORY_PASSWORD}}
-          ORG_GRADLE_PROJECT_signingKey: ${{secrets.SIGNING_KEY}}
-          ORG_GRADLE_PROJECT_signingPassword: ${{secrets.SIGNING_PASSPHRASE}}
-        run: |-
-          echo "deploy milestone artifacts to artifactory"
-          ./gradlew reactor-netty:build
-          unzip -l reactor-netty/build/distributions/reactor-netty-${{ needs.reactor-netty-core.outputs.fullVersion }}-docs.zip
+        run: ./gradlew publishToMavenLocal
+      - name: Upload docs
+        uses: actions/upload-artifact@v4
+        with:
+            name: docs
+            retention-days: 1
+            if-no-files-found: error
+            path: reactor-netty/build/distributions/reactor-netty-${{ needs.reactor-netty-core.outputs.fullVersion }}-docs.zip
 
   #sign the release artifacts and deploy them to Artifactory
   deployRelease:
@@ -187,17 +186,14 @@ jobs:
             name: ${{ env.DOCS_BUILD_ARTIFACT }}
             path: docs/build
       - name: deploy
-#        env:
-#          ORG_GRADLE_PROJECT_artifactory_publish_username: ${{secrets.ARTIFACTORY_USERNAME}}
-#          ORG_GRADLE_PROJECT_artifactory_publish_password: ${{secrets.ARTIFACTORY_PASSWORD}}
-#          ORG_GRADLE_PROJECT_signingKey: ${{secrets.SIGNING_KEY}}
-#          ORG_GRADLE_PROJECT_signingPassword: ${{secrets.SIGNING_PASSPHRASE}}
-#          ORG_GRADLE_PROJECT_sonatypeUsername: ${{secrets.SONATYPE_USERNAME}}
-#          ORG_GRADLE_PROJECT_sonatypePassword: ${{secrets.SONATYPE_PASSWORD}}
-        run: |-
-            echo "Release artifacts and deploy them to Artifactory"
-            ./gradlew reactor-netty:build
-            unzip -l reactor-netty/build/distributions/reactor-netty-${{ needs.reactor-netty-core.outputs.fullVersion }}-docs.zip
+        run: ./gradlew publishToMavenLocal
+      - name: Upload docs
+        uses: actions/upload-artifact@v4
+        with:
+            name: docs
+            retention-days: 1
+            if-no-files-found: error
+            path: reactor-netty/build/distributions/reactor-netty-${{ needs.reactor-netty-core.outputs.fullVersion }}-docs.zip
 
   tagMilestone:
     name: Tag milestone
