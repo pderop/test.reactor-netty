@@ -130,12 +130,14 @@ jobs:
             name: ${{ env.DOCS_BUILD_ARTIFACT }}
             path: docs/build
       - name: deploy
-#        env:
-#          ORG_GRADLE_PROJECT_artifactory_publish_username: ${{secrets.ARTIFACTORY_SNAPSHOT_USERNAME}}
-#          ORG_GRADLE_PROJECT_artifactory_publish_password: ${{secrets.ARTIFACTORY_PASSWORD}}
-        run: |
-          ./gradlew reactor-netty:build
-          unzip -l reactor-netty/build/distributions/reactor-netty-${{ needs.reactor-netty-core.outputs.fullVersion }}-docs.zip
+        run: ./gradlew publishToMavenLocal
+      - name: Upload docs
+        uses: actions/upload-artifact@v4
+        with:
+            name: docs
+            retention-days: 1
+            if-no-files-found: error
+            path: reactor-netty/build/distributions/reactor-netty-${{ needs.reactor-netty-core.outputs.fullVersion }}-docs.zip
 
     #sign the milestone artifacts and deploy them to Artifactory
   deployMilestone:
