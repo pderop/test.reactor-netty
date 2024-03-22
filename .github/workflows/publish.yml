@@ -5,6 +5,7 @@ on:
       - main
       - 1.1.x
       - netty5
+      - step1-only-antora
 permissions: read-all
 
 env:
