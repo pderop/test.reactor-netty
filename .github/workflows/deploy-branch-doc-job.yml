@@ -92,7 +92,7 @@ jobs:
               run_id: context.payload.workflow_run.id
             });
             
-            const matchArtifact = allArtifacts.data.artifacts.find(artifact => artifact.name === $DOCS_BUILD_ARTIFACT);
+            const matchArtifact = allArtifacts.data.artifacts.find(artifact => artifact.name === process.env.DOCS_BUILD_ARTIFACT);
 
             if (matchArtifact) {
               await github.rest.actions.deleteArtifact({
@@ -101,8 +101,8 @@ jobs:
                 artifact_id: matchArtifact.id
               });
 
-              console.log('Artifact $$DOCS_BUILD_ARTIFACT deleted successfully.');
+              console.log('Artifact', process.env.DOCS_BUILD_ARTIFACT, 'deleted successfully.');
             } else {
-              console.log('No artifact named $DOCS_BUILD_ARTIFACT found.');
+              console.log('No artifact named', process.env.DOCS_BUILD_ARTIFACT, 'found.');
             }
 
