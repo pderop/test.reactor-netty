@@ -1,6 +1,7 @@
 name: reactor-netty
 version: true
 title: Reactor Netty Reference Guide
+start_page: about-doc.adoc
 author:
     - Stephane Maldini <https://twitter.com/smaldini[@smaldini]>
     - Violeta Georgieva <https://twitter.com/violeta_g_g[@violeta_g_g]>

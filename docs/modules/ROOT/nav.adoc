@@ -1,4 +1,4 @@
-* xref:index.adoc[]
+* xref:about-doc.adoc[]
 * xref:getting-started.adoc[]
 * xref:tcp-server.adoc[]
 * xref:tcp-client.adoc[]
