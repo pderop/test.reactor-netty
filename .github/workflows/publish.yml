@@ -5,7 +5,7 @@ on:
       - main
       - 1.1.x
       - netty5
-      - step1-only-antora
+      - step1-only-antora # TODO remove
 permissions: read-all
 
 env:
