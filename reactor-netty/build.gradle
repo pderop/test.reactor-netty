@@ -73,7 +73,7 @@ task docsZip(type: Zip) {
 
 			from(pdfFile) {
 				rename { fileName ->
-					"reactor-netty-reference-guide-${project.version}.pdf"
+					"docs/reactor-netty-reference-guide-${project.version}.pdf"
 				}
 			}
 		}
