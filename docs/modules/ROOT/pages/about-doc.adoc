@@ -1,4 +1,4 @@
-[[index-doc]]
+[[about-doc]]
 = About the Documentation
 :linkattrs:
 
@@ -35,7 +35,7 @@ ifeval::["{backend}" == "html5"]
 TIP: To facilitate documentation edits, most sections have a link at the end that opens
 an edit `UI` directly on `GitHub` for the main source file for that section. These links are
 only present in the `HTML5` version of this reference guide. They look like the following link:
-link:https://github.com/reactor/reactor-netty/edit/main/docs/asciidoc/index.adoc[Suggest Edit^, role="fa fa-edit"] to xref:index.adoc[About the Documentation].
+link:https://github.com/reactor/reactor-netty/edit/main/docs/modules/ROOT/pages/about-doc.adoc[Suggest Edit^, role="fa fa-edit"] to xref:about-doc.adoc[About the Documentation].
 endif::[]
 
 [[getting-help]]

@@ -658,7 +658,7 @@ blockquote, blockquote p {
         page-break-inside: avoid;
     }
 
-	thead {
+    thead {
         display: table-header-group; /* h5bp.com/t */
     }
 
