@@ -78,9 +78,8 @@ dependencies {
 	asciidoctorGems 'rubygems:rouge'
 }
 
-def observationsOutputDir = file("${buildDir}/docs/generated/observation/").absolutePath
-
 task generateObservabilityDocs(type: JavaExec) {
+	def observationsOutputDir = file("${buildDir}/docs/generated/observation/").absolutePath
 	mainClass = "io.micrometer.docs.DocsGeneratorCommand"
 	classpath configurations.adoc
 	outputs.dir(observationsOutputDir)

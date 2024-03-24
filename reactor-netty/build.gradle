@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2020-2023 VMware, Inc. or its affiliates, All Rights Reserved.
+ * Copyright (c) 2020-2024 VMware, Inc. or its affiliates, All Rights Reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -54,7 +54,7 @@ task docsZip(type: Zip) {
 	def isSnapshot = project.version.endsWith('-SNAPSHOT')
 	def version = project.version.takeWhile { it != '-' }
 	def pdfFile = file("../docs/build/assembler/reactor-netty/${version}/reactor-netty-reference-guide.pdf")
-	boolean forcePdf = project.hasProperty('forcePdf') && project.forcePdf
+	boolean forcePdf = project.hasProperty('forcePdf')
 
 	doFirst {
 		if (!docsDir.exists() || !Files.list(docsDir.toPath()).findFirst().isPresent()) {
@@ -69,7 +69,7 @@ task docsZip(type: Zip) {
 
 	if (pdfFile.exists()) {
 		if (!isSnapshot || forcePdf) {
-			logger.log(LogLevel.DEBUG, "pdf ${pdfFile} included in docs zip")
+			logger.lifecycle("pdf ${pdfFile} included in docs zip")
 
 			from(pdfFile) {
 				rename { fileName ->
