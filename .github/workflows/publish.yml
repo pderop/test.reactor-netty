@@ -129,15 +129,15 @@ jobs:
         with:
             name: ${{ env.DOCS_BUILD_ARTIFACT }}
             path: docs/build
-#      - name: deploy
-#        run: ./gradlew publishToMavenLocal
-#      - name: Upload docs
-#        uses: actions/upload-artifact@v4
-#        with:
-#            name: docs
-#            retention-days: 1
-#            if-no-files-found: error
-#            path: reactor-netty/build/distributions/reactor-netty-${{ needs.reactor-netty-core.outputs.fullVersion }}-docs.zip
+      - name: deploy
+        run: ./gradlew publishToMavenLocal
+      - name: Upload docs
+        uses: actions/upload-artifact@v4
+        with:
+            name: docs
+            retention-days: 1
+            if-no-files-found: error
+            path: reactor-netty/build/distributions/reactor-netty-${{ needs.reactor-netty-core.outputs.fullVersion }}-docs.zip
 
     #sign the milestone artifacts and deploy them to Artifactory
   deployMilestone:
@@ -236,7 +236,7 @@ jobs:
             GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |-
           ARTIFACTS_URL="/repos/${GITHUB_REPOSITORY}/actions/runs/${GITHUB_RUN_ID}/artifacts"
-          ARTIFACT_ID=$(gh api -H 'Accept: application/vnd.github+json' -H 'X-GitHub-Api-Version: 2022-11-28' $ARTIFACTS_URL | jq -r '.artifacts[] | select(.name == "'foo'") | .id // ""')
+          ARTIFACT_ID=$(gh api -H 'Accept: application/vnd.github+json' -H 'X-GitHub-Api-Version: 2022-11-28' $ARTIFACTS_URL | jq -r '.artifacts[] | select(.name == "'$DOCS_BUILD_ARTIFACT'") | .id // ""')
           if [ -n "$ARTIFACT_ID" ]; then
             gh api --method DELETE -H 'Accept: application/vnd.github+json' -H 'X-GitHub-Api-Version: 2022-11-28' /repos/${{github.repository}}/actions/artifacts/$ARTIFACT_ID}
           fi
