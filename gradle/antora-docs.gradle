@@ -13,8 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-apply plugin: 'org.asciidoctor.jvm.pdf'
-apply plugin: 'org.asciidoctor.jvm.gems'
 apply plugin: 'io.spring.antora.generate-antora-yml'
 
 def isCommandAvailable(String command) {
@@ -78,7 +76,6 @@ configurations {
 
 dependencies {
 	adoc "io.micrometer:micrometer-docs-generator:$micrometerDocsVersion"
-	asciidoctorGems 'rubygems:rouge'
 }
 
 task generateObservabilityDocs(type: JavaExec) {

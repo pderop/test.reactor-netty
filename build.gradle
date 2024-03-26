@@ -21,7 +21,6 @@ buildscript {
 		mavenCentral()
 		maven { url "https://plugins.gradle.org/m2/" }
 		maven { url "https://repo.spring.io/plugins-release" }
-		//gradlePluginPortal()
 	}
 	dependencies {
 		classpath 'org.jfrog.buildinfo:build-info-extractor-gradle:4.33.12' //applied in individual submodules
@@ -30,9 +29,6 @@ buildscript {
 
 plugins {
 	id "com.diffplug.spotless" version "6.13.0"
-	id 'org.asciidoctor.jvm.convert' version '3.3.2' apply false
-	id 'org.asciidoctor.jvm.pdf' version '3.3.2' apply false
-	id 'org.asciidoctor.jvm.gems' version '3.3.2' apply false
 	id 'com.google.osdetector' version '1.7.3'
 	id 'org.gradle.test-retry' version '1.5.8'
 	id 'io.spring.nohttp' version '0.0.11'
