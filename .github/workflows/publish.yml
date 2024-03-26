@@ -186,7 +186,7 @@ jobs:
             name: ${{ env.DOCS_BUILD_ARTIFACT }}
             path: docs/build
       - name: deploy
-        run: ./gradlew publishToMavenLocal
+        run: ./gradlew doc
       - name: Upload docs
         uses: actions/upload-artifact@v4
         with:
