@@ -21,6 +21,7 @@ buildscript {
 		mavenCentral()
 		maven { url "https://plugins.gradle.org/m2/" }
 		maven { url "https://repo.spring.io/plugins-release" }
+		//gradlePluginPortal()
 	}
 	dependencies {
 		classpath 'org.jfrog.buildinfo:build-info-extractor-gradle:4.33.12' //applied in individual submodules
