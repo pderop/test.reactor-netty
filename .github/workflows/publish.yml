@@ -200,7 +200,7 @@ jobs:
     needs: [ reactor-netty-core, deployMilestone ]
     runs-on: ubuntu-20.04
     permissions:
-      contents: write
+        actions: write
     steps:
       - uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11
       - name: tag
@@ -229,8 +229,8 @@ jobs:
     needs: [ reactor-netty-core, tagRelease, tagMilestone, deploySnapshot ]
     if: always() # cleanup always run after all needed jobs, regardless of whether they were successful
     runs-on: ubuntu-20.04
-#    permissions:
-#      actions: write
+    permissions:
+      actions: write
     steps:
       - name: Delete antora docs-build artifact
         env:
