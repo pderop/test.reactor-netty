@@ -26,8 +26,7 @@ jobs:
       - name: setup java
         uses: actions/setup-java@99b8673ff64fbf99d8d325f52d9a5bdedb8483e9
         with:
-          distribution: 'temurin'
-          java-version: '8'
+          java-version: 13 # Modern JVM is needed for Java 10+ specific tests
       - name: interpret version
         id: version
         #we only run the qualifyVersionGha task so that no other console printing can hijack this step's output
