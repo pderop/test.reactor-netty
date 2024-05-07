@@ -10,6 +10,7 @@ permissions: read-all
 
 env:
   DOCS_BUILD_ARTIFACT: docs-build
+  DOCS_BUILD_PATH: docs/build
 
 jobs:
   # General job notes: we DON'T want to cancel any previous runs, especially in the case of a "back to snapshots" build right after a release push
@@ -109,7 +110,7 @@ jobs:
           name: ${{ env.DOCS_BUILD_ARTIFACT }}
           retention-days: 1
           if-no-files-found: error
-          path: docs/build
+          path: ${{ env.DOCS_BUILD_PATH }}
 
     #deploy the snapshot artifacts to Artifactory
   deploySnapshot:
@@ -128,7 +129,7 @@ jobs:
         uses: actions/download-artifact@c850b930e6ba138125429b7e5c93fc707a7f8427 # v4
         with:
             name: ${{ env.DOCS_BUILD_ARTIFACT }}
-            path: docs/build
+            path: ${{ env.DOCS_BUILD_PATH }}
       - name: deploy
         run: ./gradlew doc
       - name: Upload docs
@@ -156,7 +157,7 @@ jobs:
         uses: actions/download-artifact@c850b930e6ba138125429b7e5c93fc707a7f8427 # v4
         with:
             name: ${{ env.DOCS_BUILD_ARTIFACT }}
-            path: docs/build
+            path: ${{ env.DOCS_BUILD_PATH }}
       - name: deploy
         run: ./gradlew publishToMavenLocal
       - name: Upload docs
@@ -184,7 +185,7 @@ jobs:
         uses: actions/download-artifact@c850b930e6ba138125429b7e5c93fc707a7f8427 # v4
         with:
             name: ${{ env.DOCS_BUILD_ARTIFACT }}
-            path: docs/build
+            path: ${{ env.DOCS_BUILD_PATH }}
       - name: deploy
         run: ./gradlew doc
       - name: Upload docs
@@ -226,7 +227,7 @@ jobs:
           git push --tags
 
   cleanup:
-    needs: [ reactor-netty-core, tagRelease, tagMilestone, deploySnapshot ]
+    needs: [ tagRelease, tagMilestone, deploySnapshot ]
     if: always() # cleanup always run after all needed jobs, regardless of whether they were successful
     runs-on: ubuntu-20.04
     permissions:
