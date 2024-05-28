@@ -230,7 +230,7 @@ jobs:
     needs: [ tagRelease, tagMilestone, deploySnapshot ]
     #if: always() # cleanup always run after all needed jobs, regardless of whether they were successful
     #if: ${{ always() && (needs.tagRelease.result == 'success' || needs.tagRelease.result == 'skipped') && (needs.tagMilestone.result == 'success' || needs.tagMilestone.result == 'skipped') && (needs.deploySnapshot.result == 'success' || needs.deploySnapshot.result == 'skipped') }}
-    if: >
+    if: |
         ${{ always() &&
             (needs.tagRelease.result == 'success' || needs.tagRelease.result == 'skipped') &&
             (needs.tagMilestone.result == 'success' || needs.tagMilestone.result == 'skipped') &&
