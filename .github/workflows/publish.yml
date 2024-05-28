@@ -195,8 +195,8 @@ jobs:
             retention-days: 1
             if-no-files-found: error
             path: reactor-netty/build/distributions/reactor-netty-${{ needs.reactor-netty-core.outputs.fullVersion }}-docs.zip
-      - name: Simulate an error
-        run: exit 1
+#      - name: Simulate an error
+#        run: exit 1
 
   tagMilestone:
     name: Tag milestone
