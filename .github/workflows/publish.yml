@@ -231,9 +231,9 @@ jobs:
           git push --tags
 
   cleanup:
-    needs: [ deploySnapshot, deployMilestone, deployRelease ]
+    needs: [ deploySnapshot, tagRelease, tagMilestone ]
     #if: ${{ always() && contains(join(needs.*.result, ','), 'success') == 'true' }}
-    if: always() && (needs.deploySnapshot.result == 'success' || needs.deployMilestone.result == 'success' || needs.deployRelease.result == 'success')
+    if: always() && (needs.deploySnapshot.result == 'success' || needs.tagRelease.result == 'success' || needs.tagMilestone.result == 'success')
     runs-on: ubuntu-20.04
     permissions:
       actions: write
