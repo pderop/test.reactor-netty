@@ -232,7 +232,7 @@ jobs:
 
   cleanup:
     needs: [ deploySnapshot, deployMilestone, deployRelease ]
-    if: ${{ always() && contains(join(needs.*.result, ','), 'success') }}
+    if: ${{ always() && contains(join(needs.*.result, ','), 'success') == 'true' }}
     runs-on: ubuntu-20.04
     permissions:
       actions: write
