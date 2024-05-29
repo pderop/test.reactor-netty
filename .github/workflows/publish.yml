@@ -38,8 +38,8 @@ jobs:
       - name: run reactor-netty-core checks
         id: reactor-netty-core-checks
         run: echo "./gradlew reactor-netty-core:check"
-      - name: Simulate an error
-        run: exit 1
+#      - name: Simulate an error
+#        run: exit 1
   reactor-netty-http:
     # Notes on reactor-netty-http: this job has no access to secrets, only github token. As a result, all non-core actions are centralized here
     name: reactor-netty-http
