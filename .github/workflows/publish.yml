@@ -234,6 +234,7 @@ jobs:
     needs: [ deployRelease, deployMilestone, deploySnapshot ]
     if: >-
         ${{
+            always() &&
             (needs.deployRelease.result == 'success' || needs.deployMilestone.result == 'success' || needs.deploySnapshot.result == 'success')
         }}
     #if: ${{ always() && !contains(join(needs.*.result, ','), 'failure') }}
