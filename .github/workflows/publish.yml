@@ -233,7 +233,7 @@ jobs:
   cleanup:
     needs: [ deploySnapshot, deployMilestone, deployRelease ]
     #if: ${{ always() && contains(join(needs.*.result, ','), 'success') == 'true' }}
-    if: ${{ always() && contains(needs.*.result, 'success') == 'true' }}
+    if: always() && (needs.deploySnapshot.result == 'success' || needs.deployMilestone.result == 'success' || needs.deployRelease.result == 'success')
     runs-on: ubuntu-20.04
     permissions:
       actions: write
