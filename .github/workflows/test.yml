@@ -1,5 +1,9 @@
+name: test
+
 on:
-    workflow_dispatch:
+  push:
+    branches:
+      - main
 
 jobs:
   a:
@@ -13,7 +17,7 @@ jobs:
       - run: |
           echo "Running job a"
           exit 1
-            
+
   c:
     runs-on: ubuntu-latest
     needs: [ b ]
